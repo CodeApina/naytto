@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "412461117322",
+    "project_id": "housingcooperative-827c8",
+    "storage_bucket": "housingcooperative-827c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412461117322:android:1635efbd4e828456e66273",
+        "android_client_info": {
+          "package_name": "com.example.naytto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUVp9D8n75inLrQOJAsqhPrZmYBeWsfMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
