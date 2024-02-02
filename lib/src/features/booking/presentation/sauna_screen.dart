@@ -6,12 +6,18 @@ class SaunaScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Text('Sauna booking'),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Sauna booking',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ],
+          ),
         ),
       ),
     );

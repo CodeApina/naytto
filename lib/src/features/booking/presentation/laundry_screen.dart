@@ -6,12 +6,18 @@ class LaundryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Text('Laundry booking'),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Laundry booking',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ],
+          ),
         ),
       ),
     );

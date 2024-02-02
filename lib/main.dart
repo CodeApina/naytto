@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/firebase_options.dart';
+import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/routing/app_router.dart';
 
 void main() async {
@@ -19,7 +20,7 @@ class MyApp extends ConsumerWidget {
     final goRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       routerConfig: goRouter,
-      title: 'Housing',
+      theme: getAppTheme(context),
     );
   }
 }

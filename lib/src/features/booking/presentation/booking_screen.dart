@@ -7,22 +7,30 @@ class BookingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            const Text('Welcome to booking'),
-            TextButton(
-                onPressed: () {
-                  ref.read(goRouterProvider).goNamed(AppRoute.sauna.name);
-                },
-                child: const Text('Saunas')),
-            TextButton(
-                onPressed: () {
-                  ref.read(goRouterProvider).goNamed(AppRoute.laundry.name);
-                },
-                child: const Text('Laundry')),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Welcome to booking',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              TextButton(
+                  onPressed: () {
+                    ref.read(goRouterProvider).goNamed(AppRoute.sauna.name);
+                  },
+                  child: const Text(
+                    'Saunas',
+                  )),
+              TextButton(
+                  onPressed: () {
+                    ref.read(goRouterProvider).goNamed(AppRoute.laundry.name);
+                  },
+                  child: const Text('Laundry')),
+            ],
+          ),
         ),
       ),
     );
