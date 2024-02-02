@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/booking/presentation/booking_screen.dart';
+import 'package:naytto/src/features/booking/presentation/laundry_screen.dart';
 import 'package:naytto/src/features/booking/presentation/sauna_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
 import 'package:naytto/src/routing/go_router_refresh_stream.dart';
@@ -21,7 +22,7 @@ final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _bookingNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'booking');
 
 // Add a new entry to the AppRoute enum for your route whether it's nested or not.
-enum AppRoute { login, home, booking, sauna }
+enum AppRoute { login, home, booking, sauna, laundry }
 
 // Riverpod provider for the GoRouter instance
 @riverpod
@@ -88,6 +89,14 @@ GoRouter goRouter(GoRouterRef ref) {
                       pageBuilder: ((context, state) {
                         return const MaterialPage(
                             fullscreenDialog: true, child: SaunaScreen());
+                      })),
+                  GoRoute(
+                      path: 'laundry',
+                      name: AppRoute.laundry.name,
+                      parentNavigatorKey: _bookingNavigatorKey,
+                      pageBuilder: ((context, state) {
+                        return const MaterialPage(
+                            fullscreenDialog: true, child: LaundryScreen());
                       }))
                 ],
               )
