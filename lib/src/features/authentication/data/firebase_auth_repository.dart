@@ -3,11 +3,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase_auth_repository.g.dart';
 
+// Manages authentication-related operations using Firebase services.
 class AuthRepository {
+  // Firebase authentication instance.
   AuthRepository(this._auth);
   final FirebaseAuth _auth;
 
+  // Stream for observing authentication state changes.
   Stream<User?> authStateChanges() => _auth.authStateChanges();
+
+  // Get the current authenticated user.
   User? get currentUser => _auth.currentUser;
 
   Future<void> signInAnonymously() {
@@ -23,16 +28,19 @@ class AuthRepository {
   }
 }
 
+// Riverpod provider for the FirebaseAuth instance.
 @Riverpod(keepAlive: true)
 FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
   return FirebaseAuth.instance;
 }
 
+// Riverpod provider for the AuthRepository instance.
 @Riverpod(keepAlive: true)
 AuthRepository authRepository(AuthRepositoryRef ref) {
   return AuthRepository(ref.watch(firebaseAuthProvider));
 }
 
+// Riverpod provider for observing authentication state changes.
 @riverpod
 Stream<User?> authStateChanges(AuthStateChangesRef ref) {
   return ref.watch(authRepositoryProvider).authStateChanges();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/booking/presentation/booking_screen.dart';
+import 'package:naytto/src/features/booking/presentation/sauna_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
 import 'package:naytto/src/routing/go_router_refresh_stream.dart';
 import 'package:naytto/src/routing/scaffold_with_navbar.dart';
@@ -10,20 +11,27 @@ import 'package:naytto/src/features/authentication/presentation/login_screen.dar
 
 part 'app_router.g.dart';
 
+// https://medium.com/@antonio.tioypedro1234/flutter-go-router-the-essential-guide-349ef39ec5b3
+// GoRouter configuration
+
+//If your new route represents a new navigation category / shellroute stack,
+// create a new GlobalKey<NavigatorState> for it
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _bookingNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'booking');
 
-enum AppRoute { login, home, booking }
+// Add a new entry to the AppRoute enum for your route whether it's nested or not.
+enum AppRoute { login, home, booking, sauna }
 
-// https://medium.com/@antonio.tioypedro1234/flutter-go-router-the-essential-guide-349ef39ec5b3
-// GoRouter configuration
+// Riverpod provider for the GoRouter instance
 @riverpod
 GoRouter goRouter(GoRouterRef ref) {
+  // Access the authentication repository instance
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/login',
+    // Configure the GoRouter with initial location, redirection logic, and routes
     redirect: (context, state) {
       final path = state.uri.path;
       final isLoggedIn = authRepository.currentUser != null;
@@ -38,32 +46,50 @@ GoRouter goRouter(GoRouterRef ref) {
       }
       return null;
     },
+    // Listens to a stream that provides information about user authentication changes
+    // and automatically triggers the GoRouter to handle redirection in case the user logs out.
+    // The GoRouterRefreshStream acts as a bridge, connecting the authentication state stream
+    // with the GoRouter, ensuring the UI responds dynamically to changes in the user's authentication status.
     refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     routes: [
+      // Login route, this is not part of the bottom nav bar
       GoRoute(
         path: '/login',
         name: AppRoute.login.name,
         pageBuilder: (context, state) => NoTransitionPage(child: LoginScreen()),
       ),
+      // Navigation stacks for different app sections
       StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
             return ScaffoldWithNavBar(navigationShell: navigationShell);
           },
           branches: [
+            // Home section with nested routes
             StatefulShellBranch(navigatorKey: _homeNavigatorKey, routes: [
               GoRoute(
-                name: AppRoute.home.name,
                 path: '/home',
+                name: AppRoute.home.name,
                 pageBuilder: (context, state) =>
-                    NoTransitionPage(child: HomeScreen()),
+                    const NoTransitionPage(child: HomeScreen()),
               )
             ]),
+            // Booking section with nested routes
             StatefulShellBranch(navigatorKey: _bookingNavigatorKey, routes: [
               GoRoute(
-                name: AppRoute.booking.name,
                 path: '/booking',
+                name: AppRoute.booking.name,
                 pageBuilder: (context, state) =>
-                    NoTransitionPage(child: BookingScreen()),
+                    const NoTransitionPage(child: BookingScreen()),
+                routes: [
+                  GoRoute(
+                      path: 'sauna',
+                      name: AppRoute.sauna.name,
+                      parentNavigatorKey: _bookingNavigatorKey,
+                      pageBuilder: ((context, state) {
+                        return const MaterialPage(
+                            fullscreenDialog: true, child: SaunaScreen());
+                      }))
+                ],
               )
             ]),
           ])

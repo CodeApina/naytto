@@ -20,13 +20,15 @@ class ScaffoldWithNavBar extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navigationShell.currentIndex,
         items: const <BottomNavigationBarItem>[
+          // If you're adding a new navigation item to the bottom navigation bar
+          // Add it here as a BottomNavigationBarItem and provide it with an icon and label
           BottomNavigationBarItem(
-            icon: Icon(Icons.note_add),
-            label: 'Notes',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.post_add),
-            label: 'Reservations',
+            icon: Icon(Icons.calendar_month),
+            label: 'Booking',
           ),
         ],
         onTap: _onTap,
