@@ -18,6 +18,7 @@ class FirestoreFields{
   static const String booking = "";
 
   // Resident fields
+  // TODO: should residents store apartment numbers instead of apartment id for ease of data management?
   static const String residentApartmentId = "aparmentid";
   static const String residentEmail = "email";
   static const String residentFirstName = "firstname";
