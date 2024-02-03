@@ -21,6 +21,7 @@ class FirestoreFields{
   // TODO: should residents store apartment numbers instead of apartment id for ease of data management?
   static const String residentApartmentId = "aparmentid";
   static const String residentEmail = "email";
+  // TODO: should names be compiled into one field for ease of data management?
   static const String residentFirstName = "firstname";
   static const String residentLastName = "lastname";
   static const String residentTel = "phonenumber";
