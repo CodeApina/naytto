@@ -23,6 +23,6 @@ class FirestoreFields{
   static const String residentFirstName = "firstname";
   static const String residentLastName = "lastname";
   static const String residentTel = "phonenumber";
-  //TODO: this is not needed as the document ID functions as user ID
+  //TODO: make resident ID be a userID from auth
   static const String residentResidentId = "residentid";
 }
