@@ -26,15 +26,12 @@ import 'package:firebase_core/firebase_core.dart';
     } 
     /// Stores user in the database.
     ///
-    /// Requires Map<String,Dynamic>[uid, email, firstName, lastName, tel, apartmentNumber].
+    /// Requires Map<String,Dynamic>[uid, email, tel].
     Future<bool>storeUserInDB(Map<String,dynamic>mapOfData) async{
       var dbref = db.collection(FirestoreCollections.residents);
-      return await dbref.add({
-        FirestoreFields.residentResidentId: mapOfData["uid"],
+      var docId = await dbref.where(FirestoreFields.residentResidentId, isEqualTo: mapOfData["uid"]).get().then((querySnapshot) {return querySnapshot.docs[0].id;});
+      return await dbref.doc(docId).set({
         FirestoreFields.residentEmail: mapOfData["email"],
-        FirestoreFields.residentFirstName: mapOfData["firstName"],
-        FirestoreFields.residentLastName: mapOfData["lastName"],
-        FirestoreFields.residentApartmentId: mapOfData["apartmentNumber"],
         FirestoreFields.residentTel: mapOfData["tel"],
       }).then((value) {
         return true;
