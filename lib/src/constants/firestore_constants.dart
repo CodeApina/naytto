@@ -14,7 +14,7 @@ class FirestoreFields{
   static const String apartmentsResidentsId = "residentid";
 
   // Booking fields
-//TODO: Standardize field names for booking
+  //TODO: Standardize field names for booking
   static const String booking = "";
 
   // Resident fields
