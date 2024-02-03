@@ -16,7 +16,7 @@ ThemeData getAppTheme(BuildContext context) {
       CustomColors(
         color1: Color.fromARGB(255, 146, 199, 207),
         color2: Color.fromARGB(255, 170, 215, 217),
-        color3: Color.fromARGB(255, 229, 249, 241),
+        color3: Color.fromARGB(255, 255, 255, 255),
       ),
     ],
     brightness: Brightness.light,
@@ -43,7 +43,7 @@ ThemeData getAppTheme(BuildContext context) {
         ),
         // Main text used in announcements, booking info etc
         displaySmall: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87)),
+            fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black87)),
   );
 }
 
