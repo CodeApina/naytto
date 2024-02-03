@@ -47,6 +47,8 @@ import 'package:firebase_core/firebase_core.dart';
     ///Links resident to user in db
     ///
     ///Requires uid AND both first AND last name OR one other parameter
+    ///Returns true if resident matching users info is found and the linking is successful
+    ///Else returns false
     Future<bool>linkResidentToUser(uid, {email, apartmentNumber, tel, firstName, lastName}) async{
       assert((email != null || apartmentNumber != null || tel != null || firstName != null && lastName != null), "First and last name or one other parameter required");
       var dbref = db.collection(FirestoreCollections.residents);
