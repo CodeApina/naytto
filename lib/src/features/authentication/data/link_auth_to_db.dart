@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
-  Future<bool>checkDbForUser(email) async{
+  Future<bool>checkDbForUser(uid) async{
   await Firebase.initializeApp();
   var db = await FirebaseFirestore.instance;
   var dbref = db.collection("resident");
   bool found = false;
   try{
-    var data = await dbref.where("email", isEqualTo: email).get().then((querySnapshot) {
+    var data = await dbref.where("uid", isEqualTo: uid).get().then((querySnapshot) {
       if (querySnapshot.docs.isNotEmpty){
         found = true;
       }
@@ -23,5 +23,9 @@ import 'package:firebase_core/firebase_core.dart';
   }
   return found;
 }
+
+  Future<bool>storeUserInDB(uid) async{
+    return false;
+  }
 
 
