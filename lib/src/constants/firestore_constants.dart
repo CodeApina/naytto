@@ -7,7 +7,7 @@ class FirestoreCollections{
 }
 class FirestoreFields{
   // Apartment fields
-  static const String apartmentsAdress = "adress";
+  static const String apartmentsNumber = "adress";
   //TODO this is not needed as document ID functions as apartment ID
   static const String apartmentsApartemntId = "apartmentid";
   static const String apartmentsResidents = "residents";
