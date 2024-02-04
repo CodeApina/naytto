@@ -5,6 +5,7 @@ import 'package:naytto/src/features/booking/presentation/booking_screen.dart';
 import 'package:naytto/src/features/booking/presentation/laundry_screen.dart';
 import 'package:naytto/src/features/booking/presentation/sauna_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
+import 'package:naytto/src/features/settings/presentation/settings_screen.dart';
 import 'package:naytto/src/routing/go_router_refresh_stream.dart';
 import 'package:naytto/src/routing/scaffold_with_navbar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -20,9 +21,11 @@ part 'app_router.g.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _bookingNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'booking');
+final _settingsgNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'settings');
 
 // Add a new entry to the AppRoute enum for your route whether it's nested or not.
-enum AppRoute { login, home, booking, sauna, laundry }
+enum AppRoute { login, home, booking, sauna, laundry, settings }
 
 // Riverpod provider for the GoRouter instance
 @riverpod
@@ -40,10 +43,13 @@ GoRouter goRouter(GoRouterRef ref) {
         if (path.startsWith('/login')) {
           return '/home';
         }
+        // Removed if  -OV
+        // else {
+        // if (path.startsWith('/home') || path.startsWith('/booking')) {
+        //   return '/login';
+        // }
       } else {
-        if (path.startsWith('/home') || path.startsWith('/booking')) {
-          return '/login';
-        }
+        return '/login';
       }
       return null;
     },
@@ -61,21 +67,23 @@ GoRouter goRouter(GoRouterRef ref) {
       ),
       // Navigation stacks for different app sections
       StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) {
-            return ScaffoldWithNavBar(navigationShell: navigationShell);
-          },
-          branches: [
-            // Home section with nested routes
-            StatefulShellBranch(navigatorKey: _homeNavigatorKey, routes: [
-              GoRoute(
-                path: '/home',
-                name: AppRoute.home.name,
-                pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: HomeScreen()),
-              )
-            ]),
-            // Booking section with nested routes
-            StatefulShellBranch(navigatorKey: _bookingNavigatorKey, routes: [
+        builder: (context, state, navigationShell) {
+          return ScaffoldWithNavBar(navigationShell: navigationShell);
+        },
+        branches: [
+          // Home section with nested routes
+          StatefulShellBranch(navigatorKey: _homeNavigatorKey, routes: [
+            GoRoute(
+              path: '/home',
+              name: AppRoute.home.name,
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: HomeScreen()),
+            )
+          ]),
+          // Booking section with nested routes
+          StatefulShellBranch(
+            navigatorKey: _bookingNavigatorKey,
+            routes: [
               GoRoute(
                 path: '/booking',
                 name: AppRoute.booking.name,
@@ -99,9 +107,20 @@ GoRouter goRouter(GoRouterRef ref) {
                             fullscreenDialog: true, child: LaundryScreen());
                       }))
                 ],
-              )
-            ]),
-          ])
+              ),
+            ],
+          ),
+          // Settings section with nested routes
+          StatefulShellBranch(navigatorKey: _settingsgNavigatorKey, routes: [
+            GoRoute(
+              path: '/settings',
+              name: AppRoute.settings.name,
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: SettingsScreen()),
+            )
+          ]),
+        ],
+      )
     ],
   );
 }

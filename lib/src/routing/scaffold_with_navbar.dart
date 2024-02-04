@@ -30,6 +30,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
             icon: Icon(Icons.calendar_month),
             label: 'Booking',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
         onTap: _onTap,
       ),
