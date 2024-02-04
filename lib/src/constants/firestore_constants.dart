@@ -1,11 +1,11 @@
-
-
-class FirestoreCollections{
+class FirestoreCollections {
   static const String apartments = "apartments";
   static const String bookings = "bookings";
   static const String residents = "resident";
+  static const String announcements = "announcements";
 }
-class FirestoreFields{
+
+class FirestoreFields {
   // Apartment fields
   static const String apartmentsNumber = "adress";
   //TODO this is not needed as document ID functions as apartment ID
@@ -27,4 +27,10 @@ class FirestoreFields{
   static const String residentTel = "phonenumber";
   //TODO: make resident ID be a userID from auth
   static const String residentResidentId = "residentid";
+
+  // Announcement fields
+  static const String announcementId = "id";
+  static const String announcementBody = "body";
+  static const String announcementTimestamp = "timestamp";
+  static const String announcementUrgency = "urgency";
 }
