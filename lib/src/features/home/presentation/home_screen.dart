@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/common_widgets/common_container.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:naytto/src/features/home/domain/announcement.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -48,6 +49,8 @@ class _UserGreetings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(authRepositoryProvider).currentUser!.email;
+    //not in use
+    // final uid = ref.watch(authRepositoryProvider).currentUser!.uid;
     return Column(
       children: [
         Text(
@@ -86,6 +89,10 @@ class _AnnouncementContents extends ConsumerWidget {
           ],
         ),
       ),
+      const SizedBox(
+        height: 20,
+      ),
+      AnnouncementWidget(),
       const SizedBox(
         height: 20,
       ),

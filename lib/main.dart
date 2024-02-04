@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/firebase_options.dart';
 import 'package:naytto/src/constants/theme.dart';
+import 'package:naytto/src/features/home/data/announcements_repository.dart';
 import 'package:naytto/src/routing/app_router.dart';
 
 void main() async {
