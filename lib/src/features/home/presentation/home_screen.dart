@@ -73,22 +73,22 @@ class _AnnouncementContents extends ConsumerWidget {
         'Announcements:',
         style: Theme.of(context).textTheme.displayMedium,
       ),
-      CommonContainer(
-        height: 100,
-        width: 325,
-        child: Column(
-          children: [
-            Text(
-              '02/02/2024',
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-            Text(
-              'This is an announcement, This is an announcement, This is an announcement',
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-          ],
-        ),
-      ),
+      // CommonContainer(
+      //   height: 100,
+      //   width: 325,
+      //   child: Column(
+      //     children: [
+      //       Text(
+      //         '02/02/2024',
+      //         style: Theme.of(context).textTheme.displaySmall,
+      //       ),
+      //       Text(
+      //         'This is an announcement, This is an announcement, This is an announcement',
+      //         style: Theme.of(context).textTheme.displaySmall,
+      //       ),
+      //     ],
+      //   ),
+      // ),
       const SizedBox(
         height: 20,
       ),
@@ -96,22 +96,22 @@ class _AnnouncementContents extends ConsumerWidget {
       const SizedBox(
         height: 20,
       ),
-      CommonContainer(
-        height: 100,
-        width: 325,
-        child: Column(
-          children: [
-            Text(
-              '03/02/2024',
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-            Text(
-              'This is also an announcement, This is also an announcement, This is also an announcement, ',
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-          ],
-        ),
-      )
+      // CommonContainer(
+      //   height: 100,
+      //   width: 325,
+      //   child: Column(
+      //     children: [
+      //       Text(
+      //         '03/02/2024',
+      //         style: Theme.of(context).textTheme.displaySmall,
+      //       ),
+      //       Text(
+      //         'This is also an announcement, This is also an announcement, This is also an announcement, ',
+      //         style: Theme.of(context).textTheme.displaySmall,
+      //       ),
+      //     ],
+      //   ),
+      // )
     ]);
   }
 }
