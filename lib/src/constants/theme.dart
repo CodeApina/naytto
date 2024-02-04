@@ -27,8 +27,9 @@ ThemeData getAppTheme(BuildContext context) {
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 128,
         backgroundColor: Color.fromARGB(255, 170, 215, 217),
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black87),
+        selectedItemColor: Colors.white,
+        selectedIconTheme: IconThemeData(size: 35),
+        unselectedItemColor: Colors.black),
     textTheme: Theme.of(context).textTheme.copyWith(
         // For headers like category names
         displayLarge: const TextStyle(
