@@ -21,22 +21,25 @@ class HomeScreen extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                TextButton(onPressed: () {}, child: Text('logout')),
-                // SizedBox(
-                //   height: 40,
-                // ),
-                _UserGreetings(),
-                // _AnnouncementContents(),
-                _AnnouncementsPreview(),
-                SizedBox(
+                TextButton(
+                    onPressed: () {
+                      ref.read(authRepositoryProvider).signOut();
+                    },
+                    child: const Text('logout')),
+                const SizedBox(
+                  height: 40,
+                ),
+                const _UserGreetings(),
+                const _AnnouncementsPreview(),
+                const SizedBox(
                   height: 10,
                 ),
-                _BookingContents(),
-                SizedBox(
+                const _BookingContents(),
+                const SizedBox(
                   height: 20,
                 ),
-                _DashboardNavigationContents(),
-                SizedBox(
+                const _DashboardNavigationContents(),
+                const SizedBox(
                   height: 20,
                 )
               ],
