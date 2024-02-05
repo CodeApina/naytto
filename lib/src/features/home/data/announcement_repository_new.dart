@@ -16,6 +16,8 @@ class AnnouncementsRepository {
           fromFirestore: (snapshot, _) {
             return Announcement.fromMap(snapshot.data()!, snapshot.id);
           },
+          // toFirestore is not actually used but needs to be here
+          // because it is a required parameter for query
           toFirestore: (announcement, _) => announcement.toMap(),
         )
         .orderBy(FirestoreFields.announcementTimestamp, descending: false);
