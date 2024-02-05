@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:naytto/src/features/authentication/domain/user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository_new.dart';
 import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/features/home/domain/announcement_new.dart';
@@ -14,27 +15,31 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                TextButton(
+                    onPressed: () {
+                      ref.read(authRepositoryProvider).signOut();
+                    },
+                    child: const Text('logout')),
+                const SizedBox(
                   height: 40,
                 ),
-                // _UserGreetings(),
-                // _AnnouncementContents(),
-                _AnnouncementsPreview(),
-                SizedBox(
+                const _UserGreetings(),
+                const _AnnouncementsPreview(),
+                const SizedBox(
                   height: 10,
                 ),
-                _BookingContents(),
-                SizedBox(
+                const _BookingContents(),
+                const SizedBox(
                   height: 20,
                 ),
-                _DashboardNavigationContents(),
-                SizedBox(
+                const _DashboardNavigationContents(),
+                const SizedBox(
                   height: 20,
                 )
               ],
@@ -52,71 +57,18 @@ class _UserGreetings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.watch(authRepositoryProvider).currentUser!.email;
-    //not in use
-    // final uid = ref.watch(authRepositoryProvider).currentUser!.uid;
+    final currentUser = ref.watch(authRepositoryProvider).currentUser;
     return Column(
       children: [
-        Text(
-          'Welcome home, $currentUser',
-          style: Theme.of(context).textTheme.displayMedium,
-        )
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+          child: Text(
+            'Welcome home, ${currentUser!.email}',
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+        ),
       ],
     );
-  }
-}
-
-// Announcements section
-class _AnnouncementContents extends ConsumerWidget {
-  const _AnnouncementContents();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(children: [
-      Text(
-        'Announcements:',
-        style: Theme.of(context).textTheme.displayMedium,
-      ),
-      // CommonContainer(
-      //   height: 100,
-      //   width: 325,
-      //   child: Column(
-      //     children: [
-      //       Text(
-      //         '02/02/2024',
-      //         style: Theme.of(context).textTheme.displaySmall,
-      //       ),
-      //       Text(
-      //         'This is an announcement, This is an announcement, This is an announcement',
-      //         style: Theme.of(context).textTheme.displaySmall,
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      const SizedBox(
-        height: 20,
-      ),
-      AnnouncementWidget(),
-      const SizedBox(
-        height: 20,
-      ),
-      // CommonContainer(
-      //   height: 100,
-      //   width: 325,
-      //   child: Column(
-      //     children: [
-      //       Text(
-      //         '03/02/2024',
-      //         style: Theme.of(context).textTheme.displaySmall,
-      //       ),
-      //       Text(
-      //         'This is also an announcement, This is also an announcement, This is also an announcement, ',
-      //         style: Theme.of(context).textTheme.displaySmall,
-      //       ),
-      //     ],
-      //   ),
-      // )
-    ]);
   }
 }
 
