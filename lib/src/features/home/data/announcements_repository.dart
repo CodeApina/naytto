@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// This file is not in active use
+
 class HomeScreenDatabaseMethods {
   final StreamController<List<Map<String, dynamic>>> _controller =
       StreamController<List<Map<String, dynamic>>>();

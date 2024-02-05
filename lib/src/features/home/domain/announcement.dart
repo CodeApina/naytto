@@ -3,6 +3,8 @@ import 'package:naytto/src/common_widgets/common_container.dart';
 import 'package:naytto/src/features/home/data/announcements_repository.dart';
 import 'package:intl/intl.dart';
 
+// This file is not in active use
+
 class AnnouncementWidget extends StatelessWidget {
   final HomeScreenDatabaseMethods databaseMethods = HomeScreenDatabaseMethods();
 

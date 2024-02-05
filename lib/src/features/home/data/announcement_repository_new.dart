@@ -11,6 +11,9 @@ class AnnouncementsRepository {
   //// Method to create a query for announcements to be used by a [FirestoreListView]
   Query<Announcement> announcementsQuery() {
     return _firestore
+        .collection(FirestoreCollections.housingCooperative)
+        // Id for housingcooperation here from users info after authentication
+        .doc('flaNcZSewSF09o8SSEKI')
         .collection(FirestoreCollections.announcements)
         .withConverter(
           fromFirestore: (snapshot, _) {
