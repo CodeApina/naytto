@@ -61,7 +61,7 @@ import 'package:firebase_core/firebase_core.dart';
          });
       }
       if(apartmentNumber != null && residentId == null){
-        await dbref.where(FirestoreFields.residentApartmentId, isEqualTo : apartmentNumber).get().then((querySnapshot) {
+        await dbref.where(FirestoreFields.residentApartmentNumber, isEqualTo : apartmentNumber).get().then((querySnapshot) {
           if (querySnapshot.docs.isNotEmpty){
             residentId = querySnapshot.docs[0].id; 
           }

@@ -16,18 +16,25 @@ class User extends ChangeNotifier{
     notifyListeners();
   }
 
+  late String _housingCooperative;
+  String get housingCooperative => _housingCooperative;
+  set housingCooperative(String housingCooperative){
+    _housingCooperative = housingCooperative;
+    notifyListeners();
+  }
+
   late String _firstName;
-  String get firstName  => _firstName;
+  String get firstName  => name.split(" ")[0];
   set firstName(String firstName){
-    var split = name.split("");
-    _firstName = split[0];
+    _firstName = firstName;
+    notifyListeners();
   }
 
   late String _lastName;
-  String get lastName => _lastName;
+  String get lastName => name.split(" ")[1];
   set lastName(String lastName){
-    var split = name.split("");
-    _lastName = split[split.length-1];
+    _lastName = lastName;
+    notifyListeners();
   }
 
   late String _apartmentId;
