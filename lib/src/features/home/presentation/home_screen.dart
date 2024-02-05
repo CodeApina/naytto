@@ -137,7 +137,7 @@ class _BookingContents extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 color: colors(context).color3,
-                borderRadius: BorderRadius.circular(25)),
+                borderRadius: BorderRadius.circular(10)),
             child: const ListTile(
                 title: Text('05/02/2024 18:00-19:30'),
                 leading: Icon(Icons.calendar_month),
@@ -234,19 +234,23 @@ class _AnnouncementsPreview extends ConsumerWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           query: announcementsQuery,
+          pageSize: 2,
           itemBuilder: (context, snapshot) {
             final announcement = snapshot.data();
             return Padding(
               padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
               child: Container(
                 decoration: BoxDecoration(
-                    color: colors(context).color3,
-                    borderRadius: BorderRadius.circular(25)),
+                  color: colors(context).color3,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: ListTile(
                   title: Text(
                     formatTimestamp(announcement.timestamp),
                   ),
-                  leading: const Icon(Icons.announcement),
+                  leading: announcement.urgency == 2
+                      ? Icon(Icons.announcement)
+                      : Icon(Icons.announcement_outlined),
                   subtitle: Text(
                     announcement.body,
                     overflow: TextOverflow.ellipsis,
