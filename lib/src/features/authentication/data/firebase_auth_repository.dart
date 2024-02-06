@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import '../domain/app_user.dart';
 part 'firebase_auth_repository.g.dart';
 
 // Manages authentication-related operations using Firebase services.
@@ -20,7 +20,11 @@ class AuthRepository {
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) {
-    return _auth.signInWithEmailAndPassword(email: email, password: password);
+    return _auth.signInWithEmailAndPassword(email: email, password: password).then((data) {
+      AppUser().createUser(data);
+    }).onError((error, stackTrace) {
+      throw Exception("$error \n $stackTrace");
+    });
   }
 
   Future<void> signOut() {

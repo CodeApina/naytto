@@ -3,15 +3,13 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:naytto/src/features/authentication/domain/user.dart';
+import 'package:naytto/src/features/authentication/domain/app_user.dart';
 
 void main(){
-  test("firstName should return first name from name variable", () {
-    User().name = "Janne Korhonen";
-    expect(User().firstName, "Janne");
+  test("first and last name should be combined in name", () {
+    AppUser().firstName = "Janne";
+    AppUser().lastName = "Kovalainen";
+    expect(AppUser().name, "Janne Kovalainen");
   });
-  test("lastName should return last name from name variable", (){
-    User().name = "Janne Korhonen";
-    expect(User().lastName, "Korhonen");
-  });
+  
 }

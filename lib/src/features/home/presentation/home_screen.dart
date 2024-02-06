@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository_new.dart';
 import 'package:naytto/src/features/home/domain/announcement_new.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
@@ -67,13 +68,15 @@ class _UserGreetings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final appUserProvider = ChangeNotifierProvider((ref) => AppUser());
+    final appUserWatcher = ref.watch(appUserProvider);
     final currentUser = ref.watch(authRepositoryProvider).currentUser;
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
           child: Text(
-            'Welcome home, ${currentUser!.email}',
+            'Welcome home, ${appUserWatcher.email}',
             style: Theme.of(context).textTheme.displayMedium,
           ),
         ),

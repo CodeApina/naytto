@@ -5,7 +5,10 @@ class FirestoreCollections {
   static const String announcements = "announcements";
   static const String apartmentsResidents = "Residents";
   static const String housingCooperative = "HousingCooperatives";
+  static const String users = "Users";
+  static const String amenitiesReservations = "reservations";
 }
+
 
 class FirestoreFields {
   // Apartment fields
@@ -34,4 +37,19 @@ class FirestoreFields {
   static const String announcementTimestamp = "timestamp";
   static const String announcementUrgency = "urgency";
   static const String announcementTitle = "title";
+
+  // Users fields
+  static const String usersId = "uid";
+  static const String usersEmail = "email";
+  static const String usersHousingCooperative = "housing_cooperative";
+  static const String usersApartmentNumber = "apartment_number";
+
+  //HousingCooperative fields
+  static const String housingCooperativeAddress = "address";
+
+  //Reservation fields
+  static const String reservationReserver = "reserver";
+  static const String reservationEndTime = "reservation_end_time";
+  static const String reservationStartTime = "reservations_start_time";
+  static const String reservationWeekday = "weekday";
 }

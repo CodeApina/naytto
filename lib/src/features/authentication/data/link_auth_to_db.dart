@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+
 import '../../../constants/firestore_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,17 +13,13 @@ import 'package:firebase_core/firebase_core.dart';
       
       var dbref = db.collection(FirestoreCollections.residents);
       bool found = false;
-      try{
         await dbref.where(FirestoreFields.residentResidentId, isEqualTo: uid).get().then((querySnapshot) {
           if (querySnapshot.docs.isNotEmpty){
             found = true;
           }
       }).onError((error, stackTrace) {
-        print("Error: $error  \n $stackTrace");
+        throw Exception("$error \n $stackTrace");
       });
-      } on Exception catch(error){
-        throw Exception('Exeption: $error');
-      }
       return found;
     } 
     /// Stores user in the database.
@@ -36,8 +34,7 @@ import 'package:firebase_core/firebase_core.dart';
       }).then((value) {
         return true;
       }).onError((error, stackTrace) {
-        print("Error: $error  \n $stackTrace");
-        return false;
+        throw Exception("$error \n $stackTrace");
       });
     }
 
@@ -57,7 +54,7 @@ import 'package:firebase_core/firebase_core.dart';
             residentId = querySnapshot.docs[0].id;
           }
         }).onError((error, stackTrace){
-          print("Error: $error \n $stackTrace");
+          throw Exception("$error \n $stackTrace");
          });
       }
       if(apartmentNumber != null && residentId == null){
@@ -73,7 +70,7 @@ import 'package:firebase_core/firebase_core.dart';
             residentId = querySnapshot.docs[0].id; 
           }
         }).onError((error, stackTrace) {
-          print("Error: $error \n $stackTrace");
+          throw Exception("$error \n $stackTrace");
         });
       }
       if(firstName != null && lastName != null && residentId == null){
@@ -82,18 +79,52 @@ import 'package:firebase_core/firebase_core.dart';
             residentId = querySnapshot.docs[0].id; 
           }
         }).onError((error, stackTrace) {
-          print("Error: $error \n $stackTrace");
+          throw Exception("$error \n $stackTrace");
         });
       }
       if (residentId == null){
-        print("Error: User not found");
         return false;
       }
       return await dbref.doc(residentId).set({FirestoreFields.residentResidentId : uid}).then((value) {
         return true;
       },).onError((error, stackTrace) {
-        print("Error: $error \n $stackTrace");
+        throw Exception("$error \n $stackTrace");
+      });
+    }
+
+    Future<bool> createUserInDB(userObject){
+      final docRef = db.collection(FirestoreCollections.users);
+      return docRef.doc(userObject.user.uid).set({
+        FirestoreFields.usersEmail: userObject.user.email
+      }).then((value) {
+        return true;
+      }).onError((error, stackTrace) {
+        throw Exception("$error \n $stackTrace");
+      });
+    }
+
+    Future<bool> searchForUserInDB(userObject){
+      final docRef = db.collection(FirestoreCollections.users);
+      return docRef.doc(userObject.user.uid).get().then((value) {
+        if(value.exists){
+          return true;
+        }
         return false;
+      }).onError((error, stackTrace) {
+        throw Exception("$error \n $stackTrace");
+      });
+    }
+
+    Future<dynamic> fetchUserData(uid){
+      final docRef = db.collection(FirestoreCollections.users);
+      return docRef.doc(uid).get().then((DocumentSnapshot doc){
+        final data = doc.data() as Map<String, dynamic>;
+        if(data.isNotEmpty){
+          return data;
+        }
+        return null;
+      }).onError((error, stackTrace) {
+        throw Exception("$error \n $stackTrace");
       });
     }
   }
