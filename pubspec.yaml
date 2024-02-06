@@ -20,6 +20,7 @@ dependencies:
   riverpod_annotation: ^2.3.3
   intl: ^0.18.1
   firebase_ui_firestore: ^1.6.1
+  colorful_safe_area: ^1.0.0
   
 dev_dependencies:
   flutter_test:

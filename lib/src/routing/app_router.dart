@@ -4,6 +4,7 @@ import 'package:naytto/src/features/authentication/data/firebase_auth_repository
 import 'package:naytto/src/features/booking/presentation/booking_screen.dart';
 import 'package:naytto/src/features/booking/presentation/laundry_screen.dart';
 import 'package:naytto/src/features/booking/presentation/sauna_screen.dart';
+import 'package:naytto/src/features/dev/dev_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
 import 'package:naytto/src/features/settings/presentation/settings_screen.dart';
 import 'package:naytto/src/routing/go_router_refresh_stream.dart';
@@ -23,9 +24,10 @@ final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _bookingNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'booking');
 final _settingsgNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'settings');
+final _devNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dev');
 
 // Add a new entry to the AppRoute enum for your route whether it's nested or not.
-enum AppRoute { login, home, booking, sauna, laundry, settings }
+enum AppRoute { login, home, booking, sauna, laundry, settings, dev }
 
 // Riverpod provider for the GoRouter instance
 @riverpod
@@ -117,6 +119,14 @@ GoRouter goRouter(GoRouterRef ref) {
               name: AppRoute.settings.name,
               pageBuilder: (context, state) =>
                   const NoTransitionPage(child: SettingsScreen()),
+            )
+          ]),
+          StatefulShellBranch(navigatorKey: _devNavigatorKey, routes: [
+            GoRoute(
+              path: '/dev',
+              name: AppRoute.dev.name,
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: DevScreen()),
             )
           ]),
         ],
