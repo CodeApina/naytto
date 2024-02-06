@@ -16,35 +16,47 @@ ThemeData getAppTheme(BuildContext context) {
       CustomColors(
         color1: Color.fromARGB(255, 146, 199, 207),
         color2: Color.fromARGB(255, 170, 215, 217),
-        color3: Color.fromARGB(255, 255, 255, 255),
+        color3: Color.fromARGB(155, 153, 101, 97),
       ),
     ],
     brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color.fromARGB(255, 146, 199, 207),
+    scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 170, 215, 217),
     ),
+    iconTheme: const IconThemeData(color: Colors.white),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        elevation: 128,
-        backgroundColor: Color.fromARGB(255, 170, 215, 217),
-        selectedItemColor: Colors.white,
-        selectedIconTheme: IconThemeData(size: 35),
-        unselectedItemColor: Colors.black),
+      elevation: 128,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      selectedItemColor: Color.fromARGB(255, 255, 255, 255),
+      unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
+      unselectedLabelStyle:
+          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+      selectedIconTheme:
+          IconThemeData(size: 35, color: Color.fromARGB(255, 255, 255, 255)),
+      unselectedIconTheme:
+          IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+    ),
+    listTileTheme: const ListTileThemeData(
+        textColor: Color.fromRGBO(255, 255, 255, 1), iconColor: Colors.white),
     textTheme: Theme.of(context).textTheme.copyWith(
         // For headers like category names
         displayLarge: const TextStyle(
           fontSize: 36,
           fontWeight: FontWeight.w500,
-          color: Colors.white,
+          color: Colors.black87,
         ),
         // Medium text like titles in announcements
         displayMedium: const TextStyle(
           fontSize: 28,
-          color: Colors.white,
+          color: Color.fromARGB(255, 0, 0, 0),
         ),
         // Main text used in announcements, booking info etc
         displaySmall: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black87)),
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: Color.fromARGB(255, 255, 255, 255))),
   );
 }
 

@@ -1,3 +1,4 @@
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +7,6 @@ import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository_new.dart';
-import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/features/home/domain/announcement_new.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
@@ -15,34 +15,45 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
+    return ColorfulSafeArea(
+      color: colors(context).color2!,
       child: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextButton(
-                    onPressed: () {
-                      ref.read(authRepositoryProvider).signOut();
-                    },
-                    child: const Text('logout')),
-                const SizedBox(
-                  height: 40,
-                ),
-                const _UserGreetings(),
-                const _AnnouncementsPreview(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const _BookingContents(),
-                const SizedBox(
-                  height: 20,
-                ),
-                const _DashboardNavigationContents(),
-                const SizedBox(
-                  height: 20,
-                )
-              ],
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                colors(context).color2!,
+                colors(context).color3!,
+              ])),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        ref.read(authRepositoryProvider).signOut();
+                      },
+                      child: const Text('logout')),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  const _UserGreetings(),
+                  const _AnnouncementsPreview(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const _BookingContents(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const _DashboardNavigationContents(),
+                  const SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -54,7 +65,7 @@ class HomeScreen extends ConsumerWidget {
 // User greetings section
 class _UserGreetings extends ConsumerWidget {
   const _UserGreetings();
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appUserProvider = ChangeNotifierProvider((ref) => AppUser());
