@@ -1,19 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
+import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/domain/announcement_new.dart';
 
 class AnnouncementsRepository {
   // Constructor for AnnouncementsRepository
-  AnnouncementsRepository(this._firestore);
+  AnnouncementsRepository(this._firestore, this._appUser);
   final FirebaseFirestore _firestore;
+  final AppUser _appUser;
 
   //// Method to create a query for announcements to be used by a [FirestoreListView]
   Query<Announcement> announcementsQuery() {
     return _firestore
         .collection(FirestoreCollections.housingCooperative)
-        // Id for housingcooperation here from users info after authentication
-        .doc('flaNcZSewSF09o8SSEKI')
+        // Not yet working
+        // .doc(_appUser.housingCooperative)
+        .doc("Pilvilinna")
         .collection(FirestoreCollections.announcements)
         .withConverter(
           fromFirestore: (snapshot, _) {
@@ -30,6 +33,7 @@ class AnnouncementsRepository {
 // Provider for AnnouncementsRepository
 final announcementsRepositoryProvider =
     Provider<AnnouncementsRepository>((ref) {
-  // Create and return an instance of AnnouncementsRepository
-  return AnnouncementsRepository(FirebaseFirestore.instance);
+  final appUserProvider = ChangeNotifierProvider((ref) => AppUser());
+  final appUser = ref.watch(appUserProvider);
+  return AnnouncementsRepository(FirebaseFirestore.instance, appUser);
 });
