@@ -16,42 +16,39 @@ class AppUser extends ChangeNotifier {
     notifyListeners();
   }
 
-  late String _name;
-  String get name => "$firstName $lastName";
-  set name(String name) {
-    _name = name;
-    notifyListeners();
+  String get name {
+    return "$firstName $lastName";
   }
 
-  late String _housingCooperative;
+  String _housingCooperative = "";
   String get housingCooperative => _housingCooperative;
   set housingCooperative(String housingCooperative) {
     _housingCooperative = housingCooperative;
     notifyListeners();
   }
 
-  late String _firstName;
+  String _firstName = "";
   String get firstName => _firstName;
   set firstName(String firstName) {
     _firstName = firstName;
     notifyListeners();
   }
 
-  late String _lastName;
+  String _lastName = "";
   String get lastName => _lastName;
   set lastName(String lastName) {
     _lastName = lastName;
     notifyListeners();
   }
 
-  late String _apartmentId;
+  String _apartmentId = "";
   String get apartmentId => _apartmentId;
   set apartmentId(String aparmentid) {
     _apartmentId = aparmentid;
     notifyListeners();
   }
 
-  late String _tel;
+  String _tel = "";
   String get tel => _tel;
   set tel(String tel) {
     _tel = tel;
