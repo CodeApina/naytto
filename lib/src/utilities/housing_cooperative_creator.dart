@@ -11,7 +11,7 @@ class HousingCooperativeCreator{
   ///
   ///Creates a new housing cooperative collection in the firestore database filled with random residents and data
   Future<bool>CreateNewHousingCooperative(String housingCooperativeName, String address, int apartmentNumber) async{
-    List<Person> persons = PersonGenerator().nameGenerator(apartmentNumber);
+    List<Person> persons = PersonGenerator().personListGenerator(apartmentNumber);
     return db.collection(FirestoreCollections.housingCooperative).doc(housingCooperativeName).set({
       FirestoreFields.housingCooperativeAddress: address}).then((value)
       {
@@ -50,16 +50,27 @@ class PersonGenerator{
   static List<String> lastNames = ["Korhonen", "Virtanen", "Mäkinen", "Nieminen", "Mäkelä", "Hämäläinen", "Laine", "Heikkinen", "Koskinen", "Järvinen", "Lehtonen", "Lehtinen", "Saarinen", "Niemi", "Salminen", "Heinone", "Heikkilä", "Kinnunen", "Salonen", "Turunen"];
   static List<String> phoneNumberPrefix = ["044", "050", "040"];
   /// Requires the amount of people to create
-  List<Person> nameGenerator(int amountNeeded){
+  List<Person> personListGenerator(int amountNeeded){
     List<Person> persons = [Person("test","test","test")];
     for (int i = 1; i <= amountNeeded; i++){
       String phoneNumber = phoneNumberPrefix[Random().nextInt(phoneNumberPrefix.length)];
       for(int i = 0; i < 7; i++){
         phoneNumber = phoneNumber + Random().nextInt(10).toString();
       }
-      persons.add(Person(firstNames[Random().nextInt(firstNames.length)], lastNames[Random().nextInt(lastNames.length)], phoneNumber));
+      bool isUnique = false;
+    List<String>names = nameGenerator(persons);
+      persons.add(Person(names[0], names[1], phoneNumber));
     }
     return persons;
+  }
+  List<String>nameGenerator(List<Person> persons){
+    List<String>names = [firstNames[Random().nextInt(firstNames.length)], lastNames[Random().nextInt(lastNames.length)]];
+    for(Person person in persons){
+      if(person.firstName == names[0] && person.lastName == names[1]){
+        nameGenerator(persons);
+      }
+    }
+    return names;
   }
 }
 
