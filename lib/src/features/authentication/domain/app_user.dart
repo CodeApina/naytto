@@ -81,19 +81,22 @@ class AppUser extends ChangeNotifier {
   }
 
   fetchUser() {
-    uid = FirebaseAuth.instance.currentUser!.uid;
-    LinkAuthToDb().fetchUserData(uid).then((value) {
-      if (value[FirestoreFields.usersEmail] != null) {
-        email = value[FirestoreFields.usersEmail];
-      }
-      if (value[FirestoreFields.usersApartmentNumber] != null) {
-        apartmentId = value[FirestoreFields.usersApartmentNumber];
-      }
-      if (value[FirestoreFields.usersHousingCooperative] != null) {
-        housingCooperative = value[FirestoreFields.usersHousingCooperative];
-      }
-    }).onError((error, stackTrace) {
-      throw Exception("$error \n $stackTrace");
-    });
+    if (housingCooperative == "" && email == ""){
+      uid = FirebaseAuth.instance.currentUser!.uid;
+      LinkAuthToDb().fetchUserData(uid).then((value) {
+        if (value[FirestoreFields.usersEmail] != null) {
+          email = value[FirestoreFields.usersEmail];
+        }
+        if (value[FirestoreFields.usersApartmentNumber] != null) {
+          apartmentId = value[FirestoreFields.usersApartmentNumber];
+        }
+        if (value[FirestoreFields.usersHousingCooperative] != null) {
+          housingCooperative = value[FirestoreFields.usersHousingCooperative];
+        }
+      }).onError((error, stackTrace) {
+        throw Exception("$error \n $stackTrace");
+      });
+    }
+    
   }
 }
