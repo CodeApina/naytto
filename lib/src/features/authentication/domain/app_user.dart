@@ -7,6 +7,8 @@ import 'package:flutter/rendering.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/data/link_auth_to_db.dart';
 
+
+/// Contains all relevant information on User
 class AppUser extends ChangeNotifier {
   static final AppUser _instance = AppUser._internal();
   late String? _uid;
@@ -68,6 +70,9 @@ class AppUser extends ChangeNotifier {
 
   AppUser._internal() {}
 
+  /// Calls LinkAuthToDb function to create user in database
+  /// 
+  /// Takes in userObject from Firebase authentication
   createUser(userObject) {
     uid = userObject.user.uid;
     email = userObject.user.email;
@@ -80,6 +85,7 @@ class AppUser extends ChangeNotifier {
     });
   }
 
+  /// Fetches user data from database
   fetchUser() {
     if (housingCooperative == "" && email == ""){
       uid = FirebaseAuth.instance.currentUser!.uid;
