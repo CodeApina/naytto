@@ -6,8 +6,8 @@ import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
-import 'package:naytto/src/features/home/data/announcement_repository_new.dart';
-import 'package:naytto/src/features/home/domain/announcement_new.dart';
+import 'package:naytto/src/features/home/data/announcement_repository.dart';
+import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
 class HomeScreen extends ConsumerWidget {
