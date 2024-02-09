@@ -39,6 +39,17 @@ class LoginScreen extends ConsumerWidget {
                     },
                   ),
                 ),
+                //Developer Login
+                TextButton.icon(
+                    onPressed: () {
+                      String email = "janne.korhonen@gmail.com";
+                      String password = "salasana";
+                      ref
+                          .read(authRepositoryProvider)
+                          .signInWithEmailAndPassword(email, password);
+                    },
+                    icon: const Icon(Icons.developer_board),
+                    label: Text("Login as developer"))
               ],
             ),
           ),
