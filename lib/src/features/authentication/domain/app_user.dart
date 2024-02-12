@@ -1,16 +1,16 @@
-import 'dart:io';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart' as p;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/data/link_auth_to_db.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 
 /// Contains all relevant information on User
 class AppUser extends ChangeNotifier {
   static final AppUser _instance = AppUser._internal();
+  final provider = Provider<AppUser>((ref) {
+    return AppUser();
+  });
   late String? _uid;
   String get uid => _uid!;
   set uid(String uid) {
@@ -68,7 +68,9 @@ class AppUser extends ChangeNotifier {
     return _instance;
   }
 
-  AppUser._internal() {}
+  AppUser._internal() {
+
+  }
 
   /// Calls LinkAuthToDb function to create user in database
   /// 

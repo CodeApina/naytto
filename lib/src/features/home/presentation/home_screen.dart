@@ -68,9 +68,7 @@ class _UserGreetings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appUserProvider = ChangeNotifierProvider((ref) => AppUser());
-    final appUserWatcher = ref.watch(appUserProvider);
-    final currentUser = ref.watch(authRepositoryProvider).currentUser;
+    final appUserWatcher = ref.watch(AppUser().provider);
     return Column(
       children: [
         Padding(

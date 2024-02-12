@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-
 import '../../../constants/firestore_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 
 class LinkAuthToDb {
   var db = FirebaseFirestore.instance;
@@ -41,7 +37,7 @@ class LinkAuthToDb {
   /// Fetches user data from database
   /// 
   /// Takes in uid from Firebase authentication
-  Future<dynamic> fetchUserData(uid) {
+  Future<dynamic> fetchUserData(uid){
     final docRef = db.collection(FirestoreCollections.users);
     return docRef.doc(uid).get().then((DocumentSnapshot doc) {
       final data = doc.data() as Map<String, dynamic>;
