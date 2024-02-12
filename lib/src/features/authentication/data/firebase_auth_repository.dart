@@ -20,7 +20,9 @@ class AuthRepository {
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) {
-    return _auth.signInWithEmailAndPassword(email: email, password: password).then((data) {
+    return _auth
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((data) {
       AppUser().createUser(data);
     }).onError((error, stackTrace) {
       throw Exception("$error \n $stackTrace");
