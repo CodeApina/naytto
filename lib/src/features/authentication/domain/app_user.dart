@@ -4,7 +4,6 @@ import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/data/link_auth_to_db.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-
 /// Contains all relevant information on User
 class AppUser extends ChangeNotifier {
   static final AppUser _instance = AppUser._internal();
@@ -68,13 +67,12 @@ class AppUser extends ChangeNotifier {
     return _instance;
   }
 
-  AppUser._internal() {
+  AppUser._internal() {}
 
-  }
-
-  /// Calls LinkAuthToDb function to create user in database
-  /// 
-  /// Takes in userObject from Firebase authentication
+  // Calls LinkAuthToDb function to create user in database
+  //
+  // Takes in userObject from Firebase authentication
+  //housingcooperative from authentication here too?
   createUser(userObject) {
     uid = userObject.user.uid;
     email = userObject.user.email;
@@ -87,9 +85,9 @@ class AppUser extends ChangeNotifier {
     });
   }
 
-  /// Fetches user data from database
+  // Fetches user data from database
   fetchUser() {
-    if (housingCooperative == "" && email == ""){
+    if (housingCooperative == "" && email == "") {
       uid = FirebaseAuth.instance.currentUser!.uid;
       LinkAuthToDb().fetchUserData(uid).then((value) {
         if (value[FirestoreFields.usersEmail] != null) {
@@ -101,10 +99,31 @@ class AppUser extends ChangeNotifier {
         if (value[FirestoreFields.usersHousingCooperative] != null) {
           housingCooperative = value[FirestoreFields.usersHousingCooperative];
         }
+        fetchUserFromResident(value[FirestoreFields.usersHousingCooperative]);
       }).onError((error, stackTrace) {
         throw Exception("$error \n $stackTrace");
       });
     }
-    
+  }
+
+  fetchUserFromResident(String housingCooperationName) {
+    if (housingCooperative != "") {
+      uid = FirebaseAuth.instance.currentUser!.uid;
+      LinkAuthToDb()
+          .fetchUserDataFromResident(uid, housingCooperationName)
+          .then((value) {
+        if (value[FirestoreFields.usersApartmentNumber] != null) {
+          apartmentId = value[FirestoreFields.usersApartmentNumber];
+        }
+        if (value[FirestoreFields.usersApartmentNumber] != null) {
+          firstName = value[FirestoreFields.firstName];
+        }
+        if (value[FirestoreFields.usersApartmentNumber] != null) {
+          lastName = value[FirestoreFields.lastName];
+        }
+      }).onError((error, stackTrace) {
+        throw Exception("$error \n $stackTrace");
+      });
+    }
   }
 }

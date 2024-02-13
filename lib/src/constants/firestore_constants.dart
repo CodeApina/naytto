@@ -9,7 +9,6 @@ class FirestoreCollections {
   static const String amenitiesReservations = "reservations";
 }
 
-
 class FirestoreFields {
   // Apartment fields
   static const String apartmentsNumber = "apartment_number";
@@ -43,6 +42,9 @@ class FirestoreFields {
   static const String usersEmail = "email";
   static const String usersHousingCooperative = "housing_cooperative";
   static const String usersApartmentNumber = "apartment_number";
+  static const String phoneNumber = "tel";
+  static const String firstName = "first_name";
+  static const String lastName = "last_name";
 
   //HousingCooperative fields
   static const String housingCooperativeAddress = "address";

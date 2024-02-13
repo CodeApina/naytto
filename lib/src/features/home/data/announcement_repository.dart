@@ -14,6 +14,7 @@ class AnnouncementsRepository {
   Query<Announcement> announcementsQuery() {
     return _firestore
         .collection(FirestoreCollections.housingCooperative)
+
         // Not yet working
         // .doc(_appUser.housingCooperative)
         .doc("Pilvilinna")
