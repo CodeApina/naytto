@@ -41,8 +41,11 @@ GoRouter goRouter(GoRouterRef ref) {
     redirect: (context, state) async {
       final path = state.uri.path;
       final isLoggedIn = authRepository.currentUser != null;
+      bool isUserDataFetched = false;
 
-      bool isUserDataFetched = await AppUser().fetchUser();
+      if (isLoggedIn) {
+        isUserDataFetched = await AppUser().fetchUser();
+      }
 
       if (isLoggedIn && isUserDataFetched == true) {
         if (path.startsWith('/login')) {
