@@ -33,9 +33,8 @@ class LoginScreen extends ConsumerWidget {
                       String password = _passwordController.text.trim();
                       if (email.isEmpty || password.isEmpty) return;
 
-                      ref
-                          .read(authRepositoryProvider)
-                          .signInWithEmailAndPassword(email, password);
+                      ref.read(firebaseAuthProvider).signInWithEmailAndPassword(
+                          email: email, password: password);
                     },
                   ),
                 ),
@@ -44,9 +43,8 @@ class LoginScreen extends ConsumerWidget {
                     onPressed: () {
                       String email = "janne.korhonen@gmail.com";
                       String password = "salasana";
-                      ref
-                          .read(authRepositoryProvider)
-                          .signInWithEmailAndPassword(email, password);
+                      ref.read(firebaseAuthProvider).signInWithEmailAndPassword(
+                          email: email, password: password);
                     },
                     icon: const Icon(Icons.developer_board),
                     label: Text("Login as developer"))

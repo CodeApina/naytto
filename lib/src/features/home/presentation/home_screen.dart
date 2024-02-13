@@ -6,6 +6,7 @@ import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
+import 'package:naytto/src/features/authentication/domain/app_user_new.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
 import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
@@ -33,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   TextButton(
                       onPressed: () {
-                        ref.read(authRepositoryProvider).signOut();
+                        ref.read(authRepositoryProvider).signOutUser();
                       },
                       child: const Text('logout')),
                   const SizedBox(
@@ -68,20 +69,27 @@ class _UserGreetings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appUserProvider = ChangeNotifierProvider((ref) => AppUser());
-    final appUserWatcher = ref.watch(appUserProvider);
-    final currentUser = ref.watch(authRepositoryProvider).currentUser;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-          child: Text(
-            'Welcome home, ${appUserWatcher.email}',
-            style: Theme.of(context).textTheme.displayMedium,
+    // final appUserProvider = ChangeNotifierProvider((ref) => AppUser());
+    // final appUserWatcher = ref.watch(appUserProvider);
+    final currentUser = ref.watch(appUserNewProvider);
+
+    return currentUser.when(data: (data) {
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+            child: Text(
+              'Welcome home, ${data.firstName}',
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }, loading: () {
+      return const Text('Loading...');
+    }, error: (error, stackTrace) {
+      throw Exception("$error \n $stackTrace");
+    });
   }
 }
 
@@ -185,47 +193,84 @@ class _AnnouncementsPreview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final announcements = ref.watch(announcementsProvider);
     // A widget rebuild happens each time the announcements collection
     // in Firestore is edited/added/removed
-    final announcementsQuery =
-        ref.watch(announcementsRepositoryProvider).announcementsQuery();
+    // final announcementsQuery =
+    //     ref.watch(announcementsRepositoryProvider).announcementsQuery();
     return Column(
       children: [
         Text(
           'Announcements',
           style: Theme.of(context).textTheme.displayMedium,
         ),
-        FirestoreListView<Announcement>(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          query: announcementsQuery,
-          pageSize: 2,
-          itemBuilder: (context, snapshot) {
-            final announcement = snapshot.data();
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: colors(context).color3,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  title: Text(
-                    formatTimestamp(announcement.timestamp),
-                  ),
-                  leading: announcement.urgency == 2
-                      ? Icon(Icons.announcement)
-                      : Icon(Icons.announcement_outlined),
-                  subtitle: Text(
-                    announcement.body,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
+        announcements.when(
+            data: (announcements) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: announcements.length,
+                  itemBuilder: (context, index) {
+                    final announcement = announcements[index];
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: colors(context).color3,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            formatTimestamp(announcement.timestamp),
+                          ),
+                          leading: announcement.urgency == 2
+                              ? Icon(Icons.announcement)
+                              : Icon(Icons.announcement_outlined),
+                          subtitle: Text(
+                            announcement.body,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+            },
+            error: (error, stackTrace) => Text('$error'),
+            loading: () {
+              return CircularProgressIndicator();
+            })
+        // FirestoreListView<Announcement>(
+        //   shrinkWrap: true,
+        //   physics: const NeverScrollableScrollPhysics(),
+        //   query: announcementsQuery,
+        //   pageSize: 2,
+        //   itemBuilder: (context, snapshot) {
+        //     final announcement = snapshot.data();
+        //     return Padding(
+        //       padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+        //       child: Container(
+        //         decoration: BoxDecoration(
+        //           color: colors(context).color3,
+        //           borderRadius: BorderRadius.circular(10),
+        //         ),
+        //         child: ListTile(
+        //           title: Text(
+        //             formatTimestamp(announcement.timestamp),
+        //           ),
+        //           leading: announcement.urgency == 2
+        //               ? Icon(Icons.announcement)
+        //               : Icon(Icons.announcement_outlined),
+        //           subtitle: Text(
+        //             announcement.body,
+        //             overflow: TextOverflow.ellipsis,
+        //             maxLines: 2,
+        //           ),
+        //         ),
+        //       ),
+        //     );
+        //   },
+        // ),
       ],
     );
   }

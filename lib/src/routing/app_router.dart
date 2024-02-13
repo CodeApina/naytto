@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
+import 'package:naytto/src/features/authentication/domain/app_user_new.dart';
 import 'package:naytto/src/features/booking/presentation/booking_screen.dart';
 import 'package:naytto/src/features/booking/presentation/laundry_screen.dart';
 import 'package:naytto/src/features/booking/presentation/sauna_screen.dart';
@@ -43,7 +44,6 @@ GoRouter goRouter(GoRouterRef ref) {
       final path = state.uri.path;
       final isLoggedIn = authRepository.currentUser != null;
       if (isLoggedIn) {
-        AppUser().fetchUser();
         if (path.startsWith('/login')) {
           return '/home';
         }

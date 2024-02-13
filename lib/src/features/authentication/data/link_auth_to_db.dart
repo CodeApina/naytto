@@ -10,7 +10,7 @@ class LinkAuthToDb {
   var db = FirebaseFirestore.instance;
 
   /// Creates user in database
-  /// 
+  ///
   /// Takes in userObject from Firebase authentication
   Future<bool> createUserInDB(userObject) {
     final docRef = db.collection(FirestoreCollections.users);
@@ -24,7 +24,7 @@ class LinkAuthToDb {
   }
 
   /// Searches the database for user
-  /// 
+  ///
   /// Takes in userObject from Firebase authentication
   Future<bool> searchForUserInDB(userObject) {
     final docRef = db.collection(FirestoreCollections.users);
@@ -39,7 +39,7 @@ class LinkAuthToDb {
   }
 
   /// Fetches user data from database
-  /// 
+  ///
   /// Takes in uid from Firebase authentication
   Future<dynamic> fetchUserData(uid) {
     final docRef = db.collection(FirestoreCollections.users);

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:naytto/src/constants/theme.dart';
+import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
-class ScaffoldWithNavBar extends StatelessWidget {
+class ScaffoldWithNavBar extends ConsumerWidget {
   ScaffoldWithNavBar({
     required this.navigationShell,
     super.key,
@@ -13,11 +15,11 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   /// The navigation shell and container for the branch Navigators.
   final StatefulNavigationShell navigationShell;
-  final appUser = AppUser();
+  // final appUser = AppUser();
 
   @override
-  Widget build(BuildContext context) {
-    String appUserUid = appUser.uid;
+  Widget build(BuildContext context, WidgetRef ref) {
+    String appUserUid = ref.watch(firebaseAuthProvider).currentUser!.uid;
     List<BottomNavigationBarItem> bottomNavigationBarItems = [
       BottomNavigationBarItem(
         icon: Icon(Icons.home),

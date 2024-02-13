@@ -19,18 +19,24 @@ class AuthRepository {
     return _auth.signInAnonymously();
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password) {
-    return _auth
-        .signInWithEmailAndPassword(email: email, password: password)
-        .then((data) {
-      AppUser().createUser(data);
-    }).onError((error, stackTrace) {
-      throw Exception("$error \n $stackTrace");
-    });
-  }
+  // Future<void> signInWithEmailAndPassword(String email, String password) {
+  //   return _auth
+  //       .signInWithEmailAndPassword(email: email, password: password)
+  //       .then((data) {})
+  //       .onError((error, stackTrace) {
+  //     throw Exception("$error \n $stackTrace");
+  //   });
+  // }
 
-  Future<void> signOut() {
-    return _auth.signOut();
+  // Future<void> signOut() {
+  //   return _auth.signOut();
+  // }
+
+  Future<void> signOutUser() async {
+    final User? firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      await FirebaseAuth.instance.signOut();
+    }
   }
 }
 

@@ -9,7 +9,6 @@ class FirestoreCollections {
   static const String amenitiesReservations = "reservations";
 }
 
-
 class FirestoreFields {
   // Apartment fields
   static const String apartmentsNumber = "apartment_number";
