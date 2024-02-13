@@ -38,20 +38,16 @@ GoRouter goRouter(GoRouterRef ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/login',
-    // Configure the GoRouter with initial location, redirection logic, and routes
-    redirect: (context, state) {
+    redirect: (context, state) async {
       final path = state.uri.path;
       final isLoggedIn = authRepository.currentUser != null;
-      if (isLoggedIn) {
-        AppUser().fetchUser();
+
+      bool isUserDataFetched = await AppUser().fetchUser();
+
+      if (isLoggedIn && isUserDataFetched == true) {
         if (path.startsWith('/login')) {
           return '/home';
         }
-        // Removed if  -OV
-        // else {
-        // if (path.startsWith('/home') || path.startsWith('/booking')) {
-        //   return '/login';
-        // }
       } else {
         return '/login';
       }

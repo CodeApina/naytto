@@ -86,30 +86,35 @@ class AppUser extends ChangeNotifier {
   }
 
   // Fetches user data from database
-  fetchUser() {
+  //return true if everything is fine
+  Future<bool> fetchUser() async {
     if (housingCooperative == "" && email == "") {
       uid = FirebaseAuth.instance.currentUser!.uid;
-      LinkAuthToDb().fetchUserData(uid).then((value) {
-        if (value[FirestoreFields.usersEmail] != null) {
-          email = value[FirestoreFields.usersEmail];
+      var userData = await LinkAuthToDb().fetchUserData(uid);
+      if (userData[FirestoreFields.usersEmail] != null) {
+        email = userData[FirestoreFields.usersEmail];
+      }
+
+      if (userData[FirestoreFields.usersHousingCooperative] != null) {
+        housingCooperative = userData[FirestoreFields.usersHousingCooperative];
+        //waits for another database query
+        final result = await fetchUserFromResident(
+            userData[FirestoreFields.usersHousingCooperative]);
+        if (result == true) {
+          return Future.value(true);
+        } else {
+          return false;
         }
-        if (value[FirestoreFields.usersApartmentNumber] != null) {
-          apartmentId = value[FirestoreFields.usersApartmentNumber];
-        }
-        if (value[FirestoreFields.usersHousingCooperative] != null) {
-          housingCooperative = value[FirestoreFields.usersHousingCooperative];
-        }
-        fetchUserFromResident(value[FirestoreFields.usersHousingCooperative]);
-      }).onError((error, stackTrace) {
-        throw Exception("$error \n $stackTrace");
-      });
+      }
     }
+    // if nothings is done
+    return true;
   }
 
-  fetchUserFromResident(String housingCooperationName) {
+  Future<bool> fetchUserFromResident(String housingCooperationName) {
     if (housingCooperative != "") {
       uid = FirebaseAuth.instance.currentUser!.uid;
-      LinkAuthToDb()
+      return LinkAuthToDb()
           .fetchUserDataFromResident(uid, housingCooperationName)
           .then((value) {
         if (value[FirestoreFields.usersApartmentNumber] != null) {
@@ -121,9 +126,12 @@ class AppUser extends ChangeNotifier {
         if (value[FirestoreFields.usersApartmentNumber] != null) {
           lastName = value[FirestoreFields.lastName];
         }
-      }).onError((error, stackTrace) {
+        return Future.value(true);
+      }).catchError((error, stackTrace) {
         throw Exception("$error \n $stackTrace");
       });
     }
+
+    return Future.value(false);
   }
 }
