@@ -128,6 +128,10 @@ class AppUser extends ChangeNotifier {
       return LinkAuthToDb()
           .fetchUserDataFromResident(uid, housingCooperationName)
           .then((value) {
+        //Cant login if data is not found
+        if (value == null) {
+          return Future.value(false);
+        }
         if (value[FirestoreFields.usersApartmentNumber] != null) {
           apartmentId = value[FirestoreFields.usersApartmentNumber];
         }
