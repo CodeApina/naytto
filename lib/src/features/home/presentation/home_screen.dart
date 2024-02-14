@@ -1,5 +1,4 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
@@ -7,7 +6,6 @@ import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
-import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -179,51 +177,54 @@ class _DashboardNavigationContents extends StatelessWidget {
 }
 
 class _AnnouncementsPreview extends ConsumerWidget {
-  const _AnnouncementsPreview({super.key});
+  const _AnnouncementsPreview();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // A widget rebuild happens each time the announcements collection
-    // in Firestore is edited/added/removed
-    final announcementsQuery =
-        ref.watch(announcementsRepositoryProvider).announcementsQuery();
+    final announcements = ref.watch(announcementsProvider);
     return Column(
       children: [
         Text(
           'Announcements',
           style: Theme.of(context).textTheme.displayMedium,
         ),
-        FirestoreListView<Announcement>(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          query: announcementsQuery,
-          pageSize: 2,
-          itemBuilder: (context, snapshot) {
-            final announcement = snapshot.data();
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: colors(context).color3,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  title: Text(
-                    formatTimestamp(announcement.timestamp),
-                  ),
-                  leading: announcement.urgency == 2
-                      ? Icon(Icons.announcement)
-                      : Icon(Icons.announcement_outlined),
-                  subtitle: Text(
-                    announcement.body,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ),
-              ),
-            );
+        announcements.when(
+          data: (announcements) {
+            return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: announcements.length,
+                itemBuilder: (context, index) {
+                  final announcement = announcements[index];
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: colors(context).color3,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          formatTimestamp(announcement.timestamp),
+                        ),
+                        leading: announcement.urgency == 2
+                            ? const Icon(Icons.announcement)
+                            : const Icon(Icons.announcement_outlined),
+                        subtitle: Text(
+                          announcement.body,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                    ),
+                  );
+                });
           },
-        ),
+          error: (error, stackTrace) => Text('$error'),
+          loading: () {
+            return const CircularProgressIndicator();
+          },
+        )
       ],
     );
   }
