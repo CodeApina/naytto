@@ -8,10 +8,12 @@ class Announcement {
   const Announcement(
       {required this.id,
       required this.body,
+      required this.title,
       required this.timestamp,
       required this.urgency});
   final AnnouncementID id;
   final String body;
+  final String title;
   final Timestamp timestamp;
   final int urgency;
 
@@ -22,6 +24,7 @@ class Announcement {
     return Announcement(
         id: id,
         body: snapshot[FirestoreFields.announcementBody] as String,
+        title: snapshot[FirestoreFields.announcementTitle] as String,
         timestamp: snapshot[FirestoreFields.announcementTimestamp] as Timestamp,
         urgency: snapshot[FirestoreFields.announcementUrgency] as int);
   }
@@ -31,6 +34,7 @@ class Announcement {
   Map<String, dynamic> toMap() => {
         'id': id,
         FirestoreFields.announcementBody: body,
+        FirestoreFields.announcementTitle: title,
         FirestoreFields.announcementTimestamp: timestamp,
         FirestoreFields.announcementUrgency: urgency
       };

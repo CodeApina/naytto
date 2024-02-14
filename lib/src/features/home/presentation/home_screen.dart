@@ -211,7 +211,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
                             ? const Icon(Icons.announcement)
                             : const Icon(Icons.announcement_outlined),
                         subtitle: Text(
-                          announcement.body,
+                          announcement.title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         ),
