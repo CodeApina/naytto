@@ -27,28 +27,26 @@ class HomeScreen extends ConsumerWidget {
                 colors(context).color1!,
                 colors(context).color1!,
               ])),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  const _UserGreetings(),
-                  const _AnnouncementsPreview(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const _BookingContents(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const _DashboardNavigationContents(),
-                  const SizedBox(
-                    height: 20,
-                  )
-                ],
-              ),
+          child: const SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                ),
+                _UserGreetings(),
+                _AnnouncementsPreview(),
+                SizedBox(
+                  height: 10,
+                ),
+                _BookingContents(),
+                SizedBox(
+                  height: 20,
+                ),
+                _DashboardNavigationContents(),
+                SizedBox(
+                  height: 20,
+                )
+              ],
             ),
           ),
         ),
@@ -75,7 +73,7 @@ class _UserGreetings extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
                 child: Text(
-                  'Welcome home, ${appUserWatcher.email}',
+                  'Welcome home, ${appUserWatcher.firstName}',
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
               ),
