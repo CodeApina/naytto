@@ -69,11 +69,13 @@ class _UserGreetings extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 0, 16),
-              child: Text(
-                'Welcome home, ${appUserWatcher.firstName}',
-                style: Theme.of(context).textTheme.displayLarge,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+                child: Text(
+                  'Welcome home, ${appUserWatcher.email}',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
               ),
             ),
           ],
