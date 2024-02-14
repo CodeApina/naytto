@@ -14,7 +14,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ColorfulSafeArea(
-      color: colors(context).color2!,
+      color: Colors.white,
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -22,18 +22,13 @@ class HomeScreen extends ConsumerWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                colors(context).color2!,
-                colors(context).color3!,
+                colors(context).color1!,
+                colors(context).color1!,
               ])),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  TextButton(
-                      onPressed: () {
-                        ref.read(authRepositoryProvider).signOut();
-                      },
-                      child: const Text('logout')),
                   const SizedBox(
                     height: 40,
                   ),
@@ -68,14 +63,103 @@ class _UserGreetings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appUserWatcher = ref.watch(AppUser().provider);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-          child: Text(
-            'Welcome home, ${appUserWatcher.email}',
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 0, 16),
+              child: Text(
+                'Welcome home, ${appUserWatcher.firstName}',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),
+          ],
         ),
+      ],
+    );
+  }
+}
+
+class _AnnouncementsPreview extends ConsumerWidget {
+  const _AnnouncementsPreview();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final announcements = ref.watch(announcementsProvider);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+              child: Text(
+                'Announcements',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 24, 0),
+                child: InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'see more',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(color: Colors.purple[600]),
+                  ),
+                )),
+          ],
+        ),
+        announcements.when(
+          data: (announcements) {
+            return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: announcements.length,
+                itemBuilder: (context, index) {
+                  final announcement = announcements[index];
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              colors(context).color3!,
+                              colors(context).color3!,
+                            ]),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          formatTimestamp(announcement.timestamp),
+                        ),
+                        leading: announcement.urgency == 2
+                            ? const Icon(Icons.announcement)
+                            : const Icon(Icons.announcement_outlined),
+                        subtitle: Text(
+                          announcement.title,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          },
+          error: (error, stackTrace) => Text('$error'),
+          loading: () {
+            return const Center(child: CircularProgressIndicator());
+          },
+        )
       ],
     );
   }
@@ -88,10 +172,31 @@ class _BookingContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Upcoming bookings',
-          style: Theme.of(context).textTheme.displayMedium,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                child: Text(
+                  'Bookings',
+                  style: Theme.of(context).textTheme.displayMedium,
+                )),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8, 24, 0),
+                child: InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'see more',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(color: Colors.purple[600]),
+                  ),
+                )),
+          ],
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
@@ -115,33 +220,33 @@ class _BookingContents extends StatelessWidget {
 }
 
 // Dashboard navigation section
-class _DashboardNavigationContents extends StatelessWidget {
+class _DashboardNavigationContents extends ConsumerWidget {
   const _DashboardNavigationContents();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconContainer(
-              iconText: 'Community',
+              iconText: 'Log out',
               icon: IconButton(
                 onPressed: () {
-                  // add navigation logic in these onpressed functions
+                  ref.read(authRepositoryProvider).signOut();
                 },
-                icon: const Icon(Icons.person),
+                icon: const Icon(Icons.logout),
               ),
             ),
             const SizedBox(
               width: 20,
             ),
             IconContainer(
-              iconText: 'Billing',
+              iconText: 'Placeholder',
               icon: IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.payment),
+                icon: const Icon(Icons.place),
               ),
             ),
           ],
@@ -170,60 +275,6 @@ class _DashboardNavigationContents extends StatelessWidget {
               ),
             ),
           ],
-        )
-      ],
-    );
-  }
-}
-
-class _AnnouncementsPreview extends ConsumerWidget {
-  const _AnnouncementsPreview();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final announcements = ref.watch(announcementsProvider);
-    return Column(
-      children: [
-        Text(
-          'Announcements',
-          style: Theme.of(context).textTheme.displayMedium,
-        ),
-        announcements.when(
-          data: (announcements) {
-            return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: announcements.length,
-                itemBuilder: (context, index) {
-                  final announcement = announcements[index];
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: colors(context).color3,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          formatTimestamp(announcement.timestamp),
-                        ),
-                        leading: announcement.urgency == 2
-                            ? const Icon(Icons.announcement)
-                            : const Icon(Icons.announcement_outlined),
-                        subtitle: Text(
-                          announcement.title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      ),
-                    ),
-                  );
-                });
-          },
-          error: (error, stackTrace) => Text('$error'),
-          loading: () {
-            return const CircularProgressIndicator();
-          },
         )
       ],
     );

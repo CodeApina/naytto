@@ -22,17 +22,17 @@ class ScaffoldWithNavBar extends StatelessWidget {
       BottomNavigationBarItem(
         icon: Icon(Icons.home),
         label: 'Home',
-        backgroundColor: colors(context).color3!,
+        backgroundColor: colors(context).color1!,
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.calendar_month),
         label: 'Booking',
-        backgroundColor: colors(context).color3!,
+        backgroundColor: colors(context).color1!,
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.settings),
         label: 'Settings',
-        backgroundColor: colors(context).color3!,
+        backgroundColor: colors(context).color1!,
       ),
     ];
 
@@ -41,7 +41,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.developer_board),
           label: 'Dev',
-          backgroundColor: colors(context).color3!,
+          backgroundColor: colors(context).color1!,
         ),
       );
     }
@@ -49,7 +49,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: colors(context).color3,
+        backgroundColor: colors(context).color1,
         selectedItemColor:
             Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
         unselectedItemColor:

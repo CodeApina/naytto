@@ -9,17 +9,9 @@ class LaundryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ColorfulSafeArea(
-      color: colors(context).color2!,
+      color: Colors.white,
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                colors(context).color2!,
-                colors(context).color3!,
-              ])),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

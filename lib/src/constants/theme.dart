@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // Theme structure done with heavy inspiration from:
 // https://medium.com/@kinjal.dhamat.sa/light-dark-app-theme-with-custom-color-in-flutter-c686db585f0c
@@ -14,49 +15,69 @@ ThemeData getAppTheme(BuildContext context) {
   return ThemeData(
     extensions: const <ThemeExtension<CustomColors>>[
       CustomColors(
-        color1: Color.fromARGB(255, 146, 199, 207),
-        color2: Color.fromARGB(255, 170, 215, 217),
-        color3: Color.fromARGB(155, 153, 101, 97),
+        color1: Color.fromARGB(255, 255, 255, 255),
+        color2: Color.fromARGB(200, 153, 101, 97),
+        color3: Color.fromARGB(255, 153, 101, 97),
       ),
     ],
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 170, 215, 217),
     ),
     iconTheme: const IconThemeData(color: Colors.white),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 128,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-      unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
-      unselectedLabelStyle:
-          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-      selectedIconTheme:
-          IconThemeData(size: 35, color: Color.fromARGB(255, 255, 255, 255)),
-      unselectedIconTheme:
-          IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+      selectedItemColor: Colors.black,
+      selectedLabelStyle: GoogleFonts.roboto(
+        textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      ),
+      unselectedItemColor: Colors.grey[600],
+      unselectedLabelStyle: GoogleFonts.roboto(
+          textStyle: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[600])),
+      selectedIconTheme: const IconThemeData(size: 35, color: Colors.black),
+      unselectedIconTheme: IconThemeData(color: Colors.grey[600]),
     ),
-    listTileTheme: const ListTileThemeData(
-        textColor: Color.fromRGBO(255, 255, 255, 1), iconColor: Colors.white),
+    listTileTheme: ListTileThemeData(
+      textColor: const Color.fromRGBO(255, 255, 255, 1),
+      iconColor: Colors.white,
+      titleTextStyle: GoogleFonts.roboto(
+          textStyle:
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      subtitleTextStyle: GoogleFonts.robotoCondensed(
+          textStyle:
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+    ),
     textTheme: Theme.of(context).textTheme.copyWith(
-        // For headers like category names
-        displayLarge: const TextStyle(
-          fontSize: 36,
-          fontWeight: FontWeight.w500,
-          color: Colors.black87,
+          // For headers like category names
+          displayLarge: GoogleFonts.roboto(
+            textStyle: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
+              color: Colors.grey[900],
+            ),
+          ),
+          // Medium text like titles in announcements
+          displayMedium: GoogleFonts.roboto(
+            textStyle: TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[800],
+            ),
+          ),
+          displaySmall: GoogleFonts.robotoCondensed(
+            textStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+          ),
         ),
-        // Medium text like titles in announcements
-        displayMedium: const TextStyle(
-          fontSize: 28,
-          color: Color.fromARGB(255, 0, 0, 0),
-        ),
-        // Main text used in announcements, booking info etc
-        displaySmall: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Color.fromARGB(255, 255, 255, 255))),
   );
 }
 
