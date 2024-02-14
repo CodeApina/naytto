@@ -10,6 +10,17 @@ class AppUser extends ChangeNotifier {
   final provider = Provider<AppUser>((ref) {
     return AppUser();
   });
+
+  void reset() {
+    _uid = null;
+    _email = "";
+    _housingCooperative = "";
+    _firstName = "";
+    _lastName = "";
+    _apartmentId = "";
+    _tel = "";
+  }
+
   late String? _uid;
   String get uid => _uid!;
   set uid(String uid) {

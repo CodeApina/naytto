@@ -1,6 +1,8 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naytto/main.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
@@ -237,6 +239,7 @@ class _DashboardNavigationContents extends ConsumerWidget {
               icon: IconButton(
                 onPressed: () {
                   ref.read(authRepositoryProvider).signOut();
+                  ref.read(AppUser().provider).reset();
                 },
                 icon: const Icon(Icons.logout),
               ),
