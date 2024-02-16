@@ -8,6 +8,7 @@ import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
+import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -186,6 +187,7 @@ class _BookingContents extends StatelessWidget {
                   'Bookings',
                   style: Theme.of(context).textTheme.displayMedium,
                 )),
+            ApartmentBooking(),
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 24, 0),
                 child: InkWell(
