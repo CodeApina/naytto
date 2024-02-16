@@ -123,7 +123,7 @@ void changeAvailability() async {
   try {
     const String saunaID = 'wzGX3LgczNKcKGoLxima';
     const String day = 'monday';
-    const String time = '16';
+    const String time = '17';
 
     final documentReference = firestore
         .collection('HousingCooperatives')
@@ -142,8 +142,34 @@ void changeAvailability() async {
 
     if (weekdays[day][time]['available'] == true) {
       weekdays[day][time]['available'] = false;
+      final bookingReference = firestore
+          .collection('HousingCooperatives')
+          .doc('Pilvilinna')
+          .collection('bookings')
+          .doc();
+
+      await bookingReference.set({
+        'apartmentid': "A1",
+        'day': day,
+        'time': time,
+        'saunaid': saunaID,
+        'type': "sauna",
+      });
     } else if ((weekdays[day][time]['available'] == false)) {
       weekdays[day][time]['available'] = true;
+      final querySnapshot = await firestore
+          .collection('HousingCooperatives')
+          .doc('Pilvilinna')
+          .collection('bookings')
+          .where('day', isEqualTo: day)
+          .where('time', isEqualTo: time)
+          .where('saunaid', isEqualTo: saunaID)
+          .where('apartmentid', isEqualTo: 'A1')
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
     }
 
     await documentReference.update({'weekdays': weekdays});
