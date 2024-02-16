@@ -127,7 +127,7 @@ GoRouter goRouter(GoRouterRef ref) {
               path: '/dev',
               name: AppRoute.dev.name,
               pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: DevScreen()),
+                  NoTransitionPage(child: DevScreen()),
             )
           ]),
         ],
