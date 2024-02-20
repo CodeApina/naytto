@@ -131,14 +131,14 @@ class AppUser extends ChangeNotifier {
         if (value == null) {
           return Future.value(false);
         }
-        if (value[FirestoreFields.usersApartmentNumber] != null) {
-          apartmentId = value[FirestoreFields.usersApartmentNumber];
+        if (value[FirestoreFields.residentApartmentNumber] != null) {
+          apartmentId = value[FirestoreFields.residentApartmentNumber];
         }
-        if (value[FirestoreFields.usersApartmentNumber] != null) {
-          firstName = value[FirestoreFields.firstName];
+        if (value[FirestoreFields.residentFirstName] != null) {
+          firstName = value[FirestoreFields.residentFirstName];
         }
-        if (value[FirestoreFields.usersApartmentNumber] != null) {
-          lastName = value[FirestoreFields.lastName];
+        if (value[FirestoreFields.residentLastName] != null) {
+          lastName = value[FirestoreFields.residentLastName];
         }
         return Future.value(true);
       }).catchError((error, stackTrace) {
