@@ -189,7 +189,8 @@ class _BookingContents extends StatelessWidget {
                   'Bookings',
                   style: Theme.of(context).textTheme.displayMedium,
                 )),
-            ApartmentBooking(),
+            //Just for testing
+            // ApartmentBooking(),
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 24, 0),
                 child: InkWell(
