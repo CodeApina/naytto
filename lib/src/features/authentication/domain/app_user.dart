@@ -11,16 +11,6 @@ class AppUser extends ChangeNotifier {
     return AppUser();
   });
 
-  void reset() {
-    _uid = null;
-    _email = "";
-    _housingCooperative = "";
-    _firstName = "";
-    _lastName = "";
-    _apartmentId = "";
-    _tel = "";
-  }
-
   late String? _uid;
   String get uid => _uid!;
   set uid(String uid) {
@@ -80,10 +70,20 @@ class AppUser extends ChangeNotifier {
 
   AppUser._internal() {}
 
+  void reset() {
+    uid = "";
+    email = "";
+    housingCooperative = "";
+    firstName = "";
+    lastName = "";
+    apartmentId = "";
+    tel = "";
+  }
+
   // Calls LinkAuthToDb function to create user in database
   //
   // Takes in userObject from Firebase authentication
-  //housingcooperative from authentication here too?
+  // housingcooperative from authentication here too?
   createUser(userObject) {
     uid = userObject.user.uid;
     email = userObject.user.email;
@@ -97,7 +97,7 @@ class AppUser extends ChangeNotifier {
   }
 
   // Fetches user data from database
-  //return true if everything is fine
+  // returns true if everything is fine
   Future<bool> fetchUser() async {
     if (housingCooperative == "" && email == "") {
       uid = FirebaseAuth.instance.currentUser!.uid;
@@ -108,9 +108,8 @@ class AppUser extends ChangeNotifier {
 
       if (userData[FirestoreFields.usersHousingCooperative] != null) {
         housingCooperative = userData[FirestoreFields.usersHousingCooperative];
-        //waits for another database query
-        final result = await fetchUserFromResident(
-            userData[FirestoreFields.usersHousingCooperative]);
+        // awaits for another database query
+        final result = await fetchUserFromResident(userData[FirestoreFields.usersHousingCooperative]);
         if (result == true) {
           return Future.value(true);
         } else {
