@@ -7,7 +7,10 @@ class FirestoreCollections {
   static const String housingCooperative = "HousingCooperatives";
   static const String users = "Users";
   static const String amenitiesReservations = "reservations";
+  static const String saunas = "saunas";
+  static const String bookings = "bookings";
 }
+
 
 class FirestoreFields {
   // Apartment fields
@@ -19,6 +22,11 @@ class FirestoreFields {
   // Booking fields
   //TODO: Standardize field names for booking
   static const String booking = "";
+  static const String bookingApartmentID = "apartmentID";
+  static const String bookingDay = "day";
+  static const String bookingTime = "time";
+  static const String bookingID = "amenityID";
+  static const String bookingType = "type";
 
   // Resident fields
   // TODO: should residents store apartment numbers instead of apartment id for ease of data management?
@@ -54,4 +62,7 @@ class FirestoreFields {
   static const String reservationEndTime = "reservation_end_time";
   static const String reservationStartTime = "reservations_start_time";
   static const String reservationWeekday = "weekday";
+
+  // Sauna fields
+  static const String saunaWeekdays = "weekdays";
 }
