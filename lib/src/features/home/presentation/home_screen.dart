@@ -21,13 +21,15 @@ class HomeScreen extends ConsumerWidget {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
                 colors(context).color1!,
                 colors(context).color1!,
-              ])),
+              ],
+            ),
+          ),
           child: const SingleChildScrollView(
             child: Column(
               children: [

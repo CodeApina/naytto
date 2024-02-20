@@ -2,6 +2,7 @@ import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/theme.dart';
+import 'package:naytto/src/features/booking/data/booking_repository.dart';
 import 'package:naytto/src/routing/app_router.dart';
 
 class BookingScreen extends ConsumerWidget {
