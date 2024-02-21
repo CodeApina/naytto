@@ -1,7 +1,7 @@
 class FirestoreCollections {
   static const String apartments = "apartments";
   static const String amenities = "amenities";
-  static const String residents = "resident";
+  static const String residents = "residents";
   static const String announcements = "announcements";
   static const String apartmentsResidents = "Residents";
   static const String housingCooperative = "HousingCooperatives";
