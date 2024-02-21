@@ -45,10 +45,10 @@ class FirestoreFields {
   static const String announcementTitle = "title";
 
   // Users fields
-  static const String usersId = "uid";
-  static const String usersEmail = "email";
-  static const String usersHousingCooperative = "housing_cooperative";
-  static const String usersApartmentNumber = "apartment_number";
+  static const String userId = "uid";
+  static const String userEmail = "email";
+  static const String userHousingCooperative = "housing_cooperative";
+  static const String userApartmentNumber = "apartment_number";
   static const String userphoneNumber = "tel";
   static const String userfirstName = "first_name";
   static const String userlastName = "last_name";

@@ -102,14 +102,15 @@ class AppUser extends ChangeNotifier {
     if (housingCooperative == "" && email == "") {
       uid = FirebaseAuth.instance.currentUser!.uid;
       var userData = await LinkAuthToDb().fetchUserData(uid);
-      if (userData[FirestoreFields.usersEmail] != null) {
-        email = userData[FirestoreFields.usersEmail];
+      if (userData[FirestoreFields.userEmail] != null) {
+        email = userData[FirestoreFields.userEmail];
       }
 
-      if (userData[FirestoreFields.usersHousingCooperative] != null) {
-        housingCooperative = userData[FirestoreFields.usersHousingCooperative];
+      if (userData[FirestoreFields.userHousingCooperative] != null) {
+        housingCooperative = userData[FirestoreFields.userHousingCooperative];
         // awaits for another database query
-        final result = await fetchUserFromResident(userData[FirestoreFields.usersHousingCooperative]);
+        final result = await fetchUserFromResident(
+            userData[FirestoreFields.userHousingCooperative]);
         if (result == true) {
           return Future.value(true);
         } else {

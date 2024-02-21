@@ -12,7 +12,7 @@ class LinkAuthToDb {
     final docRef = db.collection(FirestoreCollections.users);
     return docRef
         .doc(userObject.user.uid)
-        .set({FirestoreFields.usersEmail: userObject.user.email}).then((value) {
+        .set({FirestoreFields.userEmail: userObject.user.email}).then((value) {
       return true;
     }).onError((error, stackTrace) {
       throw Exception("$error \n $stackTrace");
