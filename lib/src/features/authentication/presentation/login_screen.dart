@@ -28,7 +28,7 @@ class LoginScreen extends ConsumerWidget {
                   child: TextButton.icon(
                     icon: const Icon(Icons.login),
                     label: const Text('Login with Email'),
-                    onPressed: () {
+                    onPressed: () async {
                       String email = _emailController.text.trim();
                       String password = _passwordController.text.trim();
                       if (email.isEmpty || password.isEmpty) {
@@ -45,14 +45,18 @@ class LoginScreen extends ConsumerWidget {
                         return;
                       }
 
-                      if (!email.contains('@')) {
+                      if (!email.contains('@') || !email.contains('.')) {
                         _showErrorDialog(context, 'Invalid email format.');
                         return;
                       }
 
-                      ref
+                      final authenticationResult = await ref
                           .read(authRepositoryProvider)
                           .signInWithEmailAndPassword(email, password);
+
+                      if (authenticationResult == false) {
+                        _showErrorDialog(context, 'Login Failed');
+                      }
                     },
                   ),
                 ),
