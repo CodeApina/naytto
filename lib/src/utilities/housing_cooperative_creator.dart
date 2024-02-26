@@ -33,10 +33,6 @@ class HousingCooperativeCreator{
           FirestoreFields.announcementUrgency: 1
         }).then((value) {
           return db.collection(FirestoreCollections.housingCooperative).doc(housingCooperativeName).collection(FirestoreCollections.amenities).doc("saunas").collection("saunas").doc("sauna1").collection(FirestoreCollections.amenitiesReservations).add({
-            FirestoreFields.reservationReserver: "A1",
-            FirestoreFields.reservationWeekday: 3,
-            FirestoreFields.reservationStartTime: 13.00,
-            FirestoreFields.reservationEndTime: 14.00
         }).then((value) {return true;});
       });
     });

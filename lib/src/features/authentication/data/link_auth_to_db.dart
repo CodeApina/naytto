@@ -65,7 +65,7 @@ class LinkAuthToDb {
     final docRef = db
         .collection(FirestoreCollections.housingCooperative)
         .doc(housingCooperationName)
-        .collection("residents")
+        .collection(FirestoreCollections.residents)
         .doc(uid);
     return docRef.get().then((DocumentSnapshot doc) {
       if (doc.exists) {

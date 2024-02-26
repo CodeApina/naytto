@@ -40,9 +40,9 @@ class UserBookings
     final snapshot = await FirebaseFirestore.instance
         .collection(FirestoreCollections.housingCooperative)
         .doc(housingCooperative)
-        .collection('bookings')
-        .where('apartmentID', isEqualTo: apartmentID)
-        .where('type', isEqualTo: bookingType)
+        .collection(FirestoreCollections.bookings)
+        .where(FirestoreFields.bookingApartmentID, isEqualTo: apartmentID)
+        .where(FirestoreFields.bookingType, isEqualTo: bookingType)
         .get();
 
     // Access snapshot data and create a booking object from each document
@@ -68,7 +68,7 @@ class UserBookings
       await FirebaseFirestore.instance
           .collection(FirestoreCollections.housingCooperative)
           .doc(housingCooperative)
-          .collection('bookings')
+          .collection(FirestoreCollections.bookings)
           .add(booking.toFirestore());
       return _fetchBookings(bookingType);
     });
@@ -84,7 +84,7 @@ class UserBookings
       await FirebaseFirestore.instance
           .collection(FirestoreCollections.housingCooperative)
           .doc(housingCooperative)
-          .collection('bookings')
+          .collection(FirestoreCollections.bookings)
           .doc(bookingID)
           .delete();
       return _fetchBookings(bookingType);
@@ -101,7 +101,7 @@ class UserBookings
       await FirebaseFirestore.instance
           .collection(FirestoreCollections.housingCooperative)
           .doc(housingCooperative)
-          .collection('bookings')
+          .collection(FirestoreCollections.bookings)
           .doc(bookingID)
           .update(booking.toFirestore());
       return _fetchBookings(booking.type);

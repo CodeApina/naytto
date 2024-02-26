@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:naytto/src/constants/firestore_constants.dart';
 
 class Booking {
   Booking(
@@ -24,11 +25,11 @@ class Booking {
   factory Booking.fromFirestore(Map<String, dynamic> snapshot, id) {
     return Booking(
       bookingID: id,
-      apartmentID: snapshot['apartmentID'] as String,
-      amenityID: snapshot['amenityID'] as String,
-      type: snapshot['type'] as String,
-      time: snapshot['time'] as String?,
-      day: snapshot['day'] as String?,
+      apartmentID: snapshot[FirestoreFields.bookingApartmentID] as String,
+      amenityID: snapshot[FirestoreFields.bookingID] as String,
+      type: snapshot[FirestoreFields.bookingType] as String,
+      time: snapshot[FirestoreFields.bookingTime] as String?,
+      day: snapshot[FirestoreFields.bookingDay] as String?,
       timestamp: snapshot['timestamp'] as Timestamp?,
     );
   }
@@ -36,9 +37,9 @@ class Booking {
   Map<String, dynamic> toFirestore() {
     final Map<String, dynamic> firestoreData = {
       // These fields are always included
-      'apartmentID': apartmentID,
-      'amenityID': amenityID,
-      'type': type,
+      FirestoreFields.bookingApartmentID: apartmentID,
+      FirestoreFields.bookingID: amenityID,
+      FirestoreFields.bookingType: type,
     };
 
     // These fields will only be included if they are not null
@@ -46,10 +47,10 @@ class Booking {
       firestoreData['timestamp'] = timestamp;
     }
     if (time != null) {
-      firestoreData['time'] = time;
+      firestoreData[FirestoreFields.bookingTime] = time;
     }
     if (day != null) {
-      firestoreData['day'] = day;
+      firestoreData[FirestoreFields.bookingDay] = day;
     }
 
     return firestoreData;
