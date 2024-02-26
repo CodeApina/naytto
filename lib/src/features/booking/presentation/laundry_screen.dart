@@ -18,79 +18,92 @@ class LaundryScreen extends ConsumerWidget {
     return ColorfulSafeArea(
       color: Colors.white,
       child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Laundry booking',
-                style: Theme.of(context).textTheme.displayMedium,
-              ),
-              bookings.when(
-                  data: (bookings) {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: bookings.length,
-                        itemBuilder: (context, index) {
-                          final booking = bookings[index];
-                          return Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(booking.type),
-                                Text('machine:${booking.amenityID}'),
-                                Text(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Laundry booking',
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+                bookings.when(
+                    data: (bookings) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: bookings.length,
+                          itemBuilder: (context, index) {
+                            final booking = bookings[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(booking.type),
+                                  Text('machine:${booking.amenityID}'),
+                                  Text(
                                     booking.timestamp != null
                                         ? formatTimestamp(
                                             booking.timestamp!,
                                           )
                                         : 'No timestamp available',
-                                    style:
-                                        const TextStyle(color: Colors.black)),
-                              ],
-                            ),
-                          );
-                        });
-                  },
-                  error: (error, stackTrace) => Text('$error'),
-                  loading: () => const CircularProgressIndicator()),
-              TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('add booking'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  // DELETE BOOKING
+                                  TextButton(
+                                    onPressed: () {
+                                      ref
+                                          .read(userBookingsProvider('laundry')
+                                              .notifier)
+                                          .deleteBooking(
+                                              booking.bookingID, booking.type);
+                                    },
+                                    child: const Text('delete'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    error: (error, stackTrace) => Text('$error'),
+                    loading: () => const CircularProgressIndicator()),
+                TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('add booking'),
+                            actions: [
+                              TextButton(
                                 onPressed: () {
-                                  ref
-                                      .read(userBookingsProvider('laundry')
-                                          .notifier)
-                                      .addBooking(Booking(
-                                          bookingID: '',
-                                          apartmentID: 'A1',
-                                          amenityID: 'laundry1',
-                                          timestamp: generateRandomTimestamp(),
-                                          type: 'laundry'));
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text('Update'))
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: const Text('add booking'))
-            ],
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(userBookingsProvider('laundry')
+                                            .notifier)
+                                        .addBooking(Booking(
+                                            bookingID: '',
+                                            apartmentID: 'A1',
+                                            amenityID: 'laundry1',
+                                            timestamp: Timestamp.now(),
+                                            type: 'laundry'));
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Update'))
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: const Text('add booking'))
+              ],
+            ),
           ),
         ),
       ),

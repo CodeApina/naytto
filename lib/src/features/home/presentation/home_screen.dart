@@ -8,6 +8,7 @@ import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
+import 'package:naytto/src/features/home/data/bookings_homescreen_repository.dart';
 import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
@@ -171,11 +172,12 @@ class _AnnouncementsPreview extends ConsumerWidget {
 }
 
 // Bookings section
-class _BookingContents extends StatelessWidget {
+class _BookingContents extends ConsumerWidget {
   const _BookingContents();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bookings = ref.watch(apartmentsBookingsProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -189,8 +191,6 @@ class _BookingContents extends StatelessWidget {
                   'Bookings',
                   style: Theme.of(context).textTheme.displayMedium,
                 )),
-            //Just for testing
-            // ApartmentBooking(),
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 24, 0),
                 child: InkWell(
@@ -205,22 +205,66 @@ class _BookingContents extends StatelessWidget {
                 )),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-          child: Container(
-            decoration: BoxDecoration(
-                color: colors(context).color3,
-                borderRadius: BorderRadius.circular(10)),
-            child: const ListTile(
-                title: Text('05/02/2024 18:00-19:30'),
-                leading: Icon(Icons.calendar_month),
-                subtitle: Text(
-                  'Laundry - machine 3',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                )),
-          ),
-        ),
+        bookings.when(
+            data: (bookings) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: bookings.length,
+                  itemBuilder: (context, index) {
+                    final booking = bookings[index];
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                colors(context).color3!,
+                                colors(context).color3!,
+                              ]),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            booking.type,
+                          ),
+                          subtitle:
+                              // Text(
+                              // '${booking.day}, ${booking.time},
+                              Text(
+                            booking.day != null
+                                ? '${booking.day}, ${booking.time}'
+                                : formatTimestamp(booking.timestamp!),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+            },
+            error: (error, stackTrace) => Text('$error'),
+            loading: () {
+              return const Center(child: CircularProgressIndicator());
+            }),
+        // Padding(
+        //   padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+        //   // child: Container(
+        //   //   decoration: BoxDecoration(
+        //   //       color: colors(context).color3,
+        //   //       borderRadius: BorderRadius.circular(10)),
+        //   //   child: const ListTile(
+        //   //       title: Text('05/02/2024 18:00-19:30'),
+        //   //       leading: Icon(Icons.calendar_month),
+        //   //       subtitle: Text(
+        //   //         'Laundry - machine 3',
+        //   //         overflow: TextOverflow.ellipsis,
+        //   //         maxLines: 2,
+        //   //       )),
+        //   // ),
+        // ),
       ],
     );
   }
