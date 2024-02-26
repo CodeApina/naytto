@@ -17,7 +17,7 @@ final apartmentsBookingsProvider = StreamProvider.autoDispose<List<Bookings>>(
         .collection(FirestoreCollections.housingCooperative)
         .doc(housingCooperativeName)
         .collection(FirestoreCollections.bookings)
-        .where('apartmentID', isEqualTo: apartmentid)
+        .where(FirestoreFields.bookingApartmentID, isEqualTo: apartmentid)
         // .where('type', isEqualTo: "sauna")
         // .orderBy('timestamp', descending: true)
         // .limit(2)
