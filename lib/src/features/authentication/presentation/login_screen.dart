@@ -54,8 +54,8 @@ class LoginScreen extends ConsumerWidget {
                           .read(authRepositoryProvider)
                           .signInWithEmailAndPassword(email, password);
 
-                      if (authenticationResult == false) {
-                        _showErrorDialog(context, 'Login Failed');
+                      if (authenticationResult != 'signed in') {
+                        _showErrorDialog(context, authenticationResult);
                       }
                     },
                   ),
@@ -70,7 +70,7 @@ class LoginScreen extends ConsumerWidget {
                           .signInWithEmailAndPassword(email, password);
                     },
                     icon: const Icon(Icons.developer_board),
-                    label: Text("Login as developer"))
+                    label: const Text("Login as developer"))
               ],
             ),
           ),
