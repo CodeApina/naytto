@@ -17,7 +17,7 @@ ThemeData getAppTheme(BuildContext context) {
       CustomColors(
         color1: Color.fromARGB(255, 255, 255, 255),
         color2: Color.fromARGB(200, 153, 101, 97),
-        color3: Color.fromARGB(255, 153, 101, 97),
+        color3: Color.fromARGB(221, 213, 203, 203),
       ),
     ],
     brightness: Brightness.light,
@@ -25,7 +25,9 @@ ThemeData getAppTheme(BuildContext context) {
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 170, 215, 217),
     ),
-    iconTheme: const IconThemeData(color: Colors.white),
+    iconTheme: const IconThemeData(
+      color: Color.fromRGBO(0, 124, 124, 1.0),
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 128,
       showSelectedLabels: true,
@@ -44,8 +46,8 @@ ThemeData getAppTheme(BuildContext context) {
       unselectedIconTheme: IconThemeData(color: Colors.grey[600]),
     ),
     listTileTheme: ListTileThemeData(
-      textColor: const Color.fromRGBO(255, 255, 255, 1),
-      iconColor: Colors.white,
+      textColor: Color.fromARGB(255, 14, 12, 12),
+      iconColor: Color.fromRGBO(0, 124, 124, 1.0),
       titleTextStyle: GoogleFonts.roboto(
           textStyle:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -73,8 +75,8 @@ ThemeData getAppTheme(BuildContext context) {
           displaySmall: GoogleFonts.robotoCondensed(
             textStyle: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Color.fromARGB(255, 255, 255, 255),
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
             ),
           ),
         ),

@@ -22,6 +22,10 @@ class HomeScreen extends ConsumerWidget {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
+            image: const DecorationImage(
+              image: AssetImage('assets/talo2.jpg'),
+              fit: BoxFit.cover,
+            ),
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -103,7 +107,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
               child: Text(
                 'Announcements',
                 style: Theme.of(context).textTheme.displayMedium,
