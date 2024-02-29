@@ -42,7 +42,8 @@ ThemeData getAppTheme(BuildContext context) {
               fontSize: 12,
               fontWeight: FontWeight.bold,
               color: Colors.grey[600])),
-      selectedIconTheme: const IconThemeData(size: 35, color: Colors.black),
+      selectedIconTheme: const IconThemeData(
+          size: 35, color: Color.fromRGBO(0, 124, 124, 1.0)),
       unselectedIconTheme: IconThemeData(color: Colors.grey[600]),
     ),
     listTileTheme: ListTileThemeData(

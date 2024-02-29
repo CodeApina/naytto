@@ -157,8 +157,14 @@ class _AnnouncementsPreview extends ConsumerWidget {
                             formatTimestamp(announcement.timestamp),
                           ),
                           leading: announcement.urgency == 2
-                              ? const Icon(Icons.announcement)
-                              : const Icon(Icons.announcement_outlined),
+                              ? const Icon(
+                                  Icons.announcement,
+                                  color: Color.fromARGB(255, 241, 39, 25),
+                                )
+                              : const Icon(
+                                  Icons.announcement_outlined,
+                                  color: Color.fromARGB(255, 241, 39, 25),
+                                ),
                           subtitle: Text(
                             announcement.title,
                             overflow: TextOverflow.ellipsis,
