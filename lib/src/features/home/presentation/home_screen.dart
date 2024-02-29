@@ -54,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              backgroundColor: Color.fromARGB(138, 240, 239, 239),
+              backgroundColor: Color.fromARGB(220, 255, 255, 255),
             ),
             //makes scaffold transparent
             backgroundColor: Colors.transparent,
