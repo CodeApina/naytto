@@ -1,9 +1,6 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:naytto/main.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
@@ -20,23 +17,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appUserWatcher = ref.watch(AppUser().provider);
     return ColorfulSafeArea(
-      color: Colors.white,
+      color: const Color.fromRGBO(201, 202, 223, 1.0),
       child: Stack(
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
-              image: const DecorationImage(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
                 image: AssetImage('assets/talo2.jpg'),
                 fit: BoxFit.cover,
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  colors(context).color1!,
-                  colors(context).color1!,
-                ],
               ),
             ),
           ),
@@ -51,17 +40,18 @@ class HomeScreen extends ConsumerWidget {
                   const Icon(
                     Icons.hail_rounded,
                     size: 40,
+                    color: Color.fromRGBO(0, 124, 124, 1.0),
                   ),
                 ],
               ),
-              backgroundColor: Color.fromARGB(220, 255, 255, 255),
+              backgroundColor: const Color.fromARGB(220, 255, 255, 255),
             ),
             //makes scaffold transparent
             backgroundColor: Colors.transparent,
             body: const SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 40),
+                  SizedBox(height: 20),
                   // _UserGreetings(),
                   _AnnouncementsPreview(),
                   SizedBox(height: 10),
@@ -116,17 +106,9 @@ class _AnnouncementsPreview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final announcements = ref.watch(announcementsProvider);
     return Container(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 255, 229, 229),
-              Color.fromARGB(0, 255, 255, 255),
-              // colors(context).color3!,
-              // colors(context).color2!,
-            ]),
+        color: colors(context).color3,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -149,10 +131,8 @@ class _AnnouncementsPreview extends ConsumerWidget {
                     onTap: () {},
                     child: Text(
                       'see more',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displaySmall!
-                          .copyWith(color: Colors.purple[600]),
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),
                   )),
             ],
@@ -169,13 +149,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
                       padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                colors(context).color3!,
-                                colors(context).color3!,
-                              ]),
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
@@ -214,18 +188,9 @@ class _BookingContents extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bookings = ref.watch(apartmentsBookingsProvider);
     return Container(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomRight,
-          colors: [
-            Color.fromARGB(255, 252, 252, 252),
-            Color.fromARGB(0, 255, 255, 255),
-            // colors(context).color3!,
-            // colors(context).color2!,
-          ],
-        ),
+        color: colors(context).color3,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -247,10 +212,8 @@ class _BookingContents extends ConsumerWidget {
                     onTap: () {},
                     child: Text(
                       'see more',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displaySmall!
-                          .copyWith(color: Colors.purple[600]),
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),
                   )),
             ],
@@ -268,13 +231,7 @@ class _BookingContents extends ConsumerWidget {
                         child: Container(
                           height: 60,
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  colors(context).color3!,
-                                  colors(context).color3!,
-                                ]),
+                            color: Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -282,10 +239,7 @@ class _BookingContents extends ConsumerWidget {
                               title: Text(
                                 booking.type,
                               ),
-                              subtitle:
-                                  // Text(
-                                  // '${booking.day}, ${booking.time},
-                                  Text(
+                              subtitle: Text(
                                 booking.day != null
                                     ? '${booking.day}, ${booking.time}'
                                     : formatTimestamp(booking.timestamp!),
@@ -302,22 +256,6 @@ class _BookingContents extends ConsumerWidget {
               loading: () {
                 return const Center(child: CircularProgressIndicator());
               }),
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-          //   // child: Container(
-          //   //   decoration: BoxDecoration(
-          //   //       color: colors(context).color3,
-          //   //       borderRadius: BorderRadius.circular(10)),
-          //   //   child: const ListTile(
-          //   //       title: Text('05/02/2024 18:00-19:30'),
-          //   //       leading: Icon(Icons.calendar_month),
-          //   //       subtitle: Text(
-          //   //         'Laundry - machine 3',
-          //   //         overflow: TextOverflow.ellipsis,
-          //   //         maxLines: 2,
-          //   //       )),
-          //   // ),
-          // ),
         ],
       ),
     );
@@ -360,28 +298,6 @@ class _DashboardNavigationContents extends ConsumerWidget {
         const SizedBox(
           height: 20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconContainer(
-              iconText: 'Placeholder',
-              icon: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.place),
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            IconContainer(
-              iconText: 'Placeholder',
-              icon: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.place),
-              ),
-            ),
-          ],
-        )
       ],
     );
   }
