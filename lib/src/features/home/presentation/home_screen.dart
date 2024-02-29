@@ -115,78 +115,93 @@ class _AnnouncementsPreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final announcements = ref.watch(announcementsProvider);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-              child: Text(
-                'Announcements',
-                style: Theme.of(context).textTheme.displayMedium,
+    return Container(
+      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.fromARGB(255, 255, 229, 229),
+              Color.fromARGB(0, 255, 255, 255),
+              // colors(context).color3!,
+              // colors(context).color2!,
+            ]),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+                child: Text(
+                  'Announcements',
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
               ),
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 24, 0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'see more',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall!
-                        .copyWith(color: Colors.purple[600]),
-                  ),
-                )),
-          ],
-        ),
-        announcements.when(
-          data: (announcements) {
-            return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: announcements.length,
-                itemBuilder: (context, index) {
-                  final announcement = announcements[index];
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              colors(context).color3!,
-                              colors(context).color3!,
-                            ]),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          formatTimestamp(announcement.timestamp),
-                        ),
-                        leading: announcement.urgency == 2
-                            ? const Icon(Icons.announcement)
-                            : const Icon(Icons.announcement_outlined),
-                        subtitle: Text(
-                          announcement.title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      ),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 24, 0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Text(
+                      'see more',
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall!
+                          .copyWith(color: Colors.purple[600]),
                     ),
-                  );
-                });
-          },
-          error: (error, stackTrace) => Text('$error'),
-          loading: () {
-            return const Center(child: CircularProgressIndicator());
-          },
-        )
-      ],
+                  )),
+            ],
+          ),
+          announcements.when(
+            data: (announcements) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: announcements.length,
+                  itemBuilder: (context, index) {
+                    final announcement = announcements[index];
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                colors(context).color3!,
+                                colors(context).color3!,
+                              ]),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            formatTimestamp(announcement.timestamp),
+                          ),
+                          leading: announcement.urgency == 2
+                              ? const Icon(Icons.announcement)
+                              : const Icon(Icons.announcement_outlined),
+                          subtitle: Text(
+                            announcement.title,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+            },
+            error: (error, stackTrace) => Text('$error'),
+            loading: () {
+              return const Center(child: CircularProgressIndicator());
+            },
+          )
+        ],
+      ),
     );
   }
 }
@@ -198,97 +213,113 @@ class _BookingContents extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bookings = ref.watch(apartmentsBookingsProvider);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-                child: Text(
-                  'Bookings',
-                  style: Theme.of(context).textTheme.displayMedium,
-                )),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 24, 0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'see more',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall!
-                        .copyWith(color: Colors.purple[600]),
-                  ),
-                )),
+    return Container(
+      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomRight,
+          colors: [
+            Color.fromARGB(255, 252, 252, 252),
+            Color.fromARGB(0, 255, 255, 255),
+            // colors(context).color3!,
+            // colors(context).color2!,
           ],
         ),
-        bookings.when(
-            data: (bookings) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: bookings.length,
-                  itemBuilder: (context, index) {
-                    final booking = bookings[index];
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                colors(context).color3!,
-                                colors(context).color3!,
-                              ]),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: ListTile(
-                            title: Text(
-                              booking.type,
-                            ),
-                            subtitle:
-                                // Text(
-                                // '${booking.day}, ${booking.time},
-                                Text(
-                              booking.day != null
-                                  ? '${booking.day}, ${booking.time}'
-                                  : formatTimestamp(booking.timestamp!),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                  child: Text(
+                    'Bookings',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  )),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 24, 0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Text(
+                      'see more',
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall!
+                          .copyWith(color: Colors.purple[600]),
+                    ),
+                  )),
+            ],
+          ),
+          bookings.when(
+              data: (bookings) {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: bookings.length,
+                    itemBuilder: (context, index) {
+                      final booking = bookings[index];
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  colors(context).color3!,
+                                  colors(context).color3!,
+                                ]),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: ListTile(
+                              title: Text(
+                                booking.type,
+                              ),
+                              subtitle:
+                                  // Text(
+                                  // '${booking.day}, ${booking.time},
+                                  Text(
+                                booking.day != null
+                                    ? '${booking.day}, ${booking.time}'
+                                    : formatTimestamp(booking.timestamp!),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  });
-            },
-            error: (error, stackTrace) => Text('$error'),
-            loading: () {
-              return const Center(child: CircularProgressIndicator());
-            }),
-        // Padding(
-        //   padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-        //   // child: Container(
-        //   //   decoration: BoxDecoration(
-        //   //       color: colors(context).color3,
-        //   //       borderRadius: BorderRadius.circular(10)),
-        //   //   child: const ListTile(
-        //   //       title: Text('05/02/2024 18:00-19:30'),
-        //   //       leading: Icon(Icons.calendar_month),
-        //   //       subtitle: Text(
-        //   //         'Laundry - machine 3',
-        //   //         overflow: TextOverflow.ellipsis,
-        //   //         maxLines: 2,
-        //   //       )),
-        //   // ),
-        // ),
-      ],
+                      );
+                    });
+              },
+              error: (error, stackTrace) => Text('$error'),
+              loading: () {
+                return const Center(child: CircularProgressIndicator());
+              }),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+          //   // child: Container(
+          //   //   decoration: BoxDecoration(
+          //   //       color: colors(context).color3,
+          //   //       borderRadius: BorderRadius.circular(10)),
+          //   //   child: const ListTile(
+          //   //       title: Text('05/02/2024 18:00-19:30'),
+          //   //       leading: Icon(Icons.calendar_month),
+          //   //       subtitle: Text(
+          //   //         'Laundry - machine 3',
+          //   //         overflow: TextOverflow.ellipsis,
+          //   //         maxLines: 2,
+          //   //       )),
+          //   // ),
+          // ),
+        ],
+      ),
     );
   }
 }
