@@ -186,6 +186,8 @@ class _AnnouncementsPreview extends ConsumerWidget {
   }
 }
 
+String buttonText = 'see more';
+
 // Bookings section
 class _BookingContents extends ConsumerWidget {
   const _BookingContents();
@@ -215,9 +217,16 @@ class _BookingContents extends ConsumerWidget {
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 24, 0),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      // Updates how many bookings is shown and text
+                      ref.read(AppUser().provider).bookingsShown =
+                          buttonText == 'see more' ? 5 : 2;
+                      buttonText =
+                          buttonText == 'see more' ? 'see less' : 'see more';
+                      ref.refresh(apartmentsBookingsProvider);
+                    },
                     child: Text(
-                      'see more',
+                      buttonText,
                       style: Theme.of(context).textTheme.displaySmall!.copyWith(
                           color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),

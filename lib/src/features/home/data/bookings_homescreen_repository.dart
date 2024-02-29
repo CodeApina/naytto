@@ -12,6 +12,8 @@ final apartmentsBookingsProvider = StreamProvider.autoDispose<List<Bookings>>(
     final String housingCooperativeName =
         ref.watch(AppUser().provider).housingCooperative;
     final String apartmentid = ref.watch(AppUser().provider).apartmentId;
+    //Used in how many bookings is shown
+    final int showbookings = ref.watch(AppUser().provider).bookingsShown;
 
     yield* _firestore
         .collection(FirestoreCollections.housingCooperative)
@@ -20,31 +22,53 @@ final apartmentsBookingsProvider = StreamProvider.autoDispose<List<Bookings>>(
         .where(FirestoreFields.bookingApartmentID, isEqualTo: apartmentid)
         // .where('type', isEqualTo: "sauna")
         // .orderBy('timestamp', descending: true)
-        // .limit(2)
 
         // .snapshots()
         // .map((querySnapshot) => querySnapshot.docs
         //     .map((doc) => Bookings.fromMap(doc.data(), doc.id))
         //     .toList());
 
-        //Chatgpt:s Wild sorting system
+        //Chatgpt:s Wild sorting system number II
+        //Shows ALL saunas first and then sorts laundy with timestamp
         .snapshots()
-        .map((querySnapshot) => querySnapshot.docs
-            .map((doc) => Bookings.fromMap(doc.data(), doc.id))
-            .toList()
-          ..sort((a, b) {
-            if (a.type == "sauna" && b.type == "laundry") {
-              return -1; // "sauna" comes before "laundry"
-            } else if (a.type == "laundry" && b.type == "sauna") {
-              return 1;
-            } else if (a.type == "laundry" && b.type == "laundry") {
-              // "laundry"-types sortet by timestamp if available
-              return (a.timestamp != null && b.timestamp != null)
-                  ? a.timestamp!.compareTo(b.timestamp!)
-                  : 0;
-            } else {
-              return 0;
-            }
-          }));
+        .map((querySnapshot) {
+      final documents = querySnapshot.docs;
+      final saunaBookings = <Bookings>[];
+
+      for (final doc in documents) {
+        final booking = Bookings.fromMap(doc.data(), doc.id);
+        if (booking.type == "sauna") {
+          saunaBookings.add(booking);
+        }
+      }
+      saunaBookings.sort((a, b) {
+        if (a.timestamp != null && b.timestamp != null) {
+          return a.timestamp!.compareTo(b.timestamp!);
+        } else {
+          return 0;
+        }
+      });
+      final allBookings =
+          documents.map((doc) => Bookings.fromMap(doc.data(), doc.id)).toList();
+
+      allBookings.sort((a, b) {
+        if (a.type == "laundry" && b.type == "laundry") {
+          // Sort by timestamp if available
+          return (a.timestamp != null && b.timestamp != null)
+              ? a.timestamp!.compareTo(b.timestamp!)
+              : 0;
+        } else if (a.type == "sauna" && b.type == "laundry") {
+          return -1; // "sauna" comes before "laundry"
+        } else if (a.type == "laundry" && b.type == "sauna") {
+          return 1; // "laundry" comes after "sauna"
+        } else {
+          return 0; // Maintain order for other types
+        }
+      });
+
+      final result = [...saunaBookings, ...allBookings];
+
+      return result.take(showbookings).toList();
+    });
   },
 );

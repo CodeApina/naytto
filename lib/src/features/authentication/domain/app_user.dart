@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
@@ -61,6 +63,14 @@ class AppUser extends ChangeNotifier {
   String get email => _email;
   set email(String email) {
     _email = email;
+    notifyListeners();
+  }
+
+//Used to show bookings in home_screen
+  int _bookingsShown = 2;
+  int get bookingsShown => _bookingsShown;
+  set bookingsShown(int bookingsShown) {
+    _bookingsShown = bookingsShown;
     notifyListeners();
   }
 
