@@ -2,6 +2,7 @@ import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:naytto/main.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
@@ -13,85 +14,100 @@ import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final appUserWatcher = ref.watch(AppUser().provider);
     return ColorfulSafeArea(
       color: Colors.white,
-      child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            image: const DecorationImage(
-              image: AssetImage('assets/talo2.jpg'),
-              fit: BoxFit.cover,
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                colors(context).color1!,
-                colors(context).color1!,
-              ],
-            ),
-          ),
-          child: const SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                _UserGreetings(),
-                _AnnouncementsPreview(),
-                SizedBox(
-                  height: 10,
-                ),
-                _BookingContents(),
-                SizedBox(
-                  height: 20,
-                ),
-                _DashboardNavigationContents(),
-                SizedBox(
-                  height: 20,
-                )
-              ],
+      child: Stack(
+        children: [
+          // Background image
+          Container(
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/talo2.jpg'),
+                fit: BoxFit.cover,
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  colors(context).color1!,
+                  colors(context).color1!,
+                ],
+              ),
             ),
           ),
-        ),
+          Scaffold(
+            appBar: AppBar(
+              title: Row(
+                children: [
+                  Text(
+                    'Welcome home, ${appUserWatcher.firstName}    ',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                  const Icon(
+                    Icons.hail_rounded,
+                    size: 40,
+                  ),
+                ],
+              ),
+              backgroundColor: Color.fromARGB(138, 240, 239, 239),
+            ),
+            //makes scaffold transparent
+            backgroundColor: Colors.transparent,
+            body: const SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 40),
+                  // _UserGreetings(),
+                  _AnnouncementsPreview(),
+                  SizedBox(height: 10),
+                  _BookingContents(),
+                  SizedBox(height: 20),
+                  _DashboardNavigationContents(),
+                  SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
 // User greetings section
-class _UserGreetings extends ConsumerWidget {
-  const _UserGreetings();
+// class _UserGreetings extends ConsumerWidget {
+//   const _UserGreetings();
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final appUserWatcher = ref.watch(AppUser().provider);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-                child: Text(
-                  'Welcome home, ${appUserWatcher.firstName}',
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final appUserWatcher = ref.watch(AppUser().provider);
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           crossAxisAlignment: CrossAxisAlignment.end,
+//           children: [
+//             Expanded(
+//               child: Padding(
+//                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+//                 child: Text(
+//                   'Welcome home, ${appUserWatcher.firstName}',
+//                   style: Theme.of(context).textTheme.displayLarge,
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class _AnnouncementsPreview extends ConsumerWidget {
   const _AnnouncementsPreview();
@@ -220,6 +236,7 @@ class _BookingContents extends ConsumerWidget {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                       child: Container(
+                        height: 60,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                               begin: Alignment.topCenter,
@@ -230,19 +247,21 @@ class _BookingContents extends ConsumerWidget {
                               ]),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: ListTile(
-                          title: Text(
-                            booking.type,
-                          ),
-                          subtitle:
-                              // Text(
-                              // '${booking.day}, ${booking.time},
-                              Text(
-                            booking.day != null
-                                ? '${booking.day}, ${booking.time}'
-                                : formatTimestamp(booking.timestamp!),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                        child: Center(
+                          child: ListTile(
+                            title: Text(
+                              booking.type,
+                            ),
+                            subtitle:
+                                // Text(
+                                // '${booking.day}, ${booking.time},
+                                Text(
+                              booking.day != null
+                                  ? '${booking.day}, ${booking.time}'
+                                  : formatTimestamp(booking.timestamp!),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
                           ),
                         ),
                       ),

@@ -17,7 +17,7 @@ ThemeData getAppTheme(BuildContext context) {
       CustomColors(
         color1: Color.fromARGB(255, 255, 255, 255),
         color2: Color.fromARGB(200, 153, 101, 97),
-        color3: Color.fromARGB(221, 213, 203, 203),
+        color3: Color.fromARGB(203, 255, 255, 255),
       ),
     ],
     brightness: Brightness.light,
