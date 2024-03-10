@@ -2,8 +2,6 @@ import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/common_widgets/icon_container.dart';
-import 'package:naytto/src/constants/theme.dart';
-import 'package:naytto/src/features/booking/data/booking_repository.dart';
 import 'package:naytto/src/routing/app_router.dart';
 
 class BookingScreen extends ConsumerWidget {
@@ -41,6 +39,22 @@ class BookingScreen extends ConsumerWidget {
                   icon: IconButton(
                     onPressed: () {
                       ref.read(goRouterProvider).goNamed(AppRoute.sauna.name);
+                    },
+                    icon: const Icon(Icons.calendar_month),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconContainer(
+                  iconText: 'My bookings',
+                  icon: IconButton(
+                    onPressed: () {
+                      ref
+                          .read(goRouterProvider)
+                          .goNamed(AppRoute.mybookings.name);
                     },
                     icon: const Icon(Icons.calendar_month),
                   ),

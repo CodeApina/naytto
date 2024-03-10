@@ -30,6 +30,13 @@ class AmenitiesRepository {
         await queryAmenities(housingCooperative, collectionName).get();
     return amenities.docs.map((doc) => doc.data()).toList();
   }
+
+  Future<Amenity> getAmenityByID(String housingCooperative,
+      String collectionName, String amenityID) async {
+    final amenity =
+        await queryAmenities(housingCooperative, collectionName).get();
+    return amenity.docs.firstWhere((doc) => doc.id == amenityID).data();
+  }
 }
 
 @Riverpod(keepAlive: true)

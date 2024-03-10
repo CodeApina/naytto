@@ -4,6 +4,7 @@ import 'package:naytto/src/features/authentication/data/firebase_auth_repository
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/presentation/booking_screen.dart';
 import 'package:naytto/src/features/booking/presentation/laundry_screen.dart';
+import 'package:naytto/src/features/booking/presentation/my_bookings_screen.dart';
 import 'package:naytto/src/features/booking/presentation/sauna_screen.dart';
 import 'package:naytto/src/features/dev/dev_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
@@ -28,7 +29,16 @@ final _settingsgNavigatorKey =
 final _devNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dev');
 
 // Add a new entry to the AppRoute enum for your route whether it's nested or not.
-enum AppRoute { login, home, booking, sauna, laundry, settings, dev }
+enum AppRoute {
+  login,
+  home,
+  booking,
+  sauna,
+  laundry,
+  settings,
+  dev,
+  mybookings
+}
 
 // Riverpod provider for the GoRouter instance
 @riverpod
@@ -108,6 +118,14 @@ GoRouter goRouter(GoRouterRef ref) {
                       pageBuilder: ((context, state) {
                         return const MaterialPage(
                             fullscreenDialog: true, child: LaundryScreen());
+                      })),
+                  GoRoute(
+                      path: 'mybookings',
+                      name: AppRoute.mybookings.name,
+                      parentNavigatorKey: _bookingNavigatorKey,
+                      pageBuilder: ((context, state) {
+                        return const MaterialPage(
+                            fullscreenDialog: true, child: MyBookingsScreen());
                       }))
                 ],
               ),
