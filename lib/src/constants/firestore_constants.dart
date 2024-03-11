@@ -9,6 +9,7 @@ class FirestoreCollections {
   static const String amenitiesReservations = "reservations";
   static const String saunas = "saunas";
   static const String bookings = "bookings";
+  static const String maintenance = "maintenance";
 }
 
 class FirestoreFields {
@@ -64,4 +65,7 @@ class FirestoreFields {
 
   // Sauna fields
   static const String saunaWeekdays = "weekdays";
+
+  // Maintenance fields
+  static const String maintananceApartmentNumber = "aparment_number";
 }
