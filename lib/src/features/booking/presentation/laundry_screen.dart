@@ -47,6 +47,7 @@ class LaundryScreen extends ConsumerWidget {
         leading: IconButton(
             onPressed: () {
               ref.read(goRouterProvider).pop(context);
+              ref.read(hasAmenityBeenChosenProvider.notifier).state = false;
             },
             icon: const Icon(
               Icons.arrow_back,
