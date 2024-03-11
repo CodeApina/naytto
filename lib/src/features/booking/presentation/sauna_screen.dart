@@ -1,260 +1,159 @@
-import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naytto/src/features/booking/data/booking_repository.dart';
-import 'package:naytto/src/features/booking/domain/booking.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:naytto/src/features/authentication/domain/app_user.dart';
+import 'package:naytto/src/features/booking/data/ollinbookingrepo.dart';
+import 'package:naytto/src/features/booking/domain/ollinsaunabookings.dart';
 
 class SaunaScreen extends ConsumerWidget {
-  const SaunaScreen({super.key});
+  const SaunaScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _bookingTimeController = TextEditingController();
-    final _bookingDayController = TextEditingController();
-    final _bookingEditTimeController = TextEditingController();
-    final _bookingEditDayController = TextEditingController();
-    final bookings = ref.watch(
-      userBookingsProvider('sauna'),
-    );
-    String _selectedAmenityID = 'sauna1';
-
-    return ColorfulSafeArea(
-      color: Colors.white,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Sauna booking',
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-                bookings.when(
-                    data: (bookings) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: bookings.length,
-                          itemBuilder: (context, index) {
-                            final booking = bookings[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text('id: ${booking.bookingID}'),
-                                  Text('sauna: ${booking.amenityID}'),
-                                  Text(
-                                    booking.time ?? 'No time available',
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
-                                  Text(
-                                    booking.day ?? 'No day available',
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
-
-                                  // DELETE BOOKING
-                                  TextButton(
-                                    onPressed: () {
-                                      ref
-                                          .read(userBookingsProvider('sauna')
-                                              .notifier)
-                                          .deleteBooking(
-                                              booking.bookingID, booking.type);
-                                    },
-                                    child: const Text('delete'),
-                                  ),
-
-                                  // EDIT BOOKING
-                                  TextButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('edit booking'),
-                                            content: Column(
-                                              children: [
-                                                TextField(
-                                                  decoration:
-                                                      const InputDecoration(
-                                                          hintText: 'day'),
-                                                  controller:
-                                                      _bookingEditDayController,
-                                                ),
-                                                TextField(
-                                                  decoration:
-                                                      const InputDecoration(
-                                                          hintText: 'time'),
-                                                  controller:
-                                                      _bookingEditTimeController,
-                                                ),
-                                                DropdownExample(
-                                                  onValueChanged: (newValue) {
-                                                    _selectedAmenityID =
-                                                        newValue;
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text('Cancel'),
-                                              ),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    ref
-                                                        .read(
-                                                            userBookingsProvider(
-                                                                    'sauna')
-                                                                .notifier)
-                                                        .updateBooking(
-                                                            booking.bookingID,
-                                                            Booking(
-                                                                bookingID:
-                                                                    booking
-                                                                        .bookingID,
-                                                                apartmentID:
-                                                                    'A1',
-                                                                amenityID:
-                                                                    _selectedAmenityID,
-                                                                time:
-                                                                    _bookingEditTimeController
-                                                                        .text,
-                                                                day:
-                                                                    _bookingEditDayController
-                                                                        .text,
-                                                                type: 'sauna'));
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Update'))
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const Text('edit'),
-                                  )
-                                ],
-                              ),
-                            );
-                          });
-                    },
-                    error: (error, stackTrace) => Text('$error'),
-                    loading: () => const CircularProgressIndicator()),
-
-                // ADD BOOKING
-                TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('add booking'),
-                            content: Column(
-                              children: [
-                                TextField(
-                                  decoration:
-                                      const InputDecoration(hintText: 'day'),
-                                  controller: _bookingDayController,
-                                ),
-                                TextField(
-                                  decoration:
-                                      const InputDecoration(hintText: 'time'),
-                                  controller: _bookingTimeController,
-                                ),
-                                DropdownExample(
-                                  onValueChanged: (newValue) {
-                                    _selectedAmenityID = newValue;
-                                  },
-                                )
-                              ],
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    if (_bookingDayController.text
-                                        .trim()
-                                        .isEmpty) {
-                                      return;
-                                    }
-
-                                    if (_bookingTimeController.text
-                                        .trim()
-                                        .isEmpty) {
-                                      return;
-                                    }
-
-                                    ref
-                                        .read(userBookingsProvider('sauna')
-                                            .notifier)
-                                        .addBooking(Booking(
-                                            bookingID: '',
-                                            apartmentID: 'A1',
-                                            amenityID: _selectedAmenityID,
-                                            time: _bookingTimeController.text,
-                                            day: _bookingDayController.text,
-                                            type: 'sauna'));
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('Update'))
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: const Text('add booking'))
-              ],
-            ),
-          ),
+    final saunaDataAsyncValue = ref.watch(saunaDataStreamProvider);
+    final saunaDataUpdate = ref.read(saunaDataUpdateProvider);
+    // final String apartmentid = ref.watch(AppUser().provider).apartmentId;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sauna Booking'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
-    );
-  }
-}
+      body: saunaDataAsyncValue.when(
+        data: (saunaDataList) {
+          return ListView.builder(
+            itemCount: saunaDataList.length,
+            itemBuilder: (context, index) {
+              final booking = saunaDataList[index];
+              return ListTile(
+                title: Center(child: Text(booking.id)),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Column(children: [
+                        Text('Available from: ${booking.availableFrom}:00'),
+                        Text('Available to: ${booking.availableTo}:00'),
+                        // Text('Sauna id: ${booking.displayName}'),
+                      ]),
+                    ),
 
-class DropdownExample extends StatefulWidget {
-  final void Function(String) onValueChanged; // Callback function
+                    SizedBox(height: 8),
+                    // Text('Weekday:'),
+                    ...booking.fields.entries.map((entry) {
+                      String fieldName = entry.key;
+                      Map<String, bool> fieldValue = entry.value;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // fieldName == '1'
+                          //     ? Text(
+                          //         'Monday:',
+                          //       )
+                          //     : Text(
+                          //         'Thuesday',
+                          //       ),
+                          if (fieldName == '1') Text('Monday'),
+                          if (fieldName == '2') Text('Tuesday'),
+                          if (fieldName == '3') Text('Wednesday'),
+                          if (fieldName == '4') Text('Thursday'),
+                          if (fieldName == '5') Text('Friday'),
+                          if (fieldName == '6') Text('Saturday'),
+                          if (fieldName == '7') Text('Sunday'),
+                          ...fieldValue.entries.map((fieldEntry) {
+                            String time = fieldEntry.key;
+                            bool available = fieldEntry.value;
+                            //not used in this version
+                            final String path =
+                                '${booking.displayName}/$fieldName/$time';
+                            return Center(
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  minimumSize:
+                                      MaterialStateProperty.all(Size(250, 36)),
+                                  maximumSize:
+                                      MaterialStateProperty.all(Size(300, 36)),
+                                ),
+                                onPressed: () async {
+                                  // opens verification modal
+                                  final bool? confirm = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Change Booking'),
+                                        content: Text(
+                                            'Are you sure you want to change your saunas time?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: Text('No'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                            child: Text('Yes'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
 
-  const DropdownExample({Key? key, required this.onValueChanged})
-      : super(key: key);
-
-  @override
-  _DropdownExampleState createState() => _DropdownExampleState();
-}
-
-class _DropdownExampleState extends State<DropdownExample> {
-  String _selectedItem = 'sauna1'; // Initially selected item
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: _selectedItem,
-      onChanged: (String? newValue) {
-        setState(() {
-          _selectedItem = newValue!;
-          widget.onValueChanged(newValue);
-        });
-      },
-      items: <String>[
-        'sauna1',
-        'sauna2',
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+                                  if (confirm ?? false) {
+                                    try {
+                                      await saunaDataUpdate.updateSaunaData(
+                                          booking.id,
+                                          fieldName,
+                                          time,
+                                          available);
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Error updating sauna data',
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  '$time:00-${int.parse(time) + 1}:00   ${available ? 'Available' : 'Not available'}',
+                                  style: TextStyle(
+                                    color:
+                                        available ? Colors.green : Colors.red,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ],
+                      );
+                    }).toList(),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+        loading: () => Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (error, stackTrace) => Center(
+          child: Text('Error: $error'),
+        ),
+        // Add handling for the situation when data is empty
+        // .empty: () => Center(
+        //   child: Text('No sauna data available.'),
+        // ),
+      ),
     );
   }
 }

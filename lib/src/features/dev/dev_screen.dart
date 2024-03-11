@@ -8,6 +8,7 @@ import 'package:naytto/src/features/authentication/data/firebase_auth_repository
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/domain/booking.dart';
 import 'package:naytto/src/utilities/housing_cooperative_creator.dart';
+import 'package:naytto/src/features/booking/domain/amenity.dart';
 
 class DevScreen extends ConsumerWidget {
   DevScreen({super.key});
@@ -101,10 +102,29 @@ class DevScreen extends ConsumerWidget {
                       },
                       child: const Text('Change sauna availability')),
                   TextButton(
-                      onPressed: () {
-                        // Put logic here
+                      onPressed: () async {
+                        // final amenity = await getAmenity();
+                        // print(amenity.amenityID);
+                        // print(amenity.displayName);
+                        // print(amenity.availableFrom);
+                        // print(amenity.availableTo);
+                        // print('out of service?');
+                        // print(amenity.outOfService);
+                        // print(amenity.weekDays[0].day);
+                        // print(amenity.weekDays[0].timeSlots[0].time);
+                        // print(amenity.weekDays[0].timeSlots[0].availability);
+                        // print('-------------------');
+                        // print(amenity.weekDays[0].timeSlots[1].time);
+                        // print(amenity.weekDays[0].timeSlots[1].availability);
+                        // print('-------------------');
+                        // print(amenity.weekDays[1].day);
+                        // print(amenity.weekDays[1].timeSlots[0].time);
+                        // print(amenity.weekDays[1].timeSlots[0].availability);
+                        // print('-------------------');
+                        // print(amenity.weekDays[1].timeSlots[1].time);
+                        // print(amenity.weekDays[1].timeSlots[1].availability);
                       },
-                      child: const Text('Button 3')),
+                      child: const Text('Get amenity')),
                   TextButton(
                       onPressed: () {
                         // Put logic here
@@ -132,12 +152,11 @@ void changeAvailability() async {
     const String bookingType = "sauna";
 
     final docref = firestore
-      .collection(FirestoreCollections.housingCooperative)
-      .doc(housingCooperative);
+        .collection(FirestoreCollections.housingCooperative)
+        .doc(housingCooperative);
 
-    final documentReference = docref
-        .collection(FirestoreCollections.saunas)
-        .doc(saunaID);
+    final documentReference =
+        docref.collection(FirestoreCollections.saunas).doc(saunaID);
 
     final snapshot = await documentReference.get();
 
@@ -148,10 +167,7 @@ void changeAvailability() async {
     if (weekdays[day][time] == true) {
       weekdays[day][time] = false;
 
-      await docref
-          .collection(FirestoreCollections.bookings)
-          .doc()
-          .set({
+      await docref.collection(FirestoreCollections.bookings).doc().set({
         FirestoreFields.bookingApartmentID: apartmentNumber,
         FirestoreFields.bookingDay: day,
         FirestoreFields.bookingTime: time,
@@ -177,4 +193,20 @@ void changeAvailability() async {
   } catch (e) {
     print('Error changing availability: $e');
   }
+}
+
+Future<Amenity> getAmenity() async {
+  const String amenityID = 'wzGX3LgczNKcKGoLxima';
+  const String housingCooperative = "Pilvilinna";
+
+  final docref = firestore
+      .collection(FirestoreCollections.housingCooperative)
+      .doc(housingCooperative);
+
+  final documentReference =
+      docref.collection(FirestoreCollections.saunas).doc(amenityID);
+
+  final snapshot = await documentReference.get();
+
+  return Amenity.fromMap(snapshot.data()!, amenityID);
 }

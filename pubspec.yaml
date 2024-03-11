@@ -21,6 +21,7 @@ dependencies:
   intl: ^0.18.1
   firebase_ui_firestore: ^1.6.1
   colorful_safe_area: ^1.0.0
+  easy_date_timeline: ^1.0.3
   
 dev_dependencies:
   flutter_test:
@@ -33,3 +34,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+  - assets/talo2.jpg

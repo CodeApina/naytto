@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../domain/app_user.dart';
 part 'firebase_auth_repository.g.dart';
@@ -19,15 +22,29 @@ class AuthRepository {
     return _auth.signInAnonymously();
   }
 
-  Future<bool> signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return true;
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return 'signed in';
     } on FirebaseAuthException catch (e) {
-      return false;
-    } catch (e, stackTrace) {
-      print('$e \n $stackTrace');
-      return false;
+      String authError = "";
+      if (e.message!.contains('password is invalid')) {
+        authError = 'Password is invalid';
+      } else if (e.message!.contains('email is invalid')) {
+        authError = 'User not found, please check your email-adress';
+      } else if (e.code == 'user-not-found') {
+        authError = 'User not found, please check your email-adress';
+      } else if (e.message!.contains('due to unusual activity')) {
+        authError =
+            'Access to this account has been temporarily disabled due to many failed login attempts. Please try again later.';
+      } else {
+        authError = "Unknown error has accured";
+      }
+      return authError;
     }
   }
 
