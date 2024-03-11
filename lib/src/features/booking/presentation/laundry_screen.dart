@@ -11,7 +11,11 @@ import 'package:naytto/src/features/booking/domain/booking.dart';
 import 'package:intl/intl.dart';
 import 'package:naytto/src/routing/app_router.dart';
 
+// PROVIDERS
+
+// Define a StateProvider to manage the selected Amenity
 final selectedAmenityProvider = StateProvider<Amenity>((ref) {
+  // Initialize with default values
   return Amenity(
       amenityID: '',
       displayName: '',
@@ -20,10 +24,13 @@ final selectedAmenityProvider = StateProvider<Amenity>((ref) {
       outOfService: false);
 });
 
+// Define a StateProvider to manage the selected DateTime
 final selectedDateTimeProvider = StateProvider<DateTime>((ref) {
+  // Initialize with the current date and time
   return DateTime.now();
 });
 
+// Define a StateProvider to manage the selected time slot
 final selectedTimeSlotProvider = StateProvider<DateTime?>((ref) => null);
 
 class LaundryScreen extends ConsumerWidget {
@@ -55,9 +62,9 @@ class LaundryScreen extends ConsumerWidget {
               SizedBox(height: 10),
               LaundryMachineSelection(),
               SizedBox(height: 20),
-              DateSelect(),
-              AvailableBookings(),
-              SizedBox(height: 80),
+              DateSelection(),
+              AvailableTimes(),
+              SizedBox(height: 20),
               ConfirmBookingButton()
             ],
           ),
@@ -134,14 +141,14 @@ class _AmenityDropdownMenuState extends ConsumerState<AmenityDropdownMenu> {
   }
 }
 
-class DateSelect extends ConsumerStatefulWidget {
-  const DateSelect({super.key});
+class DateSelection extends ConsumerStatefulWidget {
+  const DateSelection({super.key});
 
   @override
-  ConsumerState<DateSelect> createState() => _DateSelectState();
+  ConsumerState<DateSelection> createState() => _DateSelectionState();
 }
 
-class _DateSelectState extends ConsumerState<DateSelect> {
+class _DateSelectionState extends ConsumerState<DateSelection> {
   late DateTime selectedDate;
 
   @override
@@ -169,8 +176,8 @@ class _DateSelectState extends ConsumerState<DateSelect> {
   }
 }
 
-class AvailableBookings extends ConsumerWidget {
-  const AvailableBookings({super.key});
+class AvailableTimes extends ConsumerWidget {
+  const AvailableTimes({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -184,6 +191,7 @@ class AvailableBookings extends ConsumerWidget {
 
     return bookings.when(
       data: (bookings) {
+        // Display available timeslots as choice chips
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -194,6 +202,8 @@ class AvailableBookings extends ConsumerWidget {
               ),
               Text('Available times',
                   style: Theme.of(context).textTheme.titleMedium),
+              // Use Wrap to display choice chips horizontally and have a consistent
+              // UI look despite the number of choicechips
               Wrap(
                 children: availableTimes.map((timeslot) {
                   return isTimeSlotAvailable(bookings, timeslot)
@@ -245,11 +255,15 @@ List<DateTime> generateAvailableTimes(
 }
 
 bool isTimeSlotAvailable(List<Booking> bookings, DateTime time) {
-  int hour = time.hour;
+  int hour = time.hour; // Extract the hour from the given time
 
+  // Check if there are any bookings with the same hour as the given time
   return !bookings.any((booking) {
-    int bookingHour = booking.timestamp!.toDate().hour;
-    return bookingHour == hour;
+    int bookingHour = booking.timestamp!
+        .toDate()
+        .hour; // Extract the hour from the booking timestamp
+    return bookingHour ==
+        hour; // Return false if a booking exists for the same hour
   });
 }
 
@@ -272,34 +286,6 @@ class TimeSlotChoiceChip extends ConsumerWidget {
     );
   }
 }
-
-// class BookingDetails extends ConsumerWidget {
-//   const BookingDetails({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final selectedAmenity = ref.watch(selectedAmenityProvider);
-//     final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
-//     return Container(
-//       width: MediaQuery.of(context).size.width * 0.9,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Row(
-//             children: [
-//               Text(
-//                 'Booking details',
-//                 style: Theme.of(context).textTheme.titleMedium,
-//               ),
-//             ],
-//           ),
-//           Text(selectedAmenity.displayName),
-//           Text(selectedTimeSlot.toString()),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class ConfirmBookingButton extends ConsumerWidget {
   const ConfirmBookingButton({super.key});
