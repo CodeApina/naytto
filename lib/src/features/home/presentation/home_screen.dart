@@ -16,39 +16,39 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appUserWatcher = ref.watch(AppUser().provider);
-    return ColorfulSafeArea(
-      color: const Color.fromRGBO(201, 202, 223, 1.0),
-      child: Stack(
-        children: [
-          // Background image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/talo2.jpg'),
-                fit: BoxFit.cover,
-              ),
+    return Stack(
+      children: [
+        // Background image
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/talo2.jpg'),
+              fit: BoxFit.cover,
             ),
           ),
-          Scaffold(
-            appBar: AppBar(
-              title: Row(
-                children: [
-                  Text(
-                    'Welcome home, ${appUserWatcher.firstName}    ',
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                  const Icon(
-                    Icons.hail_rounded,
-                    size: 40,
-                    color: Color.fromRGBO(0, 124, 124, 1.0),
-                  ),
-                ],
-              ),
-              backgroundColor: const Color.fromARGB(220, 255, 255, 255),
+        ),
+        Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: [
+                Text(
+                  'Welcome home, ${appUserWatcher.firstName}    ',
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+                const Icon(
+                  Icons.hail_rounded,
+                  size: 40,
+                  color: Color.fromRGBO(0, 124, 124, 1.0),
+                ),
+              ],
             ),
-            //makes scaffold transparent
-            backgroundColor: Colors.transparent,
-            body: const SingleChildScrollView(
+            backgroundColor: const Color.fromARGB(220, 255, 255, 255),
+          ),
+          //makes scaffold transparent
+          backgroundColor: Colors.transparent,
+          body: const ColorfulSafeArea(
+            color: Colors.white,
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   SizedBox(height: 20),
@@ -63,8 +63,8 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

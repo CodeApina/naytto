@@ -33,30 +33,34 @@ final selectedDateTimeProvider = StateProvider<DateTime>((ref) {
 // Define a StateProvider to manage the selected time slot
 final selectedTimeSlotProvider = StateProvider<DateTime?>((ref) => null);
 
+// Define a StateProvider to manage whether an amenity has been chosen
+// prevents certain parts of the UI from being shown until an amenity has been chosen
+final hasAmenityBeenChosenProvider = StateProvider<bool>((ref) => false);
+
 class LaundryScreen extends ConsumerWidget {
   const LaundryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ColorfulSafeArea(
-      color: Colors.white,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                ref.read(goRouterProvider).pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-              )),
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: Text(
-            'Book laundry',
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              ref.read(goRouterProvider).pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+            )),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Book laundry',
+          style: Theme.of(context).textTheme.displayMedium,
         ),
-        body: const SingleChildScrollView(
+      ),
+      body: const ColorfulSafeArea(
+        color: Colors.white,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(height: 10),
@@ -128,6 +132,7 @@ class _AmenityDropdownMenuState extends ConsumerState<AmenityDropdownMenu> {
         setState(() {
           selectedAmenity = value!;
           ref.read(selectedAmenityProvider.notifier).state = value;
+          ref.read(hasAmenityBeenChosenProvider.notifier).state = true;
         });
       },
       dropdownMenuEntries:
@@ -186,43 +191,49 @@ class AvailableTimes extends ConsumerWidget {
     final selectedAmenityID = selectedAmenity.amenityID;
     final AsyncValue<List<Booking>> bookings =
         ref.watch(BookingsStreamProvider(selectedAmenityID, selectedDate));
-    final availableTimes = generateAvailableTimes(selectedDate,
-        selectedAmenity.availableFrom, selectedAmenity.availableTo);
 
-    return bookings.when(
-      data: (bookings) {
-        // Display available timeslots as choice chips
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Text('Available times',
-                  style: Theme.of(context).textTheme.titleMedium),
-              // Use Wrap to display choice chips horizontally and have a consistent
-              // UI look despite the number of choicechips
-              Wrap(
-                children: availableTimes.map((timeslot) {
-                  return isTimeSlotAvailable(bookings, timeslot)
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TimeSlotChoiceChip(timeslot: timeslot),
-                        )
-                      : const SizedBox.shrink();
-                }).toList(),
-              ),
-            ],
-          ),
-        );
-      },
-      error: (error, stackTrace) => Text('$error'),
-      loading: () {
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+    final bool hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
+
+    if (!hasAmenityBeenChosen) {
+      return Container();
+    } else {
+      final availableTimes = generateAvailableTimes(selectedDate,
+          selectedAmenity.availableFrom, selectedAmenity.availableTo);
+      return bookings.when(
+        data: (bookings) {
+          // Display available timeslots as choice chips
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Text('Available times',
+                    style: Theme.of(context).textTheme.titleMedium),
+                // Use Wrap to display choice chips horizontally and have a consistent
+                // UI look despite the number of choicechips
+                Wrap(
+                  children: availableTimes.map((timeslot) {
+                    return isTimeSlotAvailable(bookings, timeslot)
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TimeSlotChoiceChip(timeslot: timeslot),
+                          )
+                        : const SizedBox.shrink();
+                  }).toList(),
+                ),
+              ],
+            ),
+          );
+        },
+        error: (error, stackTrace) => Text('$error'),
+        loading: () {
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
+    }
   }
 }
 
@@ -298,31 +309,37 @@ class ConfirmBookingButton extends ConsumerWidget {
     final apartmentID = user.apartmentId;
     final amenityID = selectedAmenity.amenityID;
     final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-      child: FilledButton(
-          style: ButtonStyle(
-              minimumSize: MaterialStatePropertyAll(
-                  Size(MediaQuery.of(context).size.width, 50))),
-          onPressed: () {
-            ref.read(newBookingRepositoryProvider).addBooking(
-                housingCooperative: housingCooperative,
-                booking: Booking(
-                    bookingID: '',
-                    apartmentID: apartmentID,
-                    amenityID: amenityID,
-                    timestamp: Timestamp.fromDate(selectedTimeSlot!),
-                    type: 'laundry'));
-          },
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(width: 30),
-              Icon(Icons.check),
-              SizedBox(width: 60),
-              Text('Confirm booking'),
-            ],
-          )),
-    );
+    final hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
+
+    if (!hasAmenityBeenChosen) {
+      return Container();
+    } else {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+        child: FilledButton(
+            style: ButtonStyle(
+                minimumSize: MaterialStatePropertyAll(
+                    Size(MediaQuery.of(context).size.width, 50))),
+            onPressed: () {
+              ref.read(newBookingRepositoryProvider).addBooking(
+                  housingCooperative: housingCooperative,
+                  booking: Booking(
+                      bookingID: '',
+                      apartmentID: apartmentID,
+                      amenityID: amenityID,
+                      timestamp: Timestamp.fromDate(selectedTimeSlot!),
+                      type: 'laundry'));
+            },
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(width: 30),
+                Icon(Icons.check),
+                SizedBox(width: 60),
+                Text('Confirm booking'),
+              ],
+            )),
+      );
+    }
   }
 }
