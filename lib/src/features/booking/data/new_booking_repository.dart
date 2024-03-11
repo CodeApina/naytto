@@ -10,6 +10,7 @@ class NewBookingRepository {
   const NewBookingRepository(this._firestore);
   final FirebaseFirestore _firestore;
 
+  // Query bookings based on various parameters
   Query<Booking> queryBookings(
       {required String housingCooperative,
       String? amenityID,
@@ -23,16 +24,22 @@ class NewBookingRepository {
               Booking.fromFirestore(snapshot.data()!, snapshot.id),
           toFirestore: (booking, _) => booking.toFirestore(),
         );
+
+    // Filter by amenityID if provided
     if (amenityID != null) {
-      query = query.where('amenityID', isEqualTo: amenityID);
+      query =
+          query.where(FirestoreFields.bookingAmenityID, isEqualTo: amenityID);
     }
+    // Filter by apartmentID if provided
     if (apartmentID != null) {
-      query = query.where('apartmentID', isEqualTo: apartmentID);
+      query = query.where(FirestoreFields.bookingApartmentID,
+          isEqualTo: apartmentID);
     }
     return query;
   }
 
-  Query<Booking> queryBookingsWithinToday(
+  // Query bookings within a specific time range
+  Query<Booking> queryBookingswithinDate(
       {required String housingCooperative,
       required String amenityID,
       required DateTime date}) {
@@ -48,14 +55,17 @@ class NewBookingRepository {
     Timestamp startTimestamp = Timestamp.fromDate(startOfDay);
     Timestamp endTimestamp = Timestamp.fromDate(endOfDay);
 
-    // Construct the query
+    // This required a composite index to be made "https://firebase.google.com/docs/firestore/query-data/index-overview#composite_indexes"
+    // which Firestore created automatically when trying to run the query
     Query<Booking> query = _firestore
         .collection(FirestoreCollections.housingCooperative)
         .doc(housingCooperative)
         .collection(FirestoreCollections.bookings)
-        .where('amenityID', isEqualTo: amenityID)
-        .where('timestamp', isGreaterThanOrEqualTo: startTimestamp)
-        .where('timestamp', isLessThanOrEqualTo: endTimestamp)
+        .where(FirestoreFields.bookingAmenityID, isEqualTo: amenityID)
+        .where(FirestoreFields.bookingTimestamp,
+            isGreaterThanOrEqualTo: startTimestamp)
+        .where(FirestoreFields.bookingTimestamp,
+            isLessThanOrEqualTo: endTimestamp)
         .withConverter<Booking>(
           fromFirestore: (snapshot, _) =>
               Booking.fromFirestore(snapshot.data()!, snapshot.id),
@@ -65,7 +75,7 @@ class NewBookingRepository {
     return query;
   }
 
-  // add
+  // Add booking
   Future<void> addBooking(
       {required String housingCooperative, required Booking booking}) {
     return _firestore
@@ -75,7 +85,7 @@ class NewBookingRepository {
         .add(booking.toFirestore());
   }
 
-  // delete
+  // Delete booking
   Future<void> deleteBooking(
       {required String housingCooperative, required String bookingID}) {
     return _firestore
@@ -84,7 +94,7 @@ class NewBookingRepository {
         .delete();
   }
 
-  // update
+  // Update booking
   Future<void> updateBooking(
       {required String housingCooperative,
       required String bookingID,
@@ -110,11 +120,12 @@ class NewBookingRepository {
   //       .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   // }
 
+  // Stream of bookings for a specific day
   Stream<List<Booking>> watchBookings(
       {required String housingCooperative,
       required String amenityID,
       required DateTime date}) {
-    return queryBookingsWithinToday(
+    return queryBookingswithinDate(
             housingCooperative: housingCooperative,
             amenityID: amenityID,
             date: date)
@@ -123,14 +134,16 @@ class NewBookingRepository {
   }
 }
 
+// Riverpod provider to access this repository and it's methods elsewhere
 @Riverpod(keepAlive: true)
 NewBookingRepository newBookingRepository(NewBookingRepositoryRef ref) {
   return NewBookingRepository(FirebaseFirestore.instance);
 }
 
+// Riverpod provider for a stream of bookings for a certain day
 @riverpod
-Stream<List<Booking>> bookingsStream(
-    BookingsStreamRef ref, String amenityID, DateTime date) {
+Stream<List<Booking>> bookingsForDateStream(
+    BookingsForDateStreamRef ref, String amenityID, DateTime date) {
   final user = ref.watch(AppUser().provider);
   final housingCooperative = user.housingCooperative;
   final repository = ref.watch(newBookingRepositoryProvider);

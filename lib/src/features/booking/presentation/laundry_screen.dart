@@ -190,8 +190,8 @@ class AvailableTimes extends ConsumerWidget {
     final selectedDate = ref.watch(selectedDateTimeProvider);
     final selectedAmenity = ref.watch(selectedAmenityProvider);
     final selectedAmenityID = selectedAmenity.amenityID;
-    final AsyncValue<List<Booking>> bookings =
-        ref.watch(BookingsStreamProvider(selectedAmenityID, selectedDate));
+    final AsyncValue<List<Booking>> bookings = ref
+        .watch(bookingsForDateStreamProvider(selectedAmenityID, selectedDate));
 
     final bool hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
 

@@ -22,7 +22,8 @@ final newBookingRepositoryProvider = Provider<NewBookingRepository>.internal(
 );
 
 typedef NewBookingRepositoryRef = ProviderRef<NewBookingRepository>;
-String _$bookingsStreamHash() => r'47886a2565c06ad416172cff7aecfa4518ec2e6f';
+String _$bookingsForDateStreamHash() =>
+    r'9e9c311c887a9db0bd78b800036e9c7eaa14374e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -45,29 +46,29 @@ class _SystemHash {
   }
 }
 
-/// See also [bookingsStream].
-@ProviderFor(bookingsStream)
-const bookingsStreamProvider = BookingsStreamFamily();
+/// See also [bookingsForDateStream].
+@ProviderFor(bookingsForDateStream)
+const bookingsForDateStreamProvider = BookingsForDateStreamFamily();
 
-/// See also [bookingsStream].
-class BookingsStreamFamily extends Family<AsyncValue<List<Booking>>> {
-  /// See also [bookingsStream].
-  const BookingsStreamFamily();
+/// See also [bookingsForDateStream].
+class BookingsForDateStreamFamily extends Family<AsyncValue<List<Booking>>> {
+  /// See also [bookingsForDateStream].
+  const BookingsForDateStreamFamily();
 
-  /// See also [bookingsStream].
-  BookingsStreamProvider call(
+  /// See also [bookingsForDateStream].
+  BookingsForDateStreamProvider call(
     String amenityID,
     DateTime date,
   ) {
-    return BookingsStreamProvider(
+    return BookingsForDateStreamProvider(
       amenityID,
       date,
     );
   }
 
   @override
-  BookingsStreamProvider getProviderOverride(
-    covariant BookingsStreamProvider provider,
+  BookingsForDateStreamProvider getProviderOverride(
+    covariant BookingsForDateStreamProvider provider,
   ) {
     return call(
       provider.amenityID,
@@ -87,35 +88,36 @@ class BookingsStreamFamily extends Family<AsyncValue<List<Booking>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'bookingsStreamProvider';
+  String? get name => r'bookingsForDateStreamProvider';
 }
 
-/// See also [bookingsStream].
-class BookingsStreamProvider extends AutoDisposeStreamProvider<List<Booking>> {
-  /// See also [bookingsStream].
-  BookingsStreamProvider(
+/// See also [bookingsForDateStream].
+class BookingsForDateStreamProvider
+    extends AutoDisposeStreamProvider<List<Booking>> {
+  /// See also [bookingsForDateStream].
+  BookingsForDateStreamProvider(
     String amenityID,
     DateTime date,
   ) : this._internal(
-          (ref) => bookingsStream(
-            ref as BookingsStreamRef,
+          (ref) => bookingsForDateStream(
+            ref as BookingsForDateStreamRef,
             amenityID,
             date,
           ),
-          from: bookingsStreamProvider,
-          name: r'bookingsStreamProvider',
+          from: bookingsForDateStreamProvider,
+          name: r'bookingsForDateStreamProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$bookingsStreamHash,
-          dependencies: BookingsStreamFamily._dependencies,
+                  : _$bookingsForDateStreamHash,
+          dependencies: BookingsForDateStreamFamily._dependencies,
           allTransitiveDependencies:
-              BookingsStreamFamily._allTransitiveDependencies,
+              BookingsForDateStreamFamily._allTransitiveDependencies,
           amenityID: amenityID,
           date: date,
         );
 
-  BookingsStreamProvider._internal(
+  BookingsForDateStreamProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -131,12 +133,12 @@ class BookingsStreamProvider extends AutoDisposeStreamProvider<List<Booking>> {
 
   @override
   Override overrideWith(
-    Stream<List<Booking>> Function(BookingsStreamRef provider) create,
+    Stream<List<Booking>> Function(BookingsForDateStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: BookingsStreamProvider._internal(
-        (ref) => create(ref as BookingsStreamRef),
+      override: BookingsForDateStreamProvider._internal(
+        (ref) => create(ref as BookingsForDateStreamRef),
         from: from,
         name: null,
         dependencies: null,
@@ -150,12 +152,12 @@ class BookingsStreamProvider extends AutoDisposeStreamProvider<List<Booking>> {
 
   @override
   AutoDisposeStreamProviderElement<List<Booking>> createElement() {
-    return _BookingsStreamProviderElement(this);
+    return _BookingsForDateStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is BookingsStreamProvider &&
+    return other is BookingsForDateStreamProvider &&
         other.amenityID == amenityID &&
         other.date == date;
   }
@@ -170,7 +172,7 @@ class BookingsStreamProvider extends AutoDisposeStreamProvider<List<Booking>> {
   }
 }
 
-mixin BookingsStreamRef on AutoDisposeStreamProviderRef<List<Booking>> {
+mixin BookingsForDateStreamRef on AutoDisposeStreamProviderRef<List<Booking>> {
   /// The parameter `amenityID` of this provider.
   String get amenityID;
 
@@ -178,15 +180,15 @@ mixin BookingsStreamRef on AutoDisposeStreamProviderRef<List<Booking>> {
   DateTime get date;
 }
 
-class _BookingsStreamProviderElement
+class _BookingsForDateStreamProviderElement
     extends AutoDisposeStreamProviderElement<List<Booking>>
-    with BookingsStreamRef {
-  _BookingsStreamProviderElement(super.provider);
+    with BookingsForDateStreamRef {
+  _BookingsForDateStreamProviderElement(super.provider);
 
   @override
-  String get amenityID => (origin as BookingsStreamProvider).amenityID;
+  String get amenityID => (origin as BookingsForDateStreamProvider).amenityID;
   @override
-  DateTime get date => (origin as BookingsStreamProvider).date;
+  DateTime get date => (origin as BookingsForDateStreamProvider).date;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

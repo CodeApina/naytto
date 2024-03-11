@@ -25,8 +25,10 @@ class FirestoreFields {
   static const String bookingApartmentID = "apartmentID";
   static const String bookingDay = "day";
   static const String bookingTime = "time";
+  static const String bookingTimestamp = "timestamp";
   static const String bookingID = "amenityID";
   static const String bookingType = "type";
+  static const String bookingAmenityID = "amenityID";
 
   // Resident fields
   // TODO: should residents store apartment numbers instead of apartment id for ease of data management?
