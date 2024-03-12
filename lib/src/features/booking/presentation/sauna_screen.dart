@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/data/ollinbookingrepo.dart';
 import 'package:naytto/src/features/booking/domain/ollinsaunabookings.dart';
@@ -12,7 +11,7 @@ class SaunaScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final saunaDataAsyncValue = ref.watch(saunaDataStreamProvider);
     final saunaDataUpdate = ref.read(saunaDataUpdateProvider);
-    // final String apartmentid = ref.watch(AppUser().provider).apartmentId;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Sauna Booking'),
@@ -23,63 +22,71 @@ class SaunaScreen extends ConsumerWidget {
           },
         ),
       ),
-      body: saunaDataAsyncValue.when(
-        data: (saunaDataList) {
-          return ListView.builder(
-            itemCount: saunaDataList.length,
-            itemBuilder: (context, index) {
-              final booking = saunaDataList[index];
-              return ListTile(
-                title: Center(child: Text(booking.id)),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Column(children: [
-                        Text('Available from: ${booking.availableFrom}:00'),
-                        Text('Available to: ${booking.availableTo}:00'),
-                        // Text('Sauna id: ${booking.displayName}'),
-                      ]),
-                    ),
+      body: Container(
+        margin: EdgeInsets.only(top: 50),
+        child: saunaDataAsyncValue.when(
+          data: (saunaDataList) {
+            return ListView.builder(
+              itemCount: saunaDataList.length,
+              itemBuilder: (context, index) {
+                final booking = saunaDataList[index];
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 30,
+                      // mainAxisExtent: 300),
+                      childAspectRatio: 0.6),
+                  itemCount: booking.fields.length,
+                  itemBuilder: (context, idx) {
+                    final entry = booking.fields.entries.toList()[idx];
+                    final fieldName = entry.key;
+                    final fieldValue = entry.value;
+                    String weekDay = '';
+                    if (fieldName == '1') weekDay = "Monday";
+                    if (fieldName == '2') weekDay = "Tuesday";
+                    if (fieldName == '3') weekDay = "Wednesday";
+                    if (fieldName == '4') weekDay = "Thursday";
+                    if (fieldName == '5') weekDay = "Friday";
+                    if (fieldName == '6') weekDay = "Saturday";
+                    if (fieldName == '7') weekDay = "Sunday";
 
-                    SizedBox(height: 8),
-                    // Text('Weekday:'),
-                    ...booking.fields.entries.map((entry) {
-                      String fieldName = entry.key;
-                      Map<String, bool> fieldValue = entry.value;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // fieldName == '1'
-                          //     ? Text(
-                          //         'Monday:',
-                          //       )
-                          //     : Text(
-                          //         'Thuesday',
-                          //       ),
-                          if (fieldName == '1') Text('Monday'),
-                          if (fieldName == '2') Text('Tuesday'),
-                          if (fieldName == '3') Text('Wednesday'),
-                          if (fieldName == '4') Text('Thursday'),
-                          if (fieldName == '5') Text('Friday'),
-                          if (fieldName == '6') Text('Saturday'),
-                          if (fieldName == '7') Text('Sunday'),
-                          ...fieldValue.entries.map((fieldEntry) {
-                            String time = fieldEntry.key;
-                            bool available = fieldEntry.value;
-                            //not used in this version
-                            final String path =
-                                '${booking.displayName}/$fieldName/$time';
-                            return Center(
+                    return Column(
+                      children: [
+                        Text(
+                          weekDay,
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ...fieldValue.entries.map((fieldEntry) {
+                          String time = fieldEntry.key;
+                          bool available = fieldEntry.value;
+
+                          return Expanded(
+                            child: Container(
+                              margin: EdgeInsets.all(4),
+                              // padding: EdgeInsets.all(1),
                               child: ElevatedButton(
-                                style: ButtonStyle(
-                                  minimumSize:
-                                      MaterialStateProperty.all(Size(250, 36)),
-                                  maximumSize:
-                                      MaterialStateProperty.all(Size(300, 36)),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        7.0), // Määritä pyöristyksen koko
+                                  ),
+                                  side: BorderSide(
+                                    color: Color.fromARGB(78, 16, 3, 3),
+                                    width: 2.0,
+                                  ),
+                                  minimumSize: Size(200, 0),
+                                  backgroundColor: available
+                                      ? Color.fromARGB(255, 126, 241, 130)
+                                      : Color.fromARGB(210, 255, 138, 66),
                                 ),
                                 onPressed: () async {
-                                  // opens verification modal
                                   final bool? confirm = await showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -111,7 +118,8 @@ class SaunaScreen extends ConsumerWidget {
                                           booking.id,
                                           fieldName,
                                           time,
-                                          available);
+                                          available,
+                                          weekDay);
                                     } catch (e) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -125,34 +133,27 @@ class SaunaScreen extends ConsumerWidget {
                                   }
                                 },
                                 child: Text(
-                                  '$time:00-${int.parse(time) + 1}:00   ${available ? 'Available' : 'Not available'}',
-                                  style: TextStyle(
-                                    color:
-                                        available ? Colors.green : Colors.red,
-                                  ),
+                                  '$time:00-${int.parse(time) + 1}:00',
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
-                            );
-                          }).toList(),
-                        ],
-                      );
-                    }).toList(),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-        loading: () => Center(
-          child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                    );
+                  },
+                );
+              },
+            );
+          },
+          loading: () => Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text('Error: $error'),
+          ),
         ),
-        error: (error, stackTrace) => Center(
-          child: Text('Error: $error'),
-        ),
-        // Add handling for the situation when data is empty
-        // .empty: () => Center(
-        //   child: Text('No sauna data available.'),
-        // ),
       ),
     );
   }
