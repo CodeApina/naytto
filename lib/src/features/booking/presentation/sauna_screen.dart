@@ -155,51 +155,55 @@ class _BookingContents extends ConsumerWidget {
                                   ? Color.fromARGB(255, 126, 241, 130)
                                   : Color.fromARGB(210, 255, 138, 66),
                             ),
-                            onPressed: () async {
-                              final bool? confirm = await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Change Booking'),
-                                    content: Text(
-                                        'Are you sure you want to change your saunas time?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(false);
-                                        },
-                                        child: Text('No'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(true);
-                                        },
-                                        child: Text('Yes'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                            onPressed: available
+                                ? () async {
+                                    final bool? confirm = await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Change Booking'),
+                                          content: Text(
+                                              'Are you sure you want to change your saunas time?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(false);
+                                              },
+                                              child: Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(true);
+                                              },
+                                              child: Text('Yes'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
 
-                              if (confirm ?? false) {
-                                try {
-                                  await saunaDataUpdate.updateSaunaData(
-                                      booking.id,
-                                      fieldName,
-                                      time,
-                                      available!,
-                                      weekDay);
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Error updating sauna data',
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }
-                            },
+                                    if (confirm ?? false) {
+                                      try {
+                                        await saunaDataUpdate.updateSaunaData(
+                                            booking.id,
+                                            fieldName,
+                                            time,
+                                            available!,
+                                            weekDay);
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Error updating sauna data',
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  }
+                                : () {},
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
