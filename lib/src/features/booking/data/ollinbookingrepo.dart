@@ -12,7 +12,6 @@ final saunaDataStreamProvider = StreamProvider<List<Ollinsaunabookings>>((ref) {
       .collection(FirestoreCollections.housingCooperative)
       .doc(housingCooperativeName)
       .collection('saunas')
-      .doc('ollintestisauna');
-  print(docRef);
+      .doc('ollintestisauna3');
   return fetchSaunaDataStream(docRef);
 });

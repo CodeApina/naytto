@@ -14,6 +14,7 @@ final apartmentsBookingsProvider = StreamProvider.autoDispose<List<Bookings>>(
     final String apartmentid = ref.watch(AppUser().provider).apartmentId;
     //Used in how many bookings is shown
     final int showbookings = ref.watch(AppUser().provider).bookingsShown;
+    final Timestamp now = Timestamp.now();
 
     yield* _firestore
         .collection(FirestoreCollections.housingCooperative)
@@ -40,8 +41,10 @@ final apartmentsBookingsProvider = StreamProvider.autoDispose<List<Bookings>>(
         final booking = Bookings.fromMap(doc.data(), doc.id);
         if (booking.type == "sauna") {
           saunaBookings.add(booking);
-        } else {
-          allBookings.add(booking);
+        } else if (booking.timestamp != null) {
+          if (booking.timestamp!.seconds > now.seconds) {
+            allBookings.add(booking);
+          }
         }
       }
       saunaBookings.sort((a, b) {
