@@ -192,7 +192,7 @@ class AvailableTimes extends ConsumerWidget {
     final selectedAmenityID = selectedAmenity.amenityID;
     final AsyncValue<List<Booking>> bookings = ref
         .watch(bookingsForDateStreamProvider(selectedAmenityID, selectedDate));
-
+    final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
     final bool hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
 
     if (!hasAmenityBeenChosen) {
@@ -200,6 +200,19 @@ class AvailableTimes extends ConsumerWidget {
     } else {
       final availableTimes = generateAvailableTimes(selectedDate,
           selectedAmenity.availableFrom, selectedAmenity.availableTo);
+
+      if (selectedTimeSlot != null &&
+          !availableTimes.any((timeSlot) =>
+              timeSlot.hour == selectedTimeSlot.hour &&
+              timeSlot.minute == selectedTimeSlot.minute)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('The selected time slot is no longer available.'),
+          ),
+        );
+        ref.read(selectedTimeSlotProvider.notifier).state = null;
+      }
+
       return bookings.when(
         data: (bookings) {
           // Display available timeslots as choice chips
@@ -208,6 +221,7 @@ class AvailableTimes extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(selectedTimeSlot.toString()),
                 const SizedBox(
                   height: 20,
                 ),
@@ -330,6 +344,7 @@ class ConfirmBookingButton extends ConsumerWidget {
                       amenityID: amenityID,
                       timestamp: Timestamp.fromDate(selectedTimeSlot!),
                       type: 'laundry'));
+              ref.read(selectedTimeSlotProvider.notifier).state = null;
             },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.start,
