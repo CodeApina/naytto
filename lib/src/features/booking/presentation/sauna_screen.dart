@@ -11,74 +11,85 @@ class SaunaScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sauna Booking'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
-      body: Column(
-        children: [
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              "Please select Sauna:",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(width: 20),
-            SaunaSelector(),
-          ]),
-          SizedBox(
-            height: 5,
+        appBar: AppBar(
+          title: const Text('Sauna Booking'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
-          Expanded(
-            child: Container(
-              child: _BookingContents(),
-            ),
-          )
-        ],
-      ),
-    );
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 25,
+              ),
+              Center(
+                child: Container(
+                    constraints: const BoxConstraints(
+                      maxWidth: 300,
+                      minWidth: 100,
+                      minHeight: 60,
+                    ),
+                    decoration: BoxDecoration(border: Border.all(width: 0.6)),
+                    child: const SaunaSelector()),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              const _BookingContents(),
+            ],
+          ),
+        )
+        //   ],
+        // ),
+        );
   }
 }
 
-class SaunaSelector extends StatefulWidget {
+class SaunaSelector extends ConsumerWidget {
+  const SaunaSelector({Key? key}) : super(key: key);
   @override
-  _SaunaSelectorState createState() => _SaunaSelectorState();
-}
-
-class _SaunaSelectorState extends State<SaunaSelector> {
-  String? _selectedItem;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedItem = 'Sauna1'; // Asetetaan oletusvalinta
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // String? _selectedSaunaId;
+    final AsyncValue<List<String>> saunaList = ref.watch(getSaunasProvider);
+    final selectedSauna = ref.watch(selectedSaunaID);
     return Center(
-      child: DropdownButton<String>(
-        value: _selectedItem,
-        onChanged: (String? newValue) {
-          setState(() {
-            _selectedItem = newValue;
-          });
-        },
-        items: <String>[
-          'Sauna1',
-          'Sauna2',
-        ].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
+      child: saunaList.when(
+        loading: () => const CircularProgressIndicator(),
+        error: (error, stackTrace) => Text("error: $error"),
+        data: (saunaIds) {
+          // if (_selectedSaunaId == null && saunaIds.isNotEmpty) {
+          //   _selectedSaunaId = selectedSauna;
+          // }
+          return DropdownButton<String>(
+            iconSize: 30,
+            value: selectedSauna,
+            onChanged: (String? newValue) {
+              ref.read(selectedSaunaID.notifier).state = newValue!;
+
+              // _selectedSaunaId = newValue;
+            },
+            items: saunaIds.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Row(
+                  children: [
+                    const Icon(Icons.shower),
+                    const SizedBox(width: 10),
+                    Text(
+                      value,
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(width: 70),
+                  ],
+                ),
+              );
+            }).toList(),
           );
-        }).toList(),
+        },
       ),
     );
   }
@@ -89,20 +100,24 @@ class _BookingContents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(selectedSaunaID);
     final saunaDataAsyncValue = ref.watch(saunaDataStreamProvider);
     final saunaDataUpdate = ref.read(saunaDataUpdateProvider);
     final appUser = ref.watch(AppUser().provider);
     return saunaDataAsyncValue.when(
       data: (saunaDataList) {
         return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.only(top: 10),
           itemCount: saunaDataList.length,
           itemBuilder: (context, index) {
             final booking = saunaDataList[index];
 
             return GridView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 30,
@@ -126,10 +141,10 @@ class _BookingContents extends ConsumerWidget {
                   children: [
                     Text(
                       weekDay,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     ...fieldValue.entries.map((fieldEntry) {
@@ -139,21 +154,21 @@ class _BookingContents extends ConsumerWidget {
 
                       return Expanded(
                         child: Container(
-                          margin: EdgeInsets.all(4),
+                          margin: const EdgeInsets.all(4),
                           // padding: EdgeInsets.all(1),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
-                              side: BorderSide(
+                              side: const BorderSide(
                                 color: Color.fromARGB(78, 16, 3, 3),
                                 width: 2.0,
                               ),
-                              minimumSize: Size(200, 0),
+                              minimumSize: const Size(200, 0),
                               backgroundColor: available
-                                  ? Color.fromARGB(255, 126, 241, 130)
-                                  : Color.fromARGB(210, 255, 138, 66),
+                                  ? const Color.fromARGB(255, 126, 241, 130)
+                                  : const Color.fromARGB(210, 255, 138, 66),
                             ),
                             onPressed: available
                                 ? () async {
@@ -161,8 +176,8 @@ class _BookingContents extends ConsumerWidget {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text('Change Booking'),
-                                          content: Text(
+                                          title: const Text('Change Booking'),
+                                          content: const Text(
                                               'Are you sure you want to change your saunas time?'),
                                           actions: <Widget>[
                                             TextButton(
@@ -170,13 +185,13 @@ class _BookingContents extends ConsumerWidget {
                                                 Navigator.of(context)
                                                     .pop(false);
                                               },
-                                              child: Text('No'),
+                                              child: const Text('No'),
                                             ),
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.of(context).pop(true);
                                               },
-                                              child: Text('Yes'),
+                                              child: const Text('Yes'),
                                             ),
                                           ],
                                         );
@@ -194,7 +209,7 @@ class _BookingContents extends ConsumerWidget {
                                       } catch (e) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
-                                          SnackBar(
+                                          const SnackBar(
                                             content: Text(
                                               'Error updating sauna data',
                                             ),
@@ -209,11 +224,11 @@ class _BookingContents extends ConsumerWidget {
                               children: [
                                 Text(
                                   '$time:00-${int.parse(time) + 1}:00',
-                                  style: TextStyle(color: Colors.black),
+                                  style: const TextStyle(color: Colors.black),
                                 ),
                                 if (appUser.apartmentId ==
                                     fieldEntry.value['apartmentID'])
-                                  Text('This is your time',
+                                  const Text('This is your time',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold))
@@ -231,7 +246,7 @@ class _BookingContents extends ConsumerWidget {
         );
       },
       loading: () => Center(
-        child: CircularProgressIndicator(),
+        child: const CircularProgressIndicator(),
       ),
       error: (error, stackTrace) => Center(
         child: Text('Error: $error'),
