@@ -291,7 +291,8 @@ class _BookingContents extends ConsumerWidget {
                               Text(
                                 booking.day != null
                                     ? '   ${booking.day}, ${booking.time}:00'
-                                    : formatTimestamp(booking.timestamp!),
+                                    : formatTimestampWithHHmm(
+                                        booking.timestamp!),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: Theme.of(context).textTheme.bodySmall,
