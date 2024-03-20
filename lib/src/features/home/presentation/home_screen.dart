@@ -57,7 +57,7 @@ class HomeScreen extends ConsumerWidget {
                   SizedBox(height: 10),
                   _BookingContents(),
                   SizedBox(height: 20),
-                  _DashboardNavigationContents(),
+                  // _DashboardNavigationContents(),
                   SizedBox(height: 20),
                 ],
               ),
@@ -109,7 +109,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
         color: colors(context).color3,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,14 +119,14 @@ class _AnnouncementsPreview extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(80, 10, 0, 0),
                 child: Text(
                   'Announcements',
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 24, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: InkWell(
                     onTap: () {},
                     child: Text(
@@ -146,16 +146,39 @@ class _AnnouncementsPreview extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final announcement = announcements[index];
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                      padding: const EdgeInsets.fromLTRB(18, 8, 0, 8),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          title: Text(
-                            formatTimestamp(announcement.timestamp),
+                          title: Row(
+                            children: [
+                              Text(
+                                formatTimestamp(announcement.timestamp),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                  width:
+                                      10), // Lisää tarvittaessa väliä title- ja subtitle-tekstien välille
+                              Expanded(
+                                child: Text(
+                                  announcement.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
                           ),
+                          subtitle: Text(
+                            announcement.body,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+
                           leading: announcement.urgency == 2
                               ? const Icon(
                                   Icons.announcement,
@@ -165,11 +188,11 @@ class _AnnouncementsPreview extends ConsumerWidget {
                                   Icons.announcement_outlined,
                                   color: Color.fromARGB(255, 241, 39, 25),
                                 ),
-                          subtitle: Text(
-                            announcement.title,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
+                          // subtitle: Text(
+                          //   announcement.title,
+                          //   overflow: TextOverflow.ellipsis,
+                          //   maxLines: 3,
+                          // ),
                         ),
                       ),
                     );
@@ -199,7 +222,7 @@ class _BookingContents extends ConsumerWidget {
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
         color: colors(context).color3,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +232,7 @@ class _BookingContents extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(100, 8, 0, 0),
                   child: Text(
                     'Bookings',
                     style: Theme.of(context).textTheme.displayMedium,
@@ -244,24 +267,29 @@ class _BookingContents extends ConsumerWidget {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                         child: Container(
-                          height: 60,
+                          height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
+                            color: const Color.fromARGB(128, 238, 238, 238),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
-                            child: ListTile(
-                              title: Text(
+                            child: Row(children: [
+                              Text(
                                 booking.type,
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
-                              subtitle: Text(
+                              SizedBox(
+                                width: 40,
+                              ),
+                              Text(
                                 booking.day != null
-                                    ? '${booking.day}, ${booking.time}'
+                                    ? '   ${booking.day}, ${booking.time}:00'
                                     : formatTimestamp(booking.timestamp!),
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
-                            ),
+                            ]),
                           ),
                         ),
                       );
@@ -278,6 +306,7 @@ class _BookingContents extends ConsumerWidget {
 }
 
 // Dashboard navigation section
+// not in use
 class _DashboardNavigationContents extends ConsumerWidget {
   const _DashboardNavigationContents();
 
