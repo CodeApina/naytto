@@ -8,6 +8,7 @@ import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
 import 'package:naytto/src/features/home/data/bookings_homescreen_repository.dart';
 import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
+import 'package:naytto/src/utilities/capitalizer.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -274,8 +275,14 @@ class _BookingContents extends ConsumerWidget {
                           ),
                           child: Center(
                             child: Row(children: [
+                              (booking.type == 'sauna')
+                                  ? Icon(Icons.shower)
+                                  : Icon(Icons.local_laundry_service_sharp),
+                              SizedBox(
+                                width: 10,
+                              ),
                               Text(
-                                booking.type,
+                                capitalizer(booking.type),
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
                               SizedBox(
