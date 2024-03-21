@@ -132,7 +132,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
                     onTap: () {},
                     child: Text(
                       'see more',
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),
                   )),
@@ -251,7 +251,7 @@ class _BookingContents extends ConsumerWidget {
                     },
                     child: Text(
                       buttonText,
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),
                   )),
@@ -283,7 +283,7 @@ class _BookingContents extends ConsumerWidget {
                               ),
                               Text(
                                 capitalizer(booking.type),
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                               SizedBox(
                                 width: 40,

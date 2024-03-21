@@ -12,14 +12,29 @@ class SaunaScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Sauna Booking'),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back,
+              )),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            'Book Sauna',
+            style: Theme.of(context).textTheme.displayMedium,
           ),
         ),
+        // appBar: AppBar(
+        //   title: const Text('Sauna Booking'),
+        //   leading: IconButton(
+        //     icon: const Icon(Icons.arrow_back),
+        //     onPressed: () {
+        //       Navigator.of(context).pop();
+        //     },
+        //   ),
+        // ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -81,7 +96,7 @@ class SaunaSelector extends ConsumerWidget {
                     const SizedBox(width: 10),
                     Text(
                       value,
-                      style: const TextStyle(fontSize: 20),
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                     const SizedBox(width: 70),
                   ],
@@ -141,8 +156,7 @@ class _BookingContents extends ConsumerWidget {
                   children: [
                     Text(
                       weekDay,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                     const SizedBox(
                       height: 10,
@@ -178,7 +192,8 @@ class _BookingContents extends ConsumerWidget {
                                         return AlertDialog(
                                           title: const Text('Change Booking'),
                                           content: const Text(
-                                              'Are you sure you want to change your saunas time?'),
+                                            'Are you sure you want to change your saunas time?',
+                                          ),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
@@ -224,7 +239,7 @@ class _BookingContents extends ConsumerWidget {
                               children: [
                                 Text(
                                   '$time:00-${int.parse(time) + 1}:00',
-                                  style: const TextStyle(color: Colors.black),
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 if (appUser.apartmentId ==
                                     fieldEntry.value['apartmentID'])

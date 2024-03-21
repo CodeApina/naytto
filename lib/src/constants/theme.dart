@@ -75,7 +75,7 @@ ThemeData getAppTheme(BuildContext context) {
           ),
           displaySmall: GoogleFonts.raleway(
             textStyle: const TextStyle(
-              fontSize: 12,
+              fontSize: 15,
               fontWeight: FontWeight.w700,
               color: Colors.black,
             ),
@@ -84,7 +84,7 @@ ThemeData getAppTheme(BuildContext context) {
           //used in bookings home_screem
           titleSmall: GoogleFonts.raleway(
             textStyle: const TextStyle(
-              fontSize: 16,
+              fontSize: 12,
               fontWeight: FontWeight.w700,
               color: Colors.black,
             ),
