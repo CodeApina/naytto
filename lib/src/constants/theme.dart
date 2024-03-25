@@ -28,6 +28,10 @@ ThemeData getAppTheme(BuildContext context) {
     iconTheme: const IconThemeData(
       color: Color.fromRGBO(0, 124, 124, 1.0),
     ),
+    filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Color.fromRGBO(0, 124, 124, 1)))),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 128,
       showSelectedLabels: true,
