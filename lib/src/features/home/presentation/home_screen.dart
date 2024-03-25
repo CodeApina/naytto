@@ -7,7 +7,7 @@ import 'package:naytto/src/features/authentication/data/firebase_auth_repository
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
 import 'package:naytto/src/features/home/data/bookings_homescreen_repository.dart';
-import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
+import 'package:naytto/src/routing/app_router.dart';
 import 'package:naytto/src/utilities/capitalizer.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
@@ -105,7 +105,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final announcements = ref.watch(announcementsProvider);
+    final announcements = ref.watch(announcementsHomeScreenProvider);
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
@@ -129,9 +129,13 @@ class _AnnouncementsPreview extends ConsumerWidget {
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      ref
+                          .read(goRouterProvider)
+                          .goNamed(AppRoute.announcements.name);
+                    },
                     child: Text(
-                      'see more',
+                      'show all',
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),
