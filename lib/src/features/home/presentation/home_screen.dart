@@ -30,10 +30,12 @@ class HomeScreen extends ConsumerWidget {
         ),
         Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Welcome home, ${appUserWatcher.firstName}    ',
+                  'Welcome home, ${appUserWatcher.firstName}!    ',
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
                 const Icon(
@@ -41,13 +43,13 @@ class HomeScreen extends ConsumerWidget {
                   size: 40,
                   color: Color.fromRGBO(0, 124, 124, 1.0),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () {
-                    ref.read(authRepositoryProvider).signOut();
-                    ref.read(AppUser().provider).reset();
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.logout),
+                //   onPressed: () {
+                //     ref.read(authRepositoryProvider).signOut();
+                //     ref.read(AppUser().provider).reset();
+                //   },
+                // ),
               ],
             ),
             backgroundColor: const Color.fromARGB(220, 255, 255, 255),
@@ -127,7 +129,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(80, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(40, 20, 0, 0),
                 child: Text(
                   'Announcements',
                   style: Theme.of(context).textTheme.displayMedium,
@@ -158,7 +160,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final announcement = announcements[index];
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(18, 8, 0, 8),
+                      padding: const EdgeInsets.fromLTRB(18, 8, 24, 18),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.shade200,
@@ -177,7 +179,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                   width:
                                       10), // Lisää tarvittaessa väliä title- ja subtitle-tekstien välille
                               Expanded(
@@ -249,7 +251,7 @@ class _BookingContents extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                  padding: const EdgeInsets.fromLTRB(100, 8, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(40, 20, 0, 0),
                   child: Text(
                     'Bookings',
                     style: Theme.of(context).textTheme.displayMedium,
@@ -282,9 +284,9 @@ class _BookingContents extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       final booking = bookings[index];
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                         child: Container(
-                          height: 40,
+                          height: 50,
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(128, 238, 238, 238),
                             borderRadius: BorderRadius.circular(10),
