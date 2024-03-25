@@ -25,7 +25,7 @@ class LoginScreen extends ConsumerWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextButton.icon(
+                  child: FilledButton.icon(
                     icon: const Icon(Icons.login),
                     label: const Text('Login with Email'),
                     onPressed: () async {
@@ -61,7 +61,7 @@ class LoginScreen extends ConsumerWidget {
                   ),
                 ),
                 //Developer Login
-                TextButton.icon(
+                FilledButton.icon(
                     onPressed: () {
                       String email = "janne.korhonen@gmail.com";
                       String password = "salasana";

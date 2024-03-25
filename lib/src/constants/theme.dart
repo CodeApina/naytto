@@ -16,7 +16,7 @@ ThemeData getAppTheme(BuildContext context) {
     extensions: const <ThemeExtension<CustomColors>>[
       CustomColors(
         color1: Color.fromARGB(255, 255, 255, 255),
-        color2: Color.fromARGB(200, 153, 101, 97),
+        color2: Color.fromRGBO(0, 124, 124, 1.0),
         color3: Color.fromARGB(234, 255, 255, 255),
       ),
     ],
@@ -28,16 +28,20 @@ ThemeData getAppTheme(BuildContext context) {
     iconTheme: const IconThemeData(
       color: Color.fromRGBO(0, 124, 124, 1.0),
     ),
+    filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Color.fromRGBO(0, 124, 124, 1)))),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 128,
       showSelectedLabels: true,
       showUnselectedLabels: true,
       selectedItemColor: Colors.black,
-      selectedLabelStyle: GoogleFonts.roboto(
+      selectedLabelStyle: GoogleFonts.raleway(
         textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
       unselectedItemColor: Colors.grey[600],
-      unselectedLabelStyle: GoogleFonts.roboto(
+      unselectedLabelStyle: GoogleFonts.raleway(
           textStyle: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
@@ -49,16 +53,16 @@ ThemeData getAppTheme(BuildContext context) {
     listTileTheme: ListTileThemeData(
       textColor: Color.fromARGB(255, 14, 12, 12),
       iconColor: Color.fromRGBO(0, 124, 124, 1.0),
-      titleTextStyle: GoogleFonts.roboto(
+      titleTextStyle: GoogleFonts.raleway(
           textStyle:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-      subtitleTextStyle: GoogleFonts.robotoCondensed(
+      subtitleTextStyle: GoogleFonts.raleway(
           textStyle:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
     ),
     textTheme: Theme.of(context).textTheme.copyWith(
           // For headers like category names
-          displayLarge: GoogleFonts.roboto(
+          displayLarge: GoogleFonts.raleway(
             textStyle: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.w700,
@@ -66,17 +70,40 @@ ThemeData getAppTheme(BuildContext context) {
             ),
           ),
           // Medium text like titles in announcements
-          displayMedium: GoogleFonts.roboto(
+          displayMedium: GoogleFonts.raleway(
             textStyle: TextStyle(
-              fontSize: 26,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Colors.grey[800],
             ),
           ),
-          displaySmall: GoogleFonts.robotoCondensed(
+          displaySmall: GoogleFonts.raleway(
+            textStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
+          ),
+
+          //used in bookings home_screem
+          titleSmall: GoogleFonts.raleway(
+            textStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
+          ),
+          bodySmall: GoogleFonts.raleway(
+            textStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          bodyMedium: GoogleFonts.raleway(
             textStyle: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w500,
               color: Colors.black,
             ),
           ),

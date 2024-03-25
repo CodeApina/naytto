@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/data/amenities_repository.dart';
 import 'package:naytto/src/features/booking/data/new_booking_repository.dart';
@@ -168,6 +169,7 @@ class _DateSelectionState extends ConsumerState<DateSelection> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: EasyInfiniteDateTimeLine(
+        activeColor: colors(context).color2,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(const Duration(days: 30)),
         focusDate: selectedDate,
@@ -192,14 +194,28 @@ class AvailableTimes extends ConsumerWidget {
     final selectedAmenityID = selectedAmenity.amenityID;
     final AsyncValue<List<Booking>> bookings = ref
         .watch(bookingsForDateStreamProvider(selectedAmenityID, selectedDate));
-
+    final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
     final bool hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
 
+    // TODO: DOES NOT ACTUALLY WORK
     if (!hasAmenityBeenChosen) {
       return Container();
     } else {
       final availableTimes = generateAvailableTimes(selectedDate,
           selectedAmenity.availableFrom, selectedAmenity.availableTo);
+
+      if (selectedTimeSlot != null &&
+          !availableTimes.any((timeSlot) =>
+              timeSlot.hour == selectedTimeSlot.hour &&
+              timeSlot.minute == selectedTimeSlot.minute)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('The selected time slot is no longer available.'),
+          ),
+        );
+        ref.read(selectedTimeSlotProvider.notifier).state = null;
+      }
+
       return bookings.when(
         data: (bookings) {
           // Display available timeslots as choice chips
@@ -208,6 +224,7 @@ class AvailableTimes extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(selectedTimeSlot.toString()),
                 const SizedBox(
                   height: 20,
                 ),
@@ -290,6 +307,7 @@ class TimeSlotChoiceChip extends ConsumerWidget {
     final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
 
     return ChoiceChip(
+      selectedColor: Color.fromRGBO(0, 124, 124, 1.0),
       label: Text(DateFormat.Hm().format(timeslot)),
       selected: selectedTimeSlot == timeslot,
       onSelected: (_) {
@@ -319,6 +337,8 @@ class ConfirmBookingButton extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
         child: FilledButton(
             style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(colors(context).color2),
                 minimumSize: MaterialStatePropertyAll(
                     Size(MediaQuery.of(context).size.width, 50))),
             onPressed: () {
@@ -330,6 +350,7 @@ class ConfirmBookingButton extends ConsumerWidget {
                       amenityID: amenityID,
                       timestamp: Timestamp.fromDate(selectedTimeSlot!),
                       type: 'laundry'));
+              ref.read(selectedTimeSlotProvider.notifier).state = null;
             },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.start,

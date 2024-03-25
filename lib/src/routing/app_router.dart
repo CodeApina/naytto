@@ -7,6 +7,9 @@ import 'package:naytto/src/features/booking/presentation/laundry_screen.dart';
 import 'package:naytto/src/features/booking/presentation/my_bookings_screen.dart';
 import 'package:naytto/src/features/booking/presentation/sauna_screen.dart';
 import 'package:naytto/src/features/dev/dev_screen.dart';
+import 'package:naytto/src/features/home/domain/announcement.dart';
+import 'package:naytto/src/features/home/presentation/announcement_view_screen.dart';
+import 'package:naytto/src/features/home/presentation/announcements_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
 import 'package:naytto/src/features/settings/presentation/settings_screen.dart';
 import 'package:naytto/src/routing/go_router_refresh_stream.dart';
@@ -32,6 +35,8 @@ final _devNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dev');
 enum AppRoute {
   login,
   home,
+  announcements,
+  announcementview,
   booking,
   sauna,
   laundry,
@@ -87,11 +92,95 @@ GoRouter goRouter(GoRouterRef ref) {
           // Home section with nested routes
           StatefulShellBranch(navigatorKey: _homeNavigatorKey, routes: [
             GoRoute(
-              path: '/home',
-              name: AppRoute.home.name,
-              pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: HomeScreen()),
-            )
+                path: '/home',
+                name: AppRoute.home.name,
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: HomeScreen()),
+                routes: [
+                  GoRoute(
+                      path: 'announcements',
+                      name: AppRoute.announcements.name,
+                      parentNavigatorKey: _homeNavigatorKey,
+                      pageBuilder: ((context, state) {
+                        return CustomTransitionPage(
+                          fullscreenDialog: true,
+                          child: const AnnouncementsScreen(),
+                          transitionDuration: const Duration(milliseconds: 300),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            // Define fade out animation
+                            final fadeOutTween = Tween(begin: 0.0, end: 1.0);
+                            final fadeOutAnimation =
+                                animation.drive(fadeOutTween);
+
+                            // Define slide in animation
+                            final slideTween = Tween(
+                                begin: const Offset(-1, 0),
+                                end: const Offset(0, 0));
+                            final slideAnimation = animation.drive(slideTween
+                                .chain(CurveTween(curve: Curves.easeIn)));
+
+                            // Apply fade transition
+                            final fadeTransition = FadeTransition(
+                              opacity: fadeOutAnimation,
+                              child: child,
+                            );
+
+                            // Apply slide transition
+                            final slideTransition = SlideTransition(
+                              position: slideAnimation,
+                              child: fadeTransition,
+                            );
+
+                            return slideTransition;
+                          },
+                        );
+                      }),
+                      routes: [
+                        GoRoute(
+                            path: 'announcementview',
+                            name: AppRoute.announcementview.name,
+                            pageBuilder: ((context, state) {
+                              return CustomTransitionPage(
+                                fullscreenDialog: true,
+                                child: AnnouncementViewScreen(
+                                    announcement: state.extra! as Announcement),
+                                transitionDuration:
+                                    const Duration(milliseconds: 300),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  // Define fade out animation
+                                  final fadeOutTween =
+                                      Tween(begin: 0.0, end: 1.0);
+                                  final fadeOutAnimation =
+                                      animation.drive(fadeOutTween);
+
+                                  // Define slide in animation
+                                  final slideTween = Tween(
+                                      begin: const Offset(-1, 0),
+                                      end: const Offset(0, 0));
+                                  final slideAnimation = animation.drive(
+                                      slideTween.chain(
+                                          CurveTween(curve: Curves.easeIn)));
+
+                                  // Apply fade transition
+                                  final fadeTransition = FadeTransition(
+                                    opacity: fadeOutAnimation,
+                                    child: child,
+                                  );
+
+                                  // Apply slide transition
+                                  final slideTransition = SlideTransition(
+                                    position: slideAnimation,
+                                    child: fadeTransition,
+                                  );
+
+                                  return slideTransition;
+                                },
+                              );
+                            })),
+                      ]),
+                ])
           ]),
           // Booking section with nested routes
           StatefulShellBranch(
@@ -104,29 +193,125 @@ GoRouter goRouter(GoRouterRef ref) {
                     const NoTransitionPage(child: BookingScreen()),
                 routes: [
                   GoRoute(
-                      path: 'sauna',
-                      name: AppRoute.sauna.name,
-                      parentNavigatorKey: _bookingNavigatorKey,
-                      pageBuilder: ((context, state) {
-                        return const MaterialPage(
-                            fullscreenDialog: true, child: SaunaScreen());
-                      })),
+                    path: 'sauna',
+                    name: AppRoute.sauna.name,
+                    parentNavigatorKey: _bookingNavigatorKey,
+                    pageBuilder: ((context, state) {
+                      return CustomTransitionPage(
+                        fullscreenDialog: true,
+                        child: const SaunaScreen(),
+                        transitionDuration: const Duration(milliseconds: 300),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          // Define fade out animation
+                          final fadeOutTween = Tween(begin: 0.0, end: 1.0);
+                          final fadeOutAnimation =
+                              animation.drive(fadeOutTween);
+
+                          // Define slide in animation
+                          final slideTween = Tween(
+                              begin: const Offset(-1, 0),
+                              end: const Offset(0, 0));
+                          final slideAnimation = animation.drive(slideTween
+                              .chain(CurveTween(curve: Curves.easeIn)));
+
+                          // Apply fade transition
+                          final fadeTransition = FadeTransition(
+                            opacity: fadeOutAnimation,
+                            child: child,
+                          );
+
+                          // Apply slide transition
+                          final slideTransition = SlideTransition(
+                            position: slideAnimation,
+                            child: fadeTransition,
+                          );
+
+                          return slideTransition;
+                        },
+                      );
+                    }),
+                  ),
                   GoRoute(
-                      path: 'laundry',
-                      name: AppRoute.laundry.name,
-                      parentNavigatorKey: _bookingNavigatorKey,
-                      pageBuilder: ((context, state) {
-                        return const MaterialPage(
-                            fullscreenDialog: true, child: LaundryScreen());
-                      })),
+                    path: 'laundry',
+                    name: AppRoute.laundry.name,
+                    parentNavigatorKey: _bookingNavigatorKey,
+                    pageBuilder: (context, state) {
+                      return CustomTransitionPage(
+                        fullscreenDialog: true,
+                        child: const LaundryScreen(),
+                        transitionDuration: const Duration(milliseconds: 300),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          // Define fade out animation
+                          final fadeOutTween = Tween(begin: 0.0, end: 1.0);
+                          final fadeOutAnimation =
+                              animation.drive(fadeOutTween);
+
+                          // Define slide in animation
+                          final slideTween = Tween(
+                              begin: const Offset(-1, 0),
+                              end: const Offset(0, 0));
+                          final slideAnimation = animation.drive(slideTween
+                              .chain(CurveTween(curve: Curves.easeIn)));
+
+                          // Apply fade transition
+                          final fadeTransition = FadeTransition(
+                            opacity: fadeOutAnimation,
+                            child: child,
+                          );
+
+                          // Apply slide transition
+                          final slideTransition = SlideTransition(
+                            position: slideAnimation,
+                            child: fadeTransition,
+                          );
+
+                          return slideTransition;
+                        },
+                      );
+                    },
+                  ),
                   GoRoute(
-                      path: 'mybookings',
-                      name: AppRoute.mybookings.name,
-                      parentNavigatorKey: _bookingNavigatorKey,
-                      pageBuilder: ((context, state) {
-                        return const MaterialPage(
-                            fullscreenDialog: true, child: MyBookingsScreen());
-                      }))
+                    path: 'mybookings',
+                    name: AppRoute.mybookings.name,
+                    parentNavigatorKey: _bookingNavigatorKey,
+                    pageBuilder: ((context, state) {
+                      return CustomTransitionPage(
+                        fullscreenDialog: true,
+                        child: const MyBookingsScreen(),
+                        transitionDuration: const Duration(milliseconds: 300),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          // Define fade out animation
+                          final fadeOutTween = Tween(begin: 0.0, end: 1.0);
+                          final fadeOutAnimation =
+                              animation.drive(fadeOutTween);
+
+                          // Define slide in animation
+                          final slideTween = Tween(
+                              begin: const Offset(-1, 0),
+                              end: const Offset(0, 0));
+                          final slideAnimation = animation.drive(slideTween
+                              .chain(CurveTween(curve: Curves.easeIn)));
+
+                          // Apply fade transition
+                          final fadeTransition = FadeTransition(
+                            opacity: fadeOutAnimation,
+                            child: child,
+                          );
+
+                          // Apply slide transition
+                          final slideTransition = SlideTransition(
+                            position: slideAnimation,
+                            child: fadeTransition,
+                          );
+
+                          return slideTransition;
+                        },
+                      );
+                    }),
+                  )
                 ],
               ),
             ],

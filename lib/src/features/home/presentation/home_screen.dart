@@ -7,7 +7,8 @@ import 'package:naytto/src/features/authentication/data/firebase_auth_repository
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
 import 'package:naytto/src/features/home/data/bookings_homescreen_repository.dart';
-import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
+import 'package:naytto/src/routing/app_router.dart';
+import 'package:naytto/src/utilities/capitalizer.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -29,10 +30,12 @@ class HomeScreen extends ConsumerWidget {
         ),
         Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Welcome home, ${appUserWatcher.firstName}    ',
+                  'Welcome home, ${appUserWatcher.firstName}!    ',
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
                 const Icon(
@@ -40,6 +43,13 @@ class HomeScreen extends ConsumerWidget {
                   size: 40,
                   color: Color.fromRGBO(0, 124, 124, 1.0),
                 ),
+                // IconButton(
+                //   icon: const Icon(Icons.logout),
+                //   onPressed: () {
+                //     ref.read(authRepositoryProvider).signOut();
+                //     ref.read(AppUser().provider).reset();
+                //   },
+                // ),
               ],
             ),
             backgroundColor: const Color.fromARGB(220, 255, 255, 255),
@@ -57,7 +67,7 @@ class HomeScreen extends ConsumerWidget {
                   SizedBox(height: 10),
                   _BookingContents(),
                   SizedBox(height: 20),
-                  _DashboardNavigationContents(),
+                  // _DashboardNavigationContents(),
                   SizedBox(height: 20),
                 ],
               ),
@@ -104,12 +114,12 @@ class _AnnouncementsPreview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final announcements = ref.watch(announcementsProvider);
+    final announcements = ref.watch(announcementsHomeScreenProvider);
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
         color: colors(context).color3,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,19 +129,23 @@ class _AnnouncementsPreview extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(40, 20, 0, 0),
                 child: Text(
                   'Announcements',
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 24, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      ref
+                          .read(goRouterProvider)
+                          .goNamed(AppRoute.announcements.name);
+                    },
                     child: Text(
-                      'see more',
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      'show all',
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),
                   )),
@@ -146,16 +160,44 @@ class _AnnouncementsPreview extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final announcement = announcements[index];
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                      padding: const EdgeInsets.fromLTRB(18, 8, 24, 18),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          title: Text(
-                            formatTimestamp(announcement.timestamp),
+                          onTap: () {
+                            ref.read(goRouterProvider).goNamed(
+                                AppRoute.announcementview.name,
+                                extra: announcement);
+                          },
+                          title: Row(
+                            children: [
+                              Text(
+                                formatTimestamp(announcement.timestamp),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              const SizedBox(
+                                  width:
+                                      10), // Lisää tarvittaessa väliä title- ja subtitle-tekstien välille
+                              Expanded(
+                                child: Text(
+                                  announcement.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
                           ),
+                          subtitle: Text(
+                            announcement.body,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+
                           leading: announcement.urgency == 2
                               ? const Icon(
                                   Icons.announcement,
@@ -165,11 +207,11 @@ class _AnnouncementsPreview extends ConsumerWidget {
                                   Icons.announcement_outlined,
                                   color: Color.fromARGB(255, 241, 39, 25),
                                 ),
-                          subtitle: Text(
-                            announcement.title,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
+                          // subtitle: Text(
+                          //   announcement.title,
+                          //   overflow: TextOverflow.ellipsis,
+                          //   maxLines: 3,
+                          // ),
                         ),
                       ),
                     );
@@ -199,7 +241,7 @@ class _BookingContents extends ConsumerWidget {
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
         color: colors(context).color3,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +251,7 @@ class _BookingContents extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(40, 20, 0, 0),
                   child: Text(
                     'Bookings',
                     style: Theme.of(context).textTheme.displayMedium,
@@ -227,7 +269,7 @@ class _BookingContents extends ConsumerWidget {
                     },
                     child: Text(
                       buttonText,
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: const Color.fromRGBO(0, 124, 124, 1.0)),
                     ),
                   )),
@@ -242,26 +284,38 @@ class _BookingContents extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       final booking = bookings[index];
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                         child: Container(
-                          height: 60,
+                          height: 50,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
+                            color: const Color.fromARGB(128, 238, 238, 238),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
-                            child: ListTile(
-                              title: Text(
-                                booking.type,
+                            child: Row(children: [
+                              (booking.type == 'sauna')
+                                  ? Icon(Icons.shower)
+                                  : Icon(Icons.local_laundry_service_sharp),
+                              SizedBox(
+                                width: 10,
                               ),
-                              subtitle: Text(
+                              Text(
+                                capitalizer(booking.type),
+                                style: Theme.of(context).textTheme.displaySmall,
+                              ),
+                              SizedBox(
+                                width: 40,
+                              ),
+                              Text(
                                 booking.day != null
-                                    ? '${booking.day}, ${booking.time}'
-                                    : formatTimestamp(booking.timestamp!),
+                                    ? '   ${booking.day}, ${booking.time}:00'
+                                    : formatTimestampWithHHmm(
+                                        booking.timestamp!),
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
-                            ),
+                            ]),
                           ),
                         ),
                       );
@@ -278,6 +332,7 @@ class _BookingContents extends ConsumerWidget {
 }
 
 // Dashboard navigation section
+// not in use
 class _DashboardNavigationContents extends ConsumerWidget {
   const _DashboardNavigationContents();
 

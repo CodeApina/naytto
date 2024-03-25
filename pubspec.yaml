@@ -22,6 +22,7 @@ dependencies:
   firebase_ui_firestore: ^1.6.1
   colorful_safe_area: ^1.0.0
   easy_date_timeline: ^1.0.3
+  animations: ^2.0.11
   
 dev_dependencies:
   flutter_test:
