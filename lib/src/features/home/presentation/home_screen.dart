@@ -41,6 +41,13 @@ class HomeScreen extends ConsumerWidget {
                   size: 40,
                   color: Color.fromRGBO(0, 124, 124, 1.0),
                 ),
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: () {
+                    ref.read(authRepositoryProvider).signOut();
+                    ref.read(AppUser().provider).reset();
+                  },
+                ),
               ],
             ),
             backgroundColor: const Color.fromARGB(220, 255, 255, 255),
@@ -158,6 +165,11 @@ class _AnnouncementsPreview extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
+                          onTap: () {
+                            ref.read(goRouterProvider).goNamed(
+                                AppRoute.announcementview.name,
+                                extra: announcement);
+                          },
                           title: Row(
                             children: [
                               Text(

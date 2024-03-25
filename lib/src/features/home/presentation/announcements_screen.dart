@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
-import 'package:naytto/src/features/home/domain/announcement.dart';
-import 'package:naytto/src/features/home/presentation/announcement_view_screen.dart';
 import 'package:naytto/src/routing/app_router.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
-import 'package:animations/animations.dart';
 
 class AnnouncementsScreen extends ConsumerWidget {
   const AnnouncementsScreen({super.key});
@@ -130,42 +127,6 @@ class _AnnouncementContents extends ConsumerWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class _OpenContainerWrapper extends StatelessWidget {
-  const _OpenContainerWrapper({
-    required this.id,
-    required this.announcement,
-    required this.closedChild,
-  });
-
-  final int id;
-  final Announcement announcement;
-  final Widget closedChild;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return OpenContainer(
-      openBuilder: (context, closedContainer) {
-        return AnnouncementViewScreen(announcement: announcement);
-      },
-      openColor: theme.cardColor,
-      closedShape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(0)),
-      ),
-      closedElevation: 0,
-      closedColor: theme.cardColor,
-      closedBuilder: (context, openContainer) {
-        return InkWell(
-          onTap: () {
-            openContainer();
-          },
-          child: closedChild,
-        );
-      },
     );
   }
 }
