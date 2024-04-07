@@ -43,13 +43,6 @@ class HomeScreen extends ConsumerWidget {
                   size: 40,
                   color: Color.fromRGBO(0, 124, 124, 1.0),
                 ),
-                // IconButton(
-                //   icon: const Icon(Icons.logout),
-                //   onPressed: () {
-                //     ref.read(authRepositoryProvider).signOut();
-                //     ref.read(AppUser().provider).reset();
-                //   },
-                // ),
               ],
             ),
             backgroundColor: const Color.fromARGB(220, 255, 255, 255),

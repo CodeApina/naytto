@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:naytto/src/features/authentication/domain/app_user.dart';
 // import 'package:naytto/src/routing/app_router.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -16,6 +18,17 @@ class SettingsScreen extends ConsumerWidget {
               Text(
                 'Settings Screen',
                 style: Theme.of(context).textTheme.displayLarge,
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Text('Log out'),
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  ref.read(authRepositoryProvider).signOut();
+                  ref.read(AppUser().provider).reset();
+                },
               ),
             ],
           ),
