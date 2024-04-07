@@ -34,6 +34,11 @@ class ScaffoldWithNavBar extends StatelessWidget {
         label: 'Settings',
         backgroundColor: colors(context).color1!,
       ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.build),
+        label: 'Maintenance',
+        backgroundColor: colors(context).color1!
+      )
     ];
 
     if (appUserUid == "JurckgP9csPAYE3VND1CfJdHJiC2") {

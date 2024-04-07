@@ -10,6 +10,7 @@ class FirestoreCollections {
   static const String saunas = "saunas";
   static const String bookings = "bookings";
   static const String laundry = "laundry";
+  static const String maintenance = "maintenance";
 }
 
 class FirestoreFields {
@@ -76,4 +77,12 @@ class FirestoreFields {
   static const String amenityDisplayName = "display_name";
   static const String amenityOutOfService = "out_of_service";
   static const String amenityTimeSlotAvailability = "available";
+
+  // Maintenance fields
+  static const String maintenanceApartmentNumber = "apartment_number";
+  static const String maintenanceBody = "body";
+  static const String maintenanceDate = "date";
+  static const String maintenanceType = "type";
+  static const String maintenanceReason = "reason";
+  static const String maintenanceStatus = "status";
 }

@@ -11,6 +11,7 @@ import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/features/home/presentation/announcement_view_screen.dart';
 import 'package:naytto/src/features/home/presentation/announcements_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
+import 'package:naytto/src/features/maintenance/presentation/maintenance_screen.dart';
 import 'package:naytto/src/features/settings/presentation/settings_screen.dart';
 import 'package:naytto/src/routing/go_router_refresh_stream.dart';
 import 'package:naytto/src/routing/scaffold_with_navbar.dart';
@@ -27,9 +28,10 @@ part 'app_router.g.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _bookingNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'booking');
-final _settingsgNavigatorKey =
+final _settingsNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'settings');
 final _devNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dev');
+final _maintenanceNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'maintenance');
 
 // Add a new entry to the AppRoute enum for your route whether it's nested or not.
 enum AppRoute {
@@ -42,7 +44,8 @@ enum AppRoute {
   laundry,
   settings,
   dev,
-  mybookings
+  mybookings,
+  maintenance
 }
 
 // Riverpod provider for the GoRouter instance
@@ -317,12 +320,20 @@ GoRouter goRouter(GoRouterRef ref) {
             ],
           ),
           // Settings section with nested routes
-          StatefulShellBranch(navigatorKey: _settingsgNavigatorKey, routes: [
+          StatefulShellBranch(navigatorKey: _settingsNavigatorKey, routes: [
             GoRoute(
               path: '/settings',
               name: AppRoute.settings.name,
               pageBuilder: (context, state) =>
                   const NoTransitionPage(child: SettingsScreen()),
+            )
+          ]),
+          StatefulShellBranch(navigatorKey: _maintenanceNavigatorKey, routes: [
+            GoRoute(
+              path: '/maintenance',
+              name: AppRoute.maintenance.name,
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: MaintenanceScreen()),
             )
           ]),
           StatefulShellBranch(navigatorKey: _devNavigatorKey, routes: [
@@ -333,6 +344,7 @@ GoRouter goRouter(GoRouterRef ref) {
                   NoTransitionPage(child: DevScreen()),
             )
           ]),
+          
         ],
       )
     ],
