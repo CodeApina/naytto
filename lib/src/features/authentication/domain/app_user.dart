@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/data/link_auth_to_db.dart';
+import 'package:naytto/src/utilities/housing_cooperative_creator.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 /// Contains all relevant information on User
@@ -64,6 +65,20 @@ class AppUser extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _housingCooperativeAddress = "";
+  String get housingCooperativeAddress => _housingCooperativeAddress;
+  set housingCooperativeAddress(String housingCooperativeAddress){
+    _housingCooperativeAddress = housingCooperativeAddress;
+    notifyListeners();
+  }
+
+  String _housingCooperativeTel = "";
+  String get housingCooperativeTel => _housingCooperativeTel;
+  set housingCooperativeTel(String housingCooperativeTel){
+    _housingCooperativeTel = housingCooperativeTel;
+    notifyListeners();
+  }
+
 //Used to show bookings in home_screen
   int _bookingsShown = 2;
   int get bookingsShown => _bookingsShown;
@@ -86,6 +101,8 @@ class AppUser extends ChangeNotifier {
     lastName = "";
     apartmentId = "";
     tel = "";
+    housingCooperativeTel = "";
+    housingCooperativeAddress = "";
   }
 
   // Calls LinkAuthToDb function to create user in database
@@ -120,11 +137,16 @@ class AppUser extends ChangeNotifier {
         final result = await fetchUserFromResident(
             userData[FirestoreFields.userHousingCooperative]);
         if (result == true) {
-          return Future.value(true);
+          await LinkAuthToDb().housingCooperativeContactInfo(housingCooperative).then((data) {
+            housingCooperativeTel = data[FirestoreFields.housingCooperativeTel];
+            housingCooperativeAddress = data[FirestoreFields.housingCooperativeAddress];
+          });
         } else {
           return false;
         }
       }
+      
+      
     }
     // if nothings is done
     return true;

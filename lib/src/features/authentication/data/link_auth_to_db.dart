@@ -61,6 +61,21 @@ class LinkAuthToDb {
     });
   }
 
+  Future<dynamic> housingCooperativeContactInfo(housingCooperativeName){
+    final firestore = FirebaseFirestore.instance;
+    return firestore.collection(FirestoreCollections.housingCooperative)
+    .doc(housingCooperativeName)
+    .get()
+    .then((DocumentSnapshot doc) {
+      if (doc.exists){
+        return doc.data();
+      }
+      return null;
+    }).onError((error, stackTrace) {
+      throw Exception("$error \n $stackTrace");
+    });
+  }
+
   Future<dynamic> fetchUserDataFromResident(uid, housingCooperationName) {
     final docRef = db
         .collection(FirestoreCollections.housingCooperative)

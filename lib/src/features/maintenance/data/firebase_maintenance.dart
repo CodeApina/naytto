@@ -26,6 +26,8 @@ import 'package:naytto/src/features/maintenance/domain/maintenance.dart';
       return maintenances.take(maintenances.length).toList();
     });
   },);
+
+  
   
   void storeTicketToFirestore(maintenanceMap) async{
     final _firestore = FirebaseFirestore.instance;

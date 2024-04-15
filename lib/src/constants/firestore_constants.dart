@@ -59,6 +59,7 @@ class FirestoreFields {
 
   //HousingCooperative fields
   static const String housingCooperativeAddress = "address";
+  static const String housingCooperativeTel = "tel";
 
   //Reservation fields
   static const String reservationReserver = "reserver";
