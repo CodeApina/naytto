@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
@@ -11,25 +12,40 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Text(
+            'My profile',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Settings Screen',
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
-              Text('Log out'),
-              IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () {
-                  ref.read(authRepositoryProvider).signOut();
-                  ref.read(AppUser().provider).reset();
-                },
-              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(64, 0, 64, 0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      ref.read(authRepositoryProvider).signOut();
+                      ref.read(AppUser().provider).reset();
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          color: Color.fromRGBO(0, 124, 124, 1.0),
+                        ),
+                        SizedBox(width: 12),
+                        Text('Sign out')
+                      ],
+                    )),
+              )
             ],
           ),
         ),
