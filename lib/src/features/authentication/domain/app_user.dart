@@ -67,14 +67,14 @@ class AppUser extends ChangeNotifier {
 
   String _housingCooperativeAddress = "";
   String get housingCooperativeAddress => _housingCooperativeAddress;
-  set housingCooperativeAddress(String housingCooperativeAddress){
+  set housingCooperativeAddress(String housingCooperativeAddress) {
     _housingCooperativeAddress = housingCooperativeAddress;
     notifyListeners();
   }
 
   String _housingCooperativeTel = "";
   String get housingCooperativeTel => _housingCooperativeTel;
-  set housingCooperativeTel(String housingCooperativeTel){
+  set housingCooperativeTel(String housingCooperativeTel) {
     _housingCooperativeTel = housingCooperativeTel;
     notifyListeners();
   }
@@ -137,16 +137,17 @@ class AppUser extends ChangeNotifier {
         final result = await fetchUserFromResident(
             userData[FirestoreFields.userHousingCooperative]);
         if (result == true) {
-          await LinkAuthToDb().housingCooperativeContactInfo(housingCooperative).then((data) {
+          await LinkAuthToDb()
+              .housingCooperativeContactInfo(housingCooperative)
+              .then((data) {
             housingCooperativeTel = data[FirestoreFields.housingCooperativeTel];
-            housingCooperativeAddress = data[FirestoreFields.housingCooperativeAddress];
+            housingCooperativeAddress =
+                data[FirestoreFields.housingCooperativeAddress];
           });
         } else {
           return false;
         }
       }
-      
-      
     }
     // if nothings is done
     return true;
@@ -170,6 +171,9 @@ class AppUser extends ChangeNotifier {
         }
         if (value[FirestoreFields.residentLastName] != null) {
           lastName = value[FirestoreFields.residentLastName];
+        }
+        if (value[FirestoreFields.residentTel] != null) {
+          tel = value[FirestoreFields.residentTel];
         }
         return Future.value(true);
       }).catchError((error, stackTrace) {
