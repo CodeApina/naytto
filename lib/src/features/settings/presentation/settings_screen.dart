@@ -29,14 +29,14 @@ class SettingsScreen extends ConsumerWidget {
                     Color.fromARGB(180, 146, 227, 169), BlendMode.overlay),
                 image: AssetImage('assets/postilaatikko.jpg'),
                 fit: BoxFit.cover,
-                alignment: FractionalOffset(0.5, -5),
+                // alignment: FractionalOffset(0.5, -5),
               ),
             ),
             child: Center(
               child: Stack(
                 children: [
                   Positioned(
-                    top: 258.0,
+                    top: 230.0,
                     left: 55.0,
                     right: 50.0,
                     child: Container(
