@@ -113,6 +113,10 @@ class _AnnouncementsPreview extends ConsumerWidget {
       decoration: BoxDecoration(
         color: colors(context).color3,
         borderRadius: BorderRadius.circular(25),
+        border: Border.all(
+          color: Color.fromRGBO(0, 124, 124, 0.466),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +157,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final announcement = announcements[index];
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(18, 8, 24, 18),
+                      padding: const EdgeInsets.fromLTRB(18, 8, 24, 10),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.shade200,
@@ -235,6 +239,10 @@ class _BookingContents extends ConsumerWidget {
       decoration: BoxDecoration(
         color: colors(context).color3,
         borderRadius: BorderRadius.circular(25),
+        border: Border.all(
+          color: Color.fromRGBO(0, 124, 124, 0.466),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +285,7 @@ class _BookingContents extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       final booking = bookings[index];
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 10),
                         child: Container(
                           height: 50,
                           decoration: BoxDecoration(

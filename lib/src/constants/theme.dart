@@ -15,7 +15,7 @@ ThemeData getAppTheme(BuildContext context) {
   return ThemeData(
     extensions: const <ThemeExtension<CustomColors>>[
       CustomColors(
-        color1: Color.fromARGB(255, 255, 255, 255),
+        color1: Color.fromARGB(128, 238, 238, 238),
         color2: Color.fromRGBO(0, 124, 124, 1.0),
         color3: Color.fromARGB(234, 255, 255, 255),
       ),

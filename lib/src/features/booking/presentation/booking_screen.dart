@@ -12,38 +12,19 @@ class BookingScreen extends ConsumerWidget {
     return ColorfulSafeArea(
       color: Colors.white,
       child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Text(
+            'Welcome to booking',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Welcome to booking',
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconContainer(
-                  iconText: 'Book laundry',
-                  icon: IconButton(
-                    onPressed: () {
-                      ref.read(goRouterProvider).goNamed(AppRoute.laundry.name);
-                    },
-                    icon: const Icon(Icons.calendar_month),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                IconContainer(
-                  iconText: 'Book sauna',
-                  icon: IconButton(
-                    onPressed: () {
-                      ref.read(goRouterProvider).goNamed(AppRoute.sauna.name);
-                    },
-                    icon: const Icon(Icons.calendar_month),
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: 150,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +37,45 @@ class BookingScreen extends ConsumerWidget {
                           .read(goRouterProvider)
                           .goNamed(AppRoute.mybookings.name);
                     },
-                    icon: const Icon(Icons.calendar_month),
+                    icon: const Icon(
+                      Icons.calendar_month,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconContainer(
+                  iconText: 'Book Laundry',
+                  icon: IconButton(
+                    onPressed: () {
+                      ref.read(goRouterProvider).goNamed(AppRoute.laundry.name);
+                    },
+                    icon: const Icon(
+                      Icons.local_laundry_service_sharp,
+                      size: 30,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                IconContainer(
+                  iconText: 'Book Sauna',
+                  icon: IconButton(
+                    onPressed: () {
+                      ref.read(goRouterProvider).goNamed(AppRoute.sauna.name);
+                    },
+                    icon: const Icon(
+                      Icons.shower,
+                      size: 30,
+                    ),
                   ),
                 ),
               ],

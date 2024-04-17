@@ -22,7 +22,11 @@ class IconContainer extends Container {
       width: 140,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
-        color: colors(context).color3,
+        color: colors(context).color1,
+        border: Border.all(
+          color: Color.fromRGBO(0, 124, 124, 0.466),
+          width: 1,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
