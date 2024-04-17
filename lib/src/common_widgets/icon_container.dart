@@ -18,15 +18,15 @@ class IconContainer extends Container {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      height: 120,
+      height: 95,
       width: 140,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(35),
         color: colors(context).color1,
         border: Border.all(
-          color: Color.fromRGBO(0, 124, 124, 0.466),
-          width: 1,
-        ),
+            // color: Color.fromRGBO(0, 124, 124, 1),
+            color: Colors.black,
+            width: 1),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

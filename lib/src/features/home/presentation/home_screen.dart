@@ -114,7 +114,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
         color: colors(context).color3,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: Color.fromRGBO(0, 124, 124, 0.466),
+          color: Colors.black,
           width: 1,
         ),
       ),
@@ -240,7 +240,7 @@ class _BookingContents extends ConsumerWidget {
         color: colors(context).color3,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: Color.fromRGBO(0, 124, 124, 0.466),
+          color: Colors.black,
           width: 1,
         ),
       ),
