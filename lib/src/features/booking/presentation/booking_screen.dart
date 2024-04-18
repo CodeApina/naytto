@@ -41,17 +41,25 @@ class BookingScreen extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconContainer(
-                  iconText: 'My bookings',
-                  icon: IconButton(
-                    onPressed: () {
-                      ref
-                          .read(goRouterProvider)
-                          .goNamed(AppRoute.mybookings.name);
-                    },
-                    icon: const Icon(
-                      Icons.calendar_month,
-                      size: 30,
+                InkWell(
+                  borderRadius: BorderRadius.circular(35.0),
+                  onTap: () {
+                    ref
+                        .read(goRouterProvider)
+                        .goNamed(AppRoute.mybookings.name);
+                  },
+                  child: IconContainer(
+                    iconText: 'My bookings',
+                    icon: IconButton(
+                      onPressed: () {
+                        ref
+                            .read(goRouterProvider)
+                            .goNamed(AppRoute.mybookings.name);
+                      },
+                      icon: const Icon(
+                        Icons.calendar_month,
+                        size: 30,
+                      ),
                     ),
                   ),
                 ),
@@ -65,32 +73,46 @@ class BookingScreen extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconContainer(
-                    iconText: 'Book Laundry',
-                    icon: IconButton(
-                      onPressed: () {
-                        ref
-                            .read(goRouterProvider)
-                            .goNamed(AppRoute.laundry.name);
-                      },
-                      icon: const Icon(
-                        Icons.local_laundry_service_sharp,
-                        size: 30,
+                  InkWell(
+                    borderRadius: BorderRadius.circular(35.0),
+                    onTap: () {
+                      ref.read(goRouterProvider).goNamed(AppRoute.laundry.name);
+                    },
+                    child: IconContainer(
+                      iconText: 'Book Laundry',
+                      icon: IconButton(
+                        onPressed: () {
+                          ref
+                              .read(goRouterProvider)
+                              .goNamed(AppRoute.laundry.name);
+                        },
+                        icon: const Icon(
+                          Icons.local_laundry_service_sharp,
+                          size: 30,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(
                     width: 20,
                   ),
-                  IconContainer(
-                    iconText: 'Book Sauna',
-                    icon: IconButton(
-                      onPressed: () {
-                        ref.read(goRouterProvider).goNamed(AppRoute.sauna.name);
-                      },
-                      icon: const Icon(
-                        Icons.shower,
-                        size: 30,
+                  InkWell(
+                    borderRadius: BorderRadius.circular(35.0),
+                    onTap: () {
+                      ref.read(goRouterProvider).goNamed(AppRoute.sauna.name);
+                    },
+                    child: IconContainer(
+                      iconText: 'Book Sauna',
+                      icon: IconButton(
+                        onPressed: () {
+                          ref
+                              .read(goRouterProvider)
+                              .goNamed(AppRoute.sauna.name);
+                        },
+                        icon: const Icon(
+                          Icons.shower,
+                          size: 30,
+                        ),
                       ),
                     ),
                   ),

@@ -181,7 +181,7 @@ class _BookingContents extends ConsumerWidget {
                               ),
                               minimumSize: const Size(200, 0),
                               backgroundColor: available
-                                  ? Color.fromARGB(255, 94, 191, 97)
+                                  ? Color.fromARGB(255, 117, 223, 147)
                                   : const Color.fromARGB(210, 255, 138, 66),
                             ),
                             onPressed: available
