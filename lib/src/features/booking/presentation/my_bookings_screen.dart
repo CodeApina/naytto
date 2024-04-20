@@ -60,38 +60,68 @@ class BookingsList extends ConsumerWidget {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(24, 8, 24, 10),
                     child: Container(
-                      height: 50,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(128, 238, 238, 238),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  (booking.type == 'sauna')
+                                      ? Icon(Icons.shower)
+                                      : Icon(Icons.local_laundry_service_sharp),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    capitalizer(booking.type),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  ),
+                                  const SizedBox(
+                                    width: 40,
+                                  ),
+                                  Text(
+                                    booking.day != null
+                                        ? '   ${booking.day}, ${booking.time}:00'
+                                        : formatTimestampWithHHmm(
+                                            booking.timestamp!),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ]),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              (booking.type == 'sauna')
-                                  ? Icon(Icons.shower)
-                                  : Icon(Icons.local_laundry_service_sharp),
-                              SizedBox(
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(booking.type == 'sauna'
+                                    ? 'Sauna number:'
+                                    : 'Laundry machine:'),
+                              ),
+                              const SizedBox(
                                 width: 10,
                               ),
-                              Text(
-                                capitalizer(booking.type),
-                                style: Theme.of(context).textTheme.displaySmall,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    booking.amenityDisplayName != null
+                                        ? booking.amenityDisplayName.toString()
+                                        : 'Name unvailable',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall),
                               ),
-                              SizedBox(
-                                width: 40,
-                              ),
-                              Text(
-                                booking.day != null
-                                    ? '   ${booking.day}, ${booking.time}:00'
-                                    : formatTimestampWithHHmm(
-                                        booking.timestamp!),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ]),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   );

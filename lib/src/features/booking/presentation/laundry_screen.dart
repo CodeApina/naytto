@@ -38,8 +38,6 @@ final selectedTimeSlotProvider = StateProvider<DateTime?>((ref) => null);
 // prevents certain parts of the UI from being shown until an amenity has been chosen
 final hasAmenityBeenChosenProvider = StateProvider<bool>((ref) => false);
 
-final hasTimeSlotBeenChosenProvider = StateProvider<bool>((ref) => false);
-
 class LaundryScreen extends ConsumerWidget {
   const LaundryScreen({super.key});
 
@@ -199,24 +197,11 @@ class AvailableTimes extends ConsumerWidget {
     final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
     final bool hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
 
-    // TODO: DOES NOT ACTUALLY WORK
     if (!hasAmenityBeenChosen) {
       return Container();
     } else {
       final availableTimes = generateAvailableTimes(selectedDate,
           selectedAmenity.availableFrom, selectedAmenity.availableTo);
-
-      if (selectedTimeSlot != null &&
-          !availableTimes.any((timeSlot) =>
-              timeSlot.hour == selectedTimeSlot.hour &&
-              timeSlot.minute == selectedTimeSlot.minute)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('The selected time slot is no longer available.'),
-          ),
-        );
-        ref.read(selectedTimeSlotProvider.notifier).state = null;
-      }
 
       return bookings.when(
         data: (bookings) {
@@ -226,7 +211,6 @@ class AvailableTimes extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(selectedTimeSlot.toString()),
                 const SizedBox(
                   height: 20,
                 ),
@@ -309,12 +293,11 @@ class TimeSlotChoiceChip extends ConsumerWidget {
     final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
 
     return ChoiceChip(
-      selectedColor: Color.fromRGBO(0, 124, 124, 1.0),
+      selectedColor: const Color.fromRGBO(0, 124, 124, 1.0),
       label: Text(DateFormat.Hm().format(timeslot)),
       selected: selectedTimeSlot == timeslot,
       onSelected: (_) {
         ref.read(selectedTimeSlotProvider.notifier).state = timeslot;
-        ref.read(hasTimeSlotBeenChosenProvider.notifier).state = true;
       },
     );
   }
@@ -331,8 +314,6 @@ class ConfirmBookingButton extends ConsumerWidget {
     final apartmentID = user.apartmentId;
     final amenityID = selectedAmenity.amenityID;
     final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
-    final hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
-    final hasTimeSlotBeenChosen = ref.watch(hasTimeSlotBeenChosenProvider);
 
     if (selectedTimeSlot == null) {
       return Container();
@@ -353,6 +334,7 @@ class ConfirmBookingButton extends ConsumerWidget {
                       apartmentID: apartmentID,
                       amenityID: amenityID,
                       timestamp: Timestamp.fromDate(selectedTimeSlot),
+                      amenityDisplayName: selectedAmenity.displayName,
                       type: 'laundry'));
               ref.read(selectedTimeSlotProvider.notifier).state = null;
             },

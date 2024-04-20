@@ -7,6 +7,7 @@ class Booking {
       required this.apartmentID,
       required this.amenityID,
       required this.type,
+      this.amenityDisplayName,
       this.time,
       this.day,
       this.timestamp});
@@ -18,6 +19,7 @@ class Booking {
   final String type;
 
   // optional
+  final String? amenityDisplayName;
   final String? time;
   final String? day;
   final Timestamp? timestamp;
@@ -28,6 +30,8 @@ class Booking {
       apartmentID: snapshot[FirestoreFields.bookingApartmentID] as String,
       amenityID: snapshot[FirestoreFields.bookingID] as String,
       type: snapshot[FirestoreFields.bookingType] as String,
+      amenityDisplayName:
+          snapshot[FirestoreFields.amenityDisplayName] as String?,
       time: snapshot[FirestoreFields.bookingTime] as String?,
       day: snapshot[FirestoreFields.bookingDay] as String?,
       timestamp: snapshot['timestamp'] as Timestamp?,
@@ -45,6 +49,9 @@ class Booking {
     // These fields will only be included if they are not null
     if (timestamp != null) {
       firestoreData['timestamp'] = timestamp;
+    }
+    if (amenityDisplayName != null) {
+      firestoreData[FirestoreFields.amenityDisplayName] = amenityDisplayName;
     }
     if (time != null) {
       firestoreData[FirestoreFields.bookingTime] = time;
