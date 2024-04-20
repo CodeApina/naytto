@@ -38,6 +38,8 @@ final selectedTimeSlotProvider = StateProvider<DateTime?>((ref) => null);
 // prevents certain parts of the UI from being shown until an amenity has been chosen
 final hasAmenityBeenChosenProvider = StateProvider<bool>((ref) => false);
 
+final hasTimeSlotBeenChosenProvider = StateProvider<bool>((ref) => false);
+
 class LaundryScreen extends ConsumerWidget {
   const LaundryScreen({super.key});
 
@@ -312,6 +314,7 @@ class TimeSlotChoiceChip extends ConsumerWidget {
       selected: selectedTimeSlot == timeslot,
       onSelected: (_) {
         ref.read(selectedTimeSlotProvider.notifier).state = timeslot;
+        ref.read(hasTimeSlotBeenChosenProvider.notifier).state = true;
       },
     );
   }
@@ -329,8 +332,9 @@ class ConfirmBookingButton extends ConsumerWidget {
     final amenityID = selectedAmenity.amenityID;
     final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
     final hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
+    final hasTimeSlotBeenChosen = ref.watch(hasTimeSlotBeenChosenProvider);
 
-    if (!hasAmenityBeenChosen) {
+    if (selectedTimeSlot == null) {
       return Container();
     } else {
       return Padding(
@@ -348,7 +352,7 @@ class ConfirmBookingButton extends ConsumerWidget {
                       bookingID: '',
                       apartmentID: apartmentID,
                       amenityID: amenityID,
-                      timestamp: Timestamp.fromDate(selectedTimeSlot!),
+                      timestamp: Timestamp.fromDate(selectedTimeSlot),
                       type: 'laundry'));
               ref.read(selectedTimeSlotProvider.notifier).state = null;
             },
