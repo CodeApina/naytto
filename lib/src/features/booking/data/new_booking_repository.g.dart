@@ -190,5 +190,24 @@ class _BookingsForDateStreamProviderElement
   @override
   DateTime get date => (origin as BookingsForDateStreamProvider).date;
 }
+
+String _$allBookingsForUserStreamHash() =>
+    r'1d99234a347ae31546ec3481e1012ca74379aac9';
+
+/// See also [allBookingsForUserStream].
+@ProviderFor(allBookingsForUserStream)
+final allBookingsForUserStreamProvider =
+    AutoDisposeStreamProvider<List<Booking>>.internal(
+  allBookingsForUserStream,
+  name: r'allBookingsForUserStreamProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$allBookingsForUserStreamHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef AllBookingsForUserStreamRef
+    = AutoDisposeStreamProviderRef<List<Booking>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

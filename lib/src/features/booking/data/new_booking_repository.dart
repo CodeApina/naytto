@@ -107,19 +107,6 @@ class NewBookingRepository {
         .update(booking.toFirestore());
   }
 
-  // read
-  // Stream<List<Booking>> watchBookings(
-  //     {required String housingCooperative,
-  //     String? amenityID,
-  //     String? apartmentID}) {
-  //   return queryBookings(
-  //           housingCooperative: housingCooperative,
-  //           amenityID: amenityID,
-  //           apartmentID: apartmentID)
-  //       .snapshots()
-  //       .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
-  // }
-
   // Stream of bookings for a specific day
   Stream<List<Booking>> watchBookings(
       {required String housingCooperative,
@@ -129,6 +116,30 @@ class NewBookingRepository {
             housingCooperative: housingCooperative,
             amenityID: amenityID,
             date: date)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
+  Query<Booking> queryBookingsForUser(
+      {required String housingCooperative, required String apartmentID}) {
+    Query<Booking> query = _firestore
+        .collection(FirestoreCollections.housingCooperative)
+        .doc(housingCooperative)
+        .collection(FirestoreCollections.bookings)
+        .where(FirestoreFields.bookingApartmentID, isEqualTo: apartmentID)
+        .orderBy('timestamp', descending: true)
+        .withConverter<Booking>(
+          fromFirestore: (snapshot, _) =>
+              Booking.fromFirestore(snapshot.data()!, snapshot.id),
+          toFirestore: (booking, _) => booking.toFirestore(),
+        );
+    return query;
+  }
+
+  Stream<List<Booking>> watchBookingsForUser(
+      {required String housingCooperative, required String apartmentID}) {
+    return queryBookingsForUser(
+            housingCooperative: housingCooperative, apartmentID: apartmentID)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
@@ -149,4 +160,14 @@ Stream<List<Booking>> bookingsForDateStream(
   final repository = ref.watch(newBookingRepositoryProvider);
   return repository.watchBookings(
       housingCooperative: housingCooperative, amenityID: amenityID, date: date);
+}
+
+@riverpod
+Stream<List<Booking>> allBookingsForUserStream(
+    AllBookingsForUserStreamRef ref) {
+  final user = ref.watch(AppUser().provider);
+  final housingCooperative = user.housingCooperative;
+  final repository = ref.watch(newBookingRepositoryProvider);
+  return repository.watchBookingsForUser(
+      housingCooperative: housingCooperative, apartmentID: user.apartmentId);
 }
