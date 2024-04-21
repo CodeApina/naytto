@@ -167,34 +167,36 @@ class SaunaDataUpdate {
       print(querySnapshot);
       // used to delete old booking from bookings
       //& change the availability of saunas to true according to old booking
-      for (var doc in querySnapshot.docs) {
-        Map<String, dynamic> data = doc.data();
-        String day = data[FirestoreFields.bookingDay];
-        String time = data[FirestoreFields.bookingTime];
-        String docId = data[FirestoreFields.bookingAmenityID];
-        bool newValue = true;
-        if (day == 'Monday') day = "1";
-        if (day == 'Tuesday') day = "2";
-        if (day == 'Wednesday') day = "3";
-        if (day == 'Thursday') day = "4";
-        if (day == 'Friday') day = "5";
-        if (day == 'Saturday') day = "6";
-        if (day == 'Sunday') day = "7";
-        // changes saunas availability to true
-        await FirebaseFirestore.instance
-            .collection(FirestoreCollections.housingCooperative)
-            .doc(appUser.housingCooperative)
-            .collection('saunas')
-            .doc(docId)
-            .update({
-          '$day.$time.available': true,
-          '$day.$time.apartmentID': "",
-        });
-        // .update({'$day.$time': newValue});
-      }
-      // deletes old bookings from sauna where
-      for (var doc in querySnapshot.docs) {
-        await doc.reference.delete();
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var doc in querySnapshot.docs) {
+          Map<String, dynamic> data = doc.data();
+          String day = data[FirestoreFields.bookingDay];
+          String time = data[FirestoreFields.bookingTime];
+          String docId = data[FirestoreFields.bookingAmenityID];
+          bool newValue = true;
+          if (day == 'Monday') day = "1";
+          if (day == 'Tuesday') day = "2";
+          if (day == 'Wednesday') day = "3";
+          if (day == 'Thursday') day = "4";
+          if (day == 'Friday') day = "5";
+          if (day == 'Saturday') day = "6";
+          if (day == 'Sunday') day = "7";
+          // changes saunas availability to true
+          await FirebaseFirestore.instance
+              .collection(FirestoreCollections.housingCooperative)
+              .doc(appUser.housingCooperative)
+              .collection('saunas')
+              .doc(docId)
+              .update({
+            '$day.$time.available': true,
+            '$day.$time.apartmentID': "",
+          });
+          // .update({'$day.$time': newValue});
+        }
+        // deletes old bookings from sauna where
+        for (var doc in querySnapshot.docs) {
+          await doc.reference.delete();
+        }
       }
 
       return true;
