@@ -293,30 +293,64 @@ class _BookingContents extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
-                            child: Row(children: [
-                              (booking.type == 'sauna')
-                                  ? Icon(Icons.shower)
-                                  : Icon(Icons.local_laundry_service_sharp),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                capitalizer(booking.type),
-                                style: Theme.of(context).textTheme.displaySmall,
-                              ),
-                              SizedBox(
-                                width: 40,
-                              ),
-                              Text(
-                                booking.day != null
-                                    ? '   ${booking.day}, ${booking.time}:00'
-                                    : formatTimestampWithHHmm(
-                                        booking.timestamp!),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ]),
+                            child: Column(
+                              children: [
+                                Row(children: [
+                                  (booking.type == 'sauna')
+                                      ? Icon(Icons.shower)
+                                      : Icon(Icons.local_laundry_service_sharp),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    capitalizer(booking.type),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  ),
+                                  SizedBox(
+                                    width: 40,
+                                  ),
+                                  Text(
+                                    booking.day != null
+                                        ? '   ${booking.day}, ${booking.time}:00'
+                                        : formatTimestampWithHHmm(
+                                            booking.timestamp!),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ]),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(4, 3, 0, 0),
+                                  child: Row(
+                                    children: [
+                                      (booking.type == 'sauna')
+                                          ? Text(
+                                              'Sauna: ',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            )
+                                          : Text(
+                                              'Laundy machine: ',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            ),
+                                      Text(
+                                        booking.displayname!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       );

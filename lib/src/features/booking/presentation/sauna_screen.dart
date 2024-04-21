@@ -220,7 +220,8 @@ class _BookingContents extends ConsumerWidget {
                                             fieldName,
                                             time,
                                             available!,
-                                            weekDay);
+                                            weekDay,
+                                            booking.displayName);
                                       } catch (e) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(

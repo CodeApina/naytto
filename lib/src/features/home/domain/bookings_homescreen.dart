@@ -49,11 +49,12 @@ class Bookings {
   const Bookings({
     required this.id,
     required this.apartmentID,
+    required this.type,
     this.day,
     this.time,
-    required this.type,
     this.amenityID,
     this.timestamp,
+    this.displayname,
   });
   final BookingsID id;
   final String? day;
@@ -62,6 +63,7 @@ class Bookings {
   final String? amenityID;
   final String apartmentID;
   final Timestamp? timestamp;
+  final String? displayname;
 
   factory Bookings.fromMap(Map<String, dynamic> snapshot, BookingsID id) {
     return Bookings(
@@ -71,6 +73,7 @@ class Bookings {
         type: snapshot[FirestoreFields.bookingType] as String,
         apartmentID: snapshot[FirestoreFields.bookingApartmentID] as String,
         timestamp: snapshot['timestamp'] as Timestamp?,
+        displayname: snapshot[FirestoreFields.amenityDisplayName] as String?,
         amenityID: snapshot[FirestoreFields.bookingID] as String?);
   }
   // This method is not really in use, but it's necessary to use withConverter
@@ -82,6 +85,7 @@ class Bookings {
         FirestoreFields.bookingType: type,
         FirestoreFields.bookingID: amenityID,
         FirestoreFields.bookingApartmentID: apartmentID,
+        FirestoreFields.amenityDisplayName: displayname,
         'timestamp': timestamp
       };
 }

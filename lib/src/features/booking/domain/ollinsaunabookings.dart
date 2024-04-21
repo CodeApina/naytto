@@ -109,6 +109,7 @@ class SaunaDataUpdate {
     String time,
     bool available,
     String weekDay,
+    String displayname,
   ) async {
     // cant change falue of booked time
     if (available == false) return;
@@ -122,7 +123,8 @@ class SaunaDataUpdate {
           FirestoreFields.bookingDay: weekDay,
           FirestoreFields.bookingTime: time,
           FirestoreFields.bookingAmenityID: docid,
-          FirestoreFields.bookingType: 'sauna'
+          FirestoreFields.bookingType: 'sauna',
+          FirestoreFields.amenityDisplayName: displayname,
         };
         // change availability
         await FirebaseFirestore.instance
