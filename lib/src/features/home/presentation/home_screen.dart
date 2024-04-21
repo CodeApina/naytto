@@ -340,12 +340,19 @@ class _BookingContents extends ConsumerWidget {
                                                   .textTheme
                                                   .bodySmall,
                                             ),
-                                      Text(
-                                        booking.displayname!,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
+                                      (booking.displayname != null)
+                                          ? Text(
+                                              booking.displayname!,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            )
+                                          : Text(
+                                              "Name unavailabe",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            )
                                     ],
                                   ),
                                 )
