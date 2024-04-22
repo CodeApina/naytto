@@ -37,18 +37,6 @@ class LinkAuthToDb {
   /// Fetches user data from database
   ///
   /// Takes in uid from Firebase authentication
-  // Future<dynamic> fetchUserData(uid) {
-  //   final docRef = db.collection(FirestoreCollections.users);
-  //   return docRef.doc(uid).get().then((DocumentSnapshot doc) {
-  //     final data = doc.data() as Map<String, dynamic>;
-  //     if (data.isNotEmpty) {
-  //       return data;
-  //     }
-  //     return null;
-  //   }).onError((error, stackTrace) {
-  //     throw Exception("$error \n $stackTrace");
-  //   });
-  // }
   Future<dynamic> fetchUserData(uid) {
     final docRef = db.collection(FirestoreCollections.users).doc(uid);
     return docRef.get().then((DocumentSnapshot doc) {
