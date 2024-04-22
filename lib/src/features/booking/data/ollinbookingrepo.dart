@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/domain/ollinsaunabookings.dart';
+// USED IN SAUNA_SCREEN & OLLINSAUNABOOKINGS
 
+// saunas booking data
 final saunaDataStreamProvider = StreamProvider<List<Ollinsaunabookings>>((ref) {
   final String housingCooperativeName =
       ref.watch(AppUser().provider).housingCooperative;
@@ -16,7 +18,7 @@ final saunaDataStreamProvider = StreamProvider<List<Ollinsaunabookings>>((ref) {
   return fetchSaunaDataStream(docRef);
 });
 
-// default sauna for saunaDataStreamProvider & dropdownmenu  and state management of dropdownmenu selection in sauna_screen
+// default sauna for saunaDataStreamProvider & dropdownmenu and state management of dropdownmenu selection in sauna_screen
 final selectedSaunaID = StateProvider<String?>((ref) {
   final saunaIdsAsyncValue = ref.watch(getSaunasProvider);
 

@@ -26,15 +26,6 @@ class SaunaScreen extends ConsumerWidget {
             style: Theme.of(context).textTheme.displayMedium,
           ),
         ),
-        // appBar: AppBar(
-        //   title: const Text('Sauna Booking'),
-        //   leading: IconButton(
-        //     icon: const Icon(Icons.arrow_back),
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //     },
-        //   ),
-        // ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -57,10 +48,7 @@ class SaunaScreen extends ConsumerWidget {
               const _BookingContents(),
             ],
           ),
-        )
-        //   ],
-        // ),
-        );
+        ));
   }
 }
 
@@ -68,7 +56,6 @@ class SaunaSelector extends ConsumerWidget {
   const SaunaSelector({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // String? _selectedSaunaId;
     final AsyncValue<List<String>> saunaList = ref.watch(getSaunasProvider);
     final selectedSauna = ref.watch(selectedSaunaID);
     return Center(
@@ -76,16 +63,11 @@ class SaunaSelector extends ConsumerWidget {
         loading: () => const CircularProgressIndicator(),
         error: (error, stackTrace) => Text("error: $error"),
         data: (saunaIds) {
-          // if (_selectedSaunaId == null && saunaIds.isNotEmpty) {
-          //   _selectedSaunaId = selectedSauna;
-          // }
           return DropdownButton<String>(
             iconSize: 30,
             value: selectedSauna,
             onChanged: (String? newValue) {
               ref.read(selectedSaunaID.notifier).state = newValue!;
-
-              // _selectedSaunaId = newValue;
             },
             items: saunaIds.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
@@ -169,7 +151,6 @@ class _BookingContents extends ConsumerWidget {
                       return Expanded(
                         child: Container(
                           margin: const EdgeInsets.all(4),
-                          // padding: EdgeInsets.all(1),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(

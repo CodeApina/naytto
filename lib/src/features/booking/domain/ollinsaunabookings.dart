@@ -31,19 +31,14 @@ class Ollinsaunabookings {
     BookingPath bookingPath = BookingPath();
 
     for (String key in snapshot.keys) {
-      // Käydään läpi ulommanisen mapin avaimet
       if (snapshot[key] is Map<String, dynamic>) {
-        // Tarkistetaan, onko arvo sisäinen map
         Map<String, dynamic> innerMap = snapshot[key];
-        Map<String, dynamic> innerFields =
-            {}; // Sisäinen map uutta tietorakennetta varten
+        Map<String, dynamic> innerFields = {};
 
         for (String innerKey in innerMap.keys) {
-          // Käydään läpi sisäisen mapin avaimet
           if (innerMap[innerKey] is Map<String, dynamic>) {
-            // Tarkistetaan, onko arvo sisäinen sisäinen map
             Map<String, dynamic> innerInnerMap = innerMap[innerKey];
-            // Lisätään sisäisen sisäisen mapin arvot uuteen sisäiseen mapin
+
             innerFields[innerKey] = {
               'apartmentID': innerInnerMap['apartmentID'] as String,
               'available': innerInnerMap['available'] as bool,
@@ -51,7 +46,6 @@ class Ollinsaunabookings {
           }
         }
 
-        // Lisätään ulommaisen mapin avaimen alla oleva sisäinen map uuden tietorakenteen mukaisesti
         fields[key] = innerFields;
         bookingPath.addPath(key);
       }
@@ -132,7 +126,6 @@ class SaunaDataUpdate {
             .doc(appUser.housingCooperative)
             .collection('saunas')
             .doc(docid)
-            // .update({'$fieldName.$time': newValue});
             .update({
           '$fieldName.$time.available': newValue,
           '$fieldName.$time.apartmentID': appUser.apartmentId,
@@ -164,7 +157,7 @@ class SaunaDataUpdate {
               isEqualTo: appUser.apartmentId)
           .where('type', isEqualTo: 'sauna')
           .get();
-      print(querySnapshot);
+
       // used to delete old booking from bookings
       //& change the availability of saunas to true according to old booking
       if (querySnapshot.docs.isNotEmpty) {
@@ -181,6 +174,7 @@ class SaunaDataUpdate {
           if (day == 'Friday') day = "5";
           if (day == 'Saturday') day = "6";
           if (day == 'Sunday') day = "7";
+
           // changes saunas availability to true
           await FirebaseFirestore.instance
               .collection(FirestoreCollections.housingCooperative)
@@ -191,9 +185,8 @@ class SaunaDataUpdate {
             '$day.$time.available': true,
             '$day.$time.apartmentID': "",
           });
-          // .update({'$day.$time': newValue});
         }
-        // deletes old bookings from sauna where
+        // deletes old bookings from sauna
         for (var doc in querySnapshot.docs) {
           await doc.reference.delete();
         }

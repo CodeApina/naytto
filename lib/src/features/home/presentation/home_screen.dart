@@ -72,36 +72,6 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-// User greetings section
-// class _UserGreetings extends ConsumerWidget {
-//   const _UserGreetings();
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final appUserWatcher = ref.watch(AppUser().provider);
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           crossAxisAlignment: CrossAxisAlignment.end,
-//           children: [
-//             Expanded(
-//               child: Padding(
-//                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-//                 child: Text(
-//                   'Welcome home, ${appUserWatcher.firstName}',
-//                   style: Theme.of(context).textTheme.displayLarge,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 class _AnnouncementsPreview extends ConsumerWidget {
   const _AnnouncementsPreview();
 
@@ -177,9 +147,7 @@ class _AnnouncementsPreview extends ConsumerWidget {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
-                              const SizedBox(
-                                  width:
-                                      10), // Lisää tarvittaessa väliä title- ja subtitle-tekstien välille
+                              const SizedBox(width: 10),
                               Text(
                                 announcement.title,
                                 overflow: TextOverflow.ellipsis,

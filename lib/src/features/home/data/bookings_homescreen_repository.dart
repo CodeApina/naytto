@@ -4,6 +4,7 @@ import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
+//  USED IN HOME_SCREEN BOOKINGS SECTION
 
 final apartmentsBookingsProvider = StreamProvider.autoDispose<List<Bookings>>(
   (ref) async* {
@@ -21,16 +22,6 @@ final apartmentsBookingsProvider = StreamProvider.autoDispose<List<Bookings>>(
         .doc(housingCooperativeName)
         .collection(FirestoreCollections.bookings)
         .where(FirestoreFields.bookingApartmentID, isEqualTo: apartmentid)
-        // .where('type', isEqualTo: "sauna")
-        // .orderBy('timestamp', descending: true)
-
-        // .snapshots()
-        // .map((querySnapshot) => querySnapshot.docs
-        //     .map((doc) => Bookings.fromMap(doc.data(), doc.id))
-        //     .toList());
-
-        //Chatgpt:s Wild sorting system number II
-        //Shows ALL saunas first and then sorts others with timestamp
         .snapshots()
         .map((querySnapshot) {
       final documents = querySnapshot.docs;
