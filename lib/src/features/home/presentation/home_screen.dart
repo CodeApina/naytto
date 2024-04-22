@@ -169,7 +169,8 @@ class _AnnouncementsPreview extends ConsumerWidget {
                                 AppRoute.announcementview.name,
                                 extra: announcement);
                           },
-                          title: Row(
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 formatTimestamp(announcement.timestamp),
@@ -179,12 +180,10 @@ class _AnnouncementsPreview extends ConsumerWidget {
                               const SizedBox(
                                   width:
                                       10), // Lisää tarvittaessa väliä title- ja subtitle-tekstien välille
-                              Expanded(
-                                child: Text(
-                                  announcement.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
+                              Text(
+                                announcement.title,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
                             ],
                           ),
