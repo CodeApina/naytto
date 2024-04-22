@@ -55,12 +55,10 @@ class HomeScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   SizedBox(height: 20),
-                  // _UserGreetings(),
                   _AnnouncementsPreview(),
                   SizedBox(height: 10),
                   _BookingContents(),
                   SizedBox(height: 20),
-                  // _DashboardNavigationContents(),
                   SizedBox(height: 20),
                 ],
               ),
@@ -336,48 +334,6 @@ class _BookingContents extends ConsumerWidget {
               }),
         ],
       ),
-    );
-  }
-}
-
-// Dashboard navigation section
-// not in use
-class _DashboardNavigationContents extends ConsumerWidget {
-  const _DashboardNavigationContents();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconContainer(
-              iconText: 'Log out',
-              icon: IconButton(
-                onPressed: () {
-                  ref.read(authRepositoryProvider).signOut();
-                  ref.read(AppUser().provider).reset();
-                },
-                icon: const Icon(Icons.logout),
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            IconContainer(
-              iconText: 'Placeholder',
-              icon: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.place),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-      ],
     );
   }
 }
