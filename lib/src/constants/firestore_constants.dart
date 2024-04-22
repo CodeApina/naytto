@@ -21,7 +21,6 @@ class FirestoreFields {
   static const String apartmentsResidentsReference = "recident_reference";
 
   // Booking fields
-  //TODO: Standardize field names for booking
   static const String booking = "";
   static const String bookingApartmentID = "apartmentID";
   static const String bookingDay = "day";
@@ -32,7 +31,6 @@ class FirestoreFields {
   static const String bookingAmenityID = "amenityID";
 
   // Resident fields
-  // TODO: should residents store apartment numbers instead of apartment id for ease of data management?
   static const String residentApartmentNumber = "apartment_number";
   static const String residentEmail = "email";
   static const String residentFirstName = "first_name";
