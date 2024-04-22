@@ -20,10 +20,6 @@ class Maintenance{
 
   Maintenance({required this.maintenanceId, required this.date, required this.apartmentNumber, required this.reason, required this.body, required this.type, required this.status});
 
-  bool fetchData(){
-    
-    return false;
-  }
   factory Maintenance.fromFirestore(Map<String, dynamic> snapshot, id) {
     return Maintenance(
       maintenanceId : id,
@@ -35,6 +31,7 @@ class Maintenance{
       status: snapshot[FirestoreFields.maintenanceStatus]
       );
   }
+  // Translates maintenance object into a map to be stored in Firestore
   Map<String,dynamic> toFirestore(){
     return <String,dynamic>{
       FirestoreFields.maintenanceDate: int.parse(date),
@@ -46,7 +43,7 @@ class Maintenance{
     };
   }
   
-
+  // Translates status text into a text format to be used in text fields
   String statusTextGiver(){
     String statusText;
     switch(status){
@@ -71,6 +68,7 @@ class Maintenance{
 
   
 }
+// Creates a new ticket for maintenance
 bool createTicket(text1, text2, text3){
     storeTicketToFirestore(Maintenance(maintenanceId: "new", date: DateTime.now().microsecondsSinceEpoch.toString(), apartmentNumber: AppUser().apartmentId, reason: text1, body: text2, type: text3, status: 0 ).toFirestore());
     return false;
