@@ -46,7 +46,7 @@ class PersonGenerator{
     List<Person> persons = List.empty(growable: true);
     // Creates phonenumber for the person
     for (int i = 0; i < amountNeeded; i++){
-      String phoneNumber = phoneNumberGenerator();
+      String phoneNumber = phoneNumberGenerator(persons);
       List<String>names = nameGenerator(persons);
       String email = emailGenerator(names);
       persons.add(Person(names[0], names[1], phoneNumber, email));
@@ -63,11 +63,16 @@ class PersonGenerator{
   }
 
   /// Generates a random phone number chooses one prefix and adds 7 numbers to it creating a full phone number
-  String phoneNumberGenerator(){
+  String phoneNumberGenerator(persons){
     List<String> phoneNumberPrefix = ["044", "050", "040"];
     String phoneNumber = phoneNumberPrefix[Random().nextInt(phoneNumberPrefix.length)];
       for(int i = 0; i < 7; i++){
         phoneNumber = phoneNumber + Random().nextInt(10).toString();
+      }
+      for (Person person in persons){
+        if(person.phoneNumber == phoneNumber){
+          phoneNumberGenerator(persons);
+        }
       }
     return phoneNumber;
   }

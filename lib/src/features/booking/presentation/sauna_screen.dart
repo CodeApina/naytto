@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/data/ollinbookingrepo.dart';
-import 'package:naytto/src/features/booking/domain/ollinsaunabookings.dart';
 
 class SaunaScreen extends ConsumerWidget {
   const SaunaScreen({Key? key}) : super(key: key);

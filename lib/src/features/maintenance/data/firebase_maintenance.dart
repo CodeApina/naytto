@@ -1,11 +1,8 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/maintenance/domain/maintenance.dart';
-
 
   // Generates a stream provider for use in maintenance screen
   final maintenanceStreamProvider = StreamProvider.autoDispose<List<Maintenance>>((ref) async*{
@@ -29,7 +26,6 @@ import 'package:naytto/src/features/maintenance/domain/maintenance.dart';
     });
   },);
 
-  
   // Stores the created ticket into Firestore
   void storeTicketToFirestore(maintenanceMap) async{
     final _firestore = FirebaseFirestore.instance;

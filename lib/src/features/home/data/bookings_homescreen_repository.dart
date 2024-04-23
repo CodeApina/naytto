@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
-import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/features/home/domain/bookings_homescreen.dart';
 //  USED IN HOME_SCREEN BOOKINGS SECTION
 

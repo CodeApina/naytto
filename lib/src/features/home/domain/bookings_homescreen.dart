@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 
 //  USED IN BOOKINGS_HOMESCREEN_REPOSITORY
