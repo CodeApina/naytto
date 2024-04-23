@@ -39,11 +39,13 @@ class AmenitiesRepository {
   }
 }
 
+// Riverpod provider for AmenitiesRepository
 @Riverpod(keepAlive: true)
 AmenitiesRepository amenitiesRepository(AmenitiesRepositoryRef ref) {
   return AmenitiesRepository(FirebaseFirestore.instance);
 }
 
+// Riverpod provider for fetching a list of amenities
 @riverpod
 Future<List<Amenity>> amenitiesList(
     AmenitiesListRef ref, String collectionName) {

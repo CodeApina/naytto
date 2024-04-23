@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/data/amenities_repository.dart';
-import 'package:naytto/src/features/booking/data/new_booking_repository.dart';
+import 'package:naytto/src/features/booking/data/booking_repository.dart';
 import 'package:naytto/src/features/booking/domain/amenity.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:naytto/src/features/booking/domain/booking.dart';
@@ -327,7 +327,7 @@ class ConfirmBookingButton extends ConsumerWidget {
                 minimumSize: MaterialStatePropertyAll(
                     Size(MediaQuery.of(context).size.width, 50))),
             onPressed: () {
-              ref.read(newBookingRepositoryProvider).addBooking(
+              ref.read(bookingRepositoryProvider).addBooking(
                   housingCooperative: housingCooperative,
                   booking: Booking(
                       bookingID: '',

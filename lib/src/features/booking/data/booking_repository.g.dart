@@ -1,29 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'new_booking_repository.dart';
+part of 'booking_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$newBookingRepositoryHash() =>
-    r'207d5166b456f894436746cc0729819d893c6746';
+String _$bookingRepositoryHash() => r'ffe6e76d5e0406278c91b0b16b7db5367206d41e';
 
-/// See also [newBookingRepository].
-@ProviderFor(newBookingRepository)
-final newBookingRepositoryProvider = Provider<NewBookingRepository>.internal(
-  newBookingRepository,
-  name: r'newBookingRepositoryProvider',
+/// See also [bookingRepository].
+@ProviderFor(bookingRepository)
+final bookingRepositoryProvider = Provider<NewBookingRepository>.internal(
+  bookingRepository,
+  name: r'bookingRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$newBookingRepositoryHash,
+      : _$bookingRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef NewBookingRepositoryRef = ProviderRef<NewBookingRepository>;
+typedef BookingRepositoryRef = ProviderRef<NewBookingRepository>;
 String _$bookingsForDateStreamHash() =>
-    r'9e9c311c887a9db0bd78b800036e9c7eaa14374e';
+    r'b326b1eb21db2a737791d8848c468d8c028f3ec7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -192,7 +191,7 @@ class _BookingsForDateStreamProviderElement
 }
 
 String _$allBookingsForUserStreamHash() =>
-    r'1d99234a347ae31546ec3481e1012ca74379aac9';
+    r'b642881a4b2678146c35c1a7161b1007cd806283';
 
 /// See also [allBookingsForUserStream].
 @ProviderFor(allBookingsForUserStream)

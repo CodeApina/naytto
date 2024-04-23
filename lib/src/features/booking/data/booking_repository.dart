@@ -1,110 +1,176 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/booking/domain/booking.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-// Access the bookings notifier elsewhere in code via this provider and use it's internal methods
-// Returns an AsyncValue<List<Booking>>
-final userBookingsProvider = AsyncNotifierProvider.family
-    .autoDispose<UserBookings, List<Booking>, String>(() {
-  return UserBookings();
-});
+part 'booking_repository.g.dart';
 
-// TODO: Should probably get converted to a StreamNotifier so the UI is up to date with multiple users
-// Right now the screen would not refresh if another user makes changes to the collection
+class NewBookingRepository {
+  const NewBookingRepository(this._firestore);
+  final FirebaseFirestore _firestore;
 
-// Holds the state of the bookings for the user
-// and provides methods to fetch/add/delete/update them
-// It's a notifier because it holds a state
-// It's autodispose to prevent memory leaks
-// It's family because it takes an argument for booking types
-// It's Async because it returns a future
+  // Query bookings based on various parameters
+  Query<Booking> queryBookings(
+      {required String housingCooperative,
+      String? amenityID,
+      String? apartmentID}) {
+    Query<Booking> query = _firestore
+        .collection(FirestoreCollections.housingCooperative)
+        .doc(housingCooperative)
+        .collection(FirestoreCollections.bookings)
+        .withConverter<Booking>(
+          fromFirestore: (snapshot, _) =>
+              Booking.fromFirestore(snapshot.data()!, snapshot.id),
+          toFirestore: (booking, _) => booking.toFirestore(),
+        );
 
-class UserBookings
-    extends AutoDisposeFamilyAsyncNotifier<List<Booking>, String> {
-  // Build method
-  @override
-  Future<List<Booking>> build(String arg) async {
-    return _fetchBookings(arg);
+    // Filter by amenityID if provided
+    if (amenityID != null) {
+      query =
+          query.where(FirestoreFields.bookingAmenityID, isEqualTo: amenityID);
+    }
+    // Filter by apartmentID if provided
+    if (apartmentID != null) {
+      query = query.where(FirestoreFields.bookingApartmentID,
+          isEqualTo: apartmentID);
+    }
+    return query;
   }
 
-  // Fetch all bookings for the user
-  // param requirement is a booking type like sauna, laundry, etc
-  Future<List<Booking>> _fetchBookings(String bookingType) async {
-    final AppUser user = ref.watch(AppUser().provider);
-    final String housingCooperative = user.housingCooperative;
-    final String apartmentID = user.apartmentId;
+  // Query bookings within a specific time range
+  Query<Booking> queryBookingswithinDate(
+      {required String housingCooperative,
+      required String amenityID,
+      required DateTime date}) {
+    // Get today's date as a day, ignore what the clock is
+    DateTime selectedDate = date;
+    DateTime startOfDay =
+        DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+    DateTime endOfDay = startOfDay
+        .add(const Duration(days: 1))
+        .subtract(const Duration(milliseconds: 1));
 
-    // Query
-    final snapshot = await FirebaseFirestore.instance
+    // Convert start and end of day to Firestore Timestamp objects
+    Timestamp startTimestamp = Timestamp.fromDate(startOfDay);
+    Timestamp endTimestamp = Timestamp.fromDate(endOfDay);
+
+    // This required a composite index to be made "https://firebase.google.com/docs/firestore/query-data/index-overview#composite_indexes"
+    // which Firestore created automatically when trying to run the query
+    Query<Booking> query = _firestore
+        .collection(FirestoreCollections.housingCooperative)
+        .doc(housingCooperative)
+        .collection(FirestoreCollections.bookings)
+        .where(FirestoreFields.bookingAmenityID, isEqualTo: amenityID)
+        .where(FirestoreFields.bookingTimestamp,
+            isGreaterThanOrEqualTo: startTimestamp)
+        .where(FirestoreFields.bookingTimestamp,
+            isLessThanOrEqualTo: endTimestamp)
+        .withConverter<Booking>(
+          fromFirestore: (snapshot, _) =>
+              Booking.fromFirestore(snapshot.data()!, snapshot.id),
+          toFirestore: (booking, _) => booking.toFirestore(),
+        );
+
+    return query;
+  }
+
+  // Add booking
+  Future<void> addBooking(
+      {required String housingCooperative, required Booking booking}) {
+    return _firestore
+        .collection(FirestoreCollections.housingCooperative)
+        .doc(housingCooperative)
+        .collection(FirestoreCollections.bookings)
+        .add(booking.toFirestore());
+  }
+
+  // Delete booking
+  Future<void> deleteBooking(
+      {required String housingCooperative, required String bookingID}) {
+    return _firestore
+        .collection(FirestoreCollections.bookings)
+        .doc(bookingID)
+        .delete();
+  }
+
+  // Update booking
+  Future<void> updateBooking(
+      {required String housingCooperative,
+      required String bookingID,
+      required Booking booking}) {
+    return _firestore
+        .collection(FirestoreCollections.housingCooperative)
+        .doc(housingCooperative)
+        .collection(FirestoreCollections.bookings)
+        .doc(bookingID)
+        .update(booking.toFirestore());
+  }
+
+  // Stream of bookings for a specific day
+  Stream<List<Booking>> watchBookings(
+      {required String housingCooperative,
+      required String amenityID,
+      required DateTime date}) {
+    return queryBookingswithinDate(
+            housingCooperative: housingCooperative,
+            amenityID: amenityID,
+            date: date)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
+  // Query bookings for a specific user using their apartmentID
+  Query<Booking> queryBookingsForUser(
+      {required String housingCooperative, required String apartmentID}) {
+    Query<Booking> query = _firestore
         .collection(FirestoreCollections.housingCooperative)
         .doc(housingCooperative)
         .collection(FirestoreCollections.bookings)
         .where(FirestoreFields.bookingApartmentID, isEqualTo: apartmentID)
-        .where(FirestoreFields.bookingType, isEqualTo: bookingType)
-        .get();
-
-    // Access snapshot data and create a booking object from each document
-    // and add it to the list
-    final List<Booking> bookings = snapshot.docs.map((doc) {
-      final data = doc.data();
-      final id = doc.id;
-      return Booking.fromFirestore(data, id);
-    }).toList();
-
-    // Return the list of bookings
-    return bookings;
+        .orderBy('timestamp', descending: true)
+        .withConverter<Booking>(
+          fromFirestore: (snapshot, _) =>
+              Booking.fromFirestore(snapshot.data()!, snapshot.id),
+          toFirestore: (booking, _) => booking.toFirestore(),
+        );
+    return query;
   }
 
-  // Add a booking and refresh state
-  Future<void> addBooking(Booking booking) async {
-    final AppUser user = ref.watch(AppUser().provider);
-    final String housingCooperative = user.housingCooperative;
-    String bookingType = booking.type;
-
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      await FirebaseFirestore.instance
-          .collection(FirestoreCollections.housingCooperative)
-          .doc(housingCooperative)
-          .collection(FirestoreCollections.bookings)
-          .add(booking.toFirestore());
-      return _fetchBookings(bookingType);
-    });
+  // Returns a stream of lists of bookings for a specific user identified by their housing cooperative and apartment ID.
+  Stream<List<Booking>> watchBookingsForUser(
+      {required String housingCooperative, required String apartmentID}) {
+    return queryBookingsForUser(
+            housingCooperative: housingCooperative, apartmentID: apartmentID)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
+}
 
-  // Delete a booking and refresh state
-  Future<void> deleteBooking(String bookingID, String bookingType) async {
-    final AppUser user = ref.watch(AppUser().provider);
-    final String housingCooperative = user.housingCooperative;
+// Riverpod provider to access this repository and it's methods elsewhere
+@Riverpod(keepAlive: true)
+NewBookingRepository bookingRepository(BookingRepositoryRef ref) {
+  return NewBookingRepository(FirebaseFirestore.instance);
+}
 
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      await FirebaseFirestore.instance
-          .collection(FirestoreCollections.housingCooperative)
-          .doc(housingCooperative)
-          .collection(FirestoreCollections.bookings)
-          .doc(bookingID)
-          .delete();
-      return _fetchBookings(bookingType);
-    });
-  }
+// Riverpod provider for a stream of bookings for a certain day
+@riverpod
+Stream<List<Booking>> bookingsForDateStream(
+    BookingsForDateStreamRef ref, String amenityID, DateTime date) {
+  final user = ref.watch(AppUser().provider);
+  final housingCooperative = user.housingCooperative;
+  final repository = ref.watch(bookingRepositoryProvider);
+  return repository.watchBookings(
+      housingCooperative: housingCooperative, amenityID: amenityID, date: date);
+}
 
-  // Update a booking and refresh state
-  Future<void> updateBooking(String bookingID, Booking booking) async {
-    final AppUser user = ref.watch(AppUser().provider);
-    final String housingCooperative = user.housingCooperative;
-
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      await FirebaseFirestore.instance
-          .collection(FirestoreCollections.housingCooperative)
-          .doc(housingCooperative)
-          .collection(FirestoreCollections.bookings)
-          .doc(bookingID)
-          .update(booking.toFirestore());
-      return _fetchBookings(booking.type);
-    });
-  }
+// Riverpod provider for the stream of all bookings for a specific user
+@riverpod
+Stream<List<Booking>> allBookingsForUserStream(
+    AllBookingsForUserStreamRef ref) {
+  final user = ref.watch(AppUser().provider);
+  final housingCooperative = user.housingCooperative;
+  final repository = ref.watch(bookingRepositoryProvider);
+  return repository.watchBookingsForUser(
+      housingCooperative: housingCooperative, apartmentID: user.apartmentId);
 }
