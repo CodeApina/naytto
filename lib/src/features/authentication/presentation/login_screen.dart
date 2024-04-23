@@ -35,6 +35,8 @@ class LoginScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(64, 8, 64, 8),
                 child: TextField(
+                  obscureText: true,
+                  obscuringCharacter: '*',
                   decoration: const InputDecoration(hintText: 'Password'),
                   controller: _passwordController,
                 ),
