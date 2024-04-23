@@ -18,7 +18,13 @@ class MaintenanceScreen extends ConsumerWidget {
     return ColorfulSafeArea(
       color: Colors.white,
       child: Scaffold(
-        body: SingleChildScrollView(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/maintenance.jpg")
+            )
+          ),
+          child: SingleChildScrollView(
             child: Center(
               child: Column(
                 children: [
@@ -143,9 +149,8 @@ class MaintenanceScreen extends ConsumerWidget {
                                   padding: const EdgeInsets.all(10),
                                   child: Container(
                                     height: 100,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          128, 238, 238, 238),
+                                    decoration: BoxDecoration( 
+                                      color: Color.fromARGB(128, 197, 196, 196).withOpacity(0.9),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Center(
@@ -200,7 +205,8 @@ class MaintenanceScreen extends ConsumerWidget {
               ),
             ),
           ),
-        ),
+        )
+      ),
     );
   }
 }
