@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/data/link_auth_to_db.dart';
-import 'package:naytto/src/utilities/housing_cooperative_creator.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 /// Contains all relevant information on User
@@ -91,7 +90,7 @@ class AppUser extends ChangeNotifier {
     return _instance;
   }
 
-  AppUser._internal() {}
+  AppUser._internal();
 
   void reset() {
     uid = "";
