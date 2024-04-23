@@ -115,7 +115,7 @@ class SettingsScreen extends ConsumerWidget {
                                   Row(
                                     children: [
                                       Text(
-                                        'My H.cooperative:',
+                                        'My Housing co-op',
                                         style: Theme.of(context)
                                             .textTheme
                                             .displaySmall,
