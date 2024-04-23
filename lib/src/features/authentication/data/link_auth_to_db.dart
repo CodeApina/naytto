@@ -5,35 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LinkAuthToDb {
   var db = FirebaseFirestore.instance;
 
-  /// Creates user in database
-  ///
-  /// Takes in userObject from Firebase authentication
-  Future<bool> createUserInDB(userObject) {
-    final docRef = db.collection(FirestoreCollections.users);
-    return docRef
-        .doc(userObject.user.uid)
-        .set({FirestoreFields.userEmail: userObject.user.email}).then((value) {
-      return true;
-    }).onError((error, stackTrace) {
-      throw Exception("$error \n $stackTrace");
-    });
-  }
-
-  /// Searches the database for user
-  ///
-  /// Takes in userObject from Firebase authentication
-  Future<bool> searchForUserInDB(userObject) {
-    final docRef = db.collection(FirestoreCollections.users);
-    return docRef.doc(userObject.user.uid).get().then((value) {
-      if (value.exists) {
-        return true;
-      }
-      return false;
-    }).onError((error, stackTrace) {
-      throw Exception("$error \n $stackTrace");
-    });
-  }
-
   /// Fetches user data from database
   ///
   /// Takes in uid from Firebase authentication
