@@ -104,22 +104,6 @@ class AppUser extends ChangeNotifier {
     housingCooperativeAddress = "";
   }
 
-  // Calls LinkAuthToDb function to create user in database
-  //
-  // Takes in userObject from Firebase authentication
-  // housingcooperative from authentication here too?
-  createUser(userObject) {
-    uid = userObject.user.uid;
-    email = userObject.user.email;
-    LinkAuthToDb().searchForUserInDB(userObject).then((value) {
-      if (!value) {
-        LinkAuthToDb().createUserInDB(userObject).then;
-      }
-    }).onError((error, stackTrace) {
-      throw Exception("$error \n $stackTrace");
-    });
-  }
-
   // Fetches user data from database
   // returns true if everything is fine
   Future<bool> fetchUser() async {
