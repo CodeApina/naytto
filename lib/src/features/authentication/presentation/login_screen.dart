@@ -10,30 +10,39 @@ class LoginScreen extends ConsumerWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(96, 300, 96, 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 400.0,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/welcome.jpg'),
-                      fit: BoxFit.cover,
-                    ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 80,
+              ),
+              Container(
+                height: 400.0,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/welcome.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                TextField(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(64, 8, 64, 8),
+                child: TextField(
                   decoration: const InputDecoration(hintText: 'Email'),
                   controller: _emailController,
                 ),
-                TextField(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(64, 8, 64, 8),
+                child: TextField(
                   decoration: const InputDecoration(hintText: 'Password'),
                   controller: _passwordController,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(64, 8, 64, 8),
+                child: SizedBox(
+                  width: double.infinity,
                   child: FilledButton.icon(
                     icon: const Icon(Icons.login),
                     label: const Text('Login with Email'),
@@ -69,19 +78,24 @@ class LoginScreen extends ConsumerWidget {
                     },
                   ),
                 ),
-                //Developer Login
-                FilledButton.icon(
-                    onPressed: () {
-                      String email = "janne.korhonen@gmail.com";
-                      String password = "salasana";
-                      ref
-                          .read(authRepositoryProvider)
-                          .signInWithEmailAndPassword(email, password);
-                    },
-                    icon: const Icon(Icons.developer_board),
-                    label: const Text("Login as developer"))
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(64, 8, 64, 8),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                      onPressed: () {
+                        String email = "janne.korhonen@gmail.com";
+                        String password = "salasana";
+                        ref
+                            .read(authRepositoryProvider)
+                            .signInWithEmailAndPassword(email, password);
+                      },
+                      icon: const Icon(Icons.developer_board),
+                      label: const Text("Login as developer")),
+                ),
+              ),
+            ],
           ),
         ),
       ),
