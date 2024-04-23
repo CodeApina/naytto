@@ -12,7 +12,7 @@ import 'package:naytto/src/features/home/presentation/announcement_view_screen.d
 import 'package:naytto/src/features/home/presentation/announcements_screen.dart';
 import 'package:naytto/src/features/home/presentation/home_screen.dart';
 import 'package:naytto/src/features/maintenance/presentation/maintenance_screen.dart';
-import 'package:naytto/src/features/settings/presentation/profile_screen.dart';
+import 'package:naytto/src/features/profile/presentation/profile_screen.dart';
 import 'package:naytto/src/routing/go_router_refresh_stream.dart';
 import 'package:naytto/src/routing/scaffold_with_navbar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
