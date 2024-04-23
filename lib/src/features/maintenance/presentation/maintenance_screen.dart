@@ -18,22 +18,29 @@ class MaintenanceScreen extends ConsumerWidget {
     return ColorfulSafeArea(
       color: Colors.white,
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/maintenance.jpg")
-            )
-          ),
-          child: SingleChildScrollView(
+        body:SingleChildScrollView(
             child: Center(
               child: Column(
                 children: [
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                   Container(
-                      padding: const EdgeInsets.only(bottom: 100, top: 20),
+                      padding: const EdgeInsets.only(bottom: 50, top: 20),
                       child: Text(
                         "Maintenance",
                         style: Theme.of(context).textTheme.displayLarge,
                       )),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Container(
+                      height: 400.0,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/maintenance.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
                   Column(
                     children: [Text(
                         AppUser().housingCooperative,
@@ -150,7 +157,7 @@ class MaintenanceScreen extends ConsumerWidget {
                                   child: Container(
                                     height: 100,
                                     decoration: BoxDecoration( 
-                                      color: Color.fromARGB(128, 197, 196, 196).withOpacity(0.9),
+                                      color: const Color.fromARGB(128, 238, 238, 238),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Center(
@@ -206,7 +213,6 @@ class MaintenanceScreen extends ConsumerWidget {
             ),
           ),
         )
-      ),
-    );
+      );
   }
 }
