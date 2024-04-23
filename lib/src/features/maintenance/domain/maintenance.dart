@@ -9,11 +9,9 @@ class Maintenance{
   final String apartmentNumber;
   final String reason;
   final String body;
-  final String type;
   final int status;
 
-
-  Maintenance({required this.maintenanceId, required this.date, required this.apartmentNumber, required this.reason, required this.body, required this.type, required this.status});
+  Maintenance({required this.maintenanceId, required this.date, required this.apartmentNumber, required this.reason, required this.body, required this.status});
 
   factory Maintenance.fromFirestore(Map<String, dynamic> snapshot, id) {
     return Maintenance(
@@ -22,7 +20,6 @@ class Maintenance{
       apartmentNumber: snapshot[FirestoreFields.maintenanceApartmentNumber],
       reason: snapshot[FirestoreFields.maintenanceReason],
       body: snapshot[FirestoreFields.maintenanceBody],
-      type: snapshot[FirestoreFields.maintenanceType],
       status: snapshot[FirestoreFields.maintenanceStatus]
       );
   }
@@ -32,7 +29,6 @@ class Maintenance{
       FirestoreFields.maintenanceDate: int.parse(date),
       FirestoreFields.maintenanceReason: reason,
       FirestoreFields.maintenanceBody: body,
-      FirestoreFields.maintenanceType: type,
       FirestoreFields.maintenanceStatus: status,
       FirestoreFields.maintenanceApartmentNumber: apartmentNumber
     };
@@ -62,7 +58,7 @@ class Maintenance{
   }
 }
 // Creates a new ticket for maintenance
-bool createTicket(text1, text2, text3){
-    storeTicketToFirestore(Maintenance(maintenanceId: "new", date: DateTime.now().microsecondsSinceEpoch.toString(), apartmentNumber: AppUser().apartmentId, reason: text1, body: text2, type: text3, status: 0 ).toFirestore());
+bool createTicket(reason, body){
+    storeTicketToFirestore(Maintenance(maintenanceId: "new", date: DateTime.now().microsecondsSinceEpoch.toString(), apartmentNumber: AppUser().apartmentId, reason: reason, body: body, status: 0 ).toFirestore());
     return false;
   }

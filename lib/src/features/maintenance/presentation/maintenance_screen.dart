@@ -117,13 +117,6 @@ class MaintenanceScreen extends ConsumerWidget {
                                             child: TextFormField(
                                                 controller: bodyController),
                                           ),
-                                          const Text("Type of maintenance:"),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: TextFormField(
-                                              controller: typeController,
-                                            ),
-                                          ),
                                           Padding(
                                             padding: const EdgeInsets.all(8),
                                             child: ElevatedButton(
@@ -131,8 +124,7 @@ class MaintenanceScreen extends ConsumerWidget {
                                               onPressed: () {
                                                 createTicket(
                                                     reasonController.text,
-                                                    bodyController.text,
-                                                    typeController.text);
+                                                    bodyController.text);
                                                 Navigator.of(context,
                                                         rootNavigator: true)
                                                     .pop();
@@ -183,33 +175,41 @@ class MaintenanceScreen extends ConsumerWidget {
                                             capitalizer(maintenance.reason),
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .displayMedium,
+                                                .displaySmall,
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
                                           ),
                                         ),
                                         const SizedBox(
-                                          width: 40,
+                                          width: 20,
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              maintenance.statusTextGiver(),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displaySmall,
-                                            ),
-                                            Text(
-                                              maintenance.body,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium,
-                                            ),
-                                            Text(maintenance.date,
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                maintenance.statusTextGiver(),
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .displaySmall)
-                                          ],
+                                                    .displaySmall,
+                                              ),
+                                              Text(
+                                                maintenance.body,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium,
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                              ),
+                                              Text(maintenance.date,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall)
+                                            ],
+                                          )
                                         )
                                       ]),
                                     ),
