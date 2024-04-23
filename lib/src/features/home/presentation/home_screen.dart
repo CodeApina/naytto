@@ -1,9 +1,7 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naytto/src/common_widgets/icon_container.dart';
 import 'package:naytto/src/constants/theme.dart';
-import 'package:naytto/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/data/announcement_repository.dart';
 import 'package:naytto/src/features/home/data/bookings_homescreen_repository.dart';
@@ -159,7 +157,6 @@ class _AnnouncementsPreview extends ConsumerWidget {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
-
                           leading: announcement.urgency == 2
                               ? const Icon(
                                   Icons.announcement,
@@ -169,11 +166,6 @@ class _AnnouncementsPreview extends ConsumerWidget {
                                   Icons.announcement_outlined,
                                   color: Color.fromARGB(255, 241, 39, 25),
                                 ),
-                          // subtitle: Text(
-                          //   announcement.title,
-                          //   overflow: TextOverflow.ellipsis,
-                          //   maxLines: 3,
-                          // ),
                         ),
                       ),
                     );
@@ -262,9 +254,10 @@ class _BookingContents extends ConsumerWidget {
                               children: [
                                 Row(children: [
                                   (booking.type == 'sauna')
-                                      ? Icon(Icons.shower)
-                                      : Icon(Icons.local_laundry_service_sharp),
-                                  SizedBox(
+                                      ? const Icon(Icons.shower)
+                                      : const Icon(
+                                          Icons.local_laundry_service_sharp),
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
@@ -273,7 +266,7 @@ class _BookingContents extends ConsumerWidget {
                                         .textTheme
                                         .displaySmall,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 40,
                                   ),
                                   Text(

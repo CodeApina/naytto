@@ -194,7 +194,6 @@ class AvailableTimes extends ConsumerWidget {
     final selectedAmenityID = selectedAmenity.amenityID;
     final AsyncValue<List<Booking>> bookings = ref
         .watch(bookingsForDateStreamProvider(selectedAmenityID, selectedDate));
-    final selectedTimeSlot = ref.watch(selectedTimeSlotProvider);
     final bool hasAmenityBeenChosen = ref.watch(hasAmenityBeenChosenProvider);
 
     if (!hasAmenityBeenChosen) {

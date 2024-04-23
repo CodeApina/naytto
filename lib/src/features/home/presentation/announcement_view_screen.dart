@@ -14,12 +14,13 @@ class AnnouncementViewScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              ref.read(goRouterProvider).pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-            )),
+          onPressed: () {
+            ref.read(goRouterProvider).pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+        ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
@@ -36,15 +37,15 @@ class AnnouncementViewScreen extends ConsumerWidget {
             children: [
               Text(
                 announcement.title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 announcement.body,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
             ],
           ),

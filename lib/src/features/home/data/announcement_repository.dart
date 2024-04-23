@@ -4,15 +4,16 @@ import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/home/domain/announcement.dart';
 
+// Provider for fetching the latest 2 announcements for the home screen
 final announcementsHomeScreenProvider =
     StreamProvider.autoDispose<List<Announcement>>(
   (ref) async* {
-    final _firestore = FirebaseFirestore.instance;
+    final firestore = FirebaseFirestore.instance;
 
     final String housingCooperativeName =
         ref.watch(AppUser().provider).housingCooperative;
 
-    yield* _firestore
+    yield* firestore
         .collection(FirestoreCollections.housingCooperative)
         .doc(housingCooperativeName)
         .collection(FirestoreCollections.announcements)
@@ -25,14 +26,15 @@ final announcementsHomeScreenProvider =
   },
 );
 
+// Provider for fetching all announcements
 final allAnnouncementsProvider = StreamProvider.autoDispose<List<Announcement>>(
   (ref) async* {
-    final _firestore = FirebaseFirestore.instance;
+    final firestore = FirebaseFirestore.instance;
 
     final String housingCooperativeName =
         ref.watch(AppUser().provider).housingCooperative;
 
-    yield* _firestore
+    yield* firestore
         .collection(FirestoreCollections.housingCooperative)
         .doc(housingCooperativeName)
         .collection(FirestoreCollections.announcements)

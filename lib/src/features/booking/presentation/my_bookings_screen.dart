@@ -1,10 +1,7 @@
-import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naytto/src/features/booking/data/new_booking_repository.dart';
-import 'package:naytto/src/features/booking/domain/booking.dart';
+import 'package:naytto/src/features/booking/data/booking_repository.dart';
 import 'package:naytto/src/routing/app_router.dart';
 import 'package:naytto/src/utilities/capitalizer.dart';
 import 'package:naytto/src/utilities/timestamp_formatter.dart';
@@ -72,9 +69,10 @@ class BookingsList extends ConsumerWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   (booking.type == 'sauna')
-                                      ? Icon(Icons.shower)
-                                      : Icon(Icons.local_laundry_service_sharp),
-                                  SizedBox(
+                                      ? const Icon(Icons.shower)
+                                      : const Icon(
+                                          Icons.local_laundry_service_sharp),
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
