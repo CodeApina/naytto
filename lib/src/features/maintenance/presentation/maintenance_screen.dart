@@ -166,6 +166,7 @@ class MaintenanceScreen extends ConsumerWidget {
                                       child: Row(children: [
                                         const Padding(padding: EdgeInsets.only(left: 10)),
                                         const Icon(Icons.build),
+                                        const Padding(padding: EdgeInsets.only(left: 10),),
                                         SizedBox(
                                           width: 100,
                                           child: Text(
