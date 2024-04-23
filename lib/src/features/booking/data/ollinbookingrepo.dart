@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
@@ -168,7 +167,7 @@ class SaunaDataUpdate {
               .collection('saunas')
               .doc(docId)
               .update({
-            '$day.$time.available': true,
+            '$day.$time.available': newValue,
             '$day.$time.apartmentID': "",
           });
         }
