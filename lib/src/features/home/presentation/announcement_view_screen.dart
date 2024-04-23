@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/src/features/home/domain/announcement.dart';
 import 'package:naytto/src/routing/app_router.dart';
 
+/// Displays a single announcement
+
 class AnnouncementViewScreen extends ConsumerWidget {
   const AnnouncementViewScreen({super.key, required this.announcement});
 

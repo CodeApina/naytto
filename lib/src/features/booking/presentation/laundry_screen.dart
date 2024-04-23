@@ -176,6 +176,7 @@ class _DateSelectionState extends ConsumerState<DateSelection> {
         onDateChange: (selectedDate) {
           setState(() {
             this.selectedDate = selectedDate;
+            ref.read(selectedTimeSlotProvider.notifier).state = null;
             ref.read(selectedDateTimeProvider.notifier).state = selectedDate;
           });
         },
@@ -245,8 +246,25 @@ List<DateTime> generateAvailableTimes(
   int fromHour = int.parse(availableFrom);
   int toHour = int.parse(availableTo);
 
-  final earliestTime =
-      DateTime(chosenDate.year, chosenDate.month, chosenDate.day, fromHour, 0);
+  // Get current date
+  DateTime currentDate = DateTime.now();
+
+  // Check if chosenDate is today
+  bool isToday = chosenDate.year == currentDate.year &&
+      chosenDate.month == currentDate.month &&
+      chosenDate.day == currentDate.day;
+
+  DateTime earliestTime;
+
+  // If the chosen date is today, don't generate the times from the past
+  if (isToday) {
+    earliestTime = DateTime(currentDate.year, currentDate.month,
+        currentDate.day, currentDate.hour, 0);
+    fromHour = earliestTime.hour;
+  } else {
+    earliestTime = DateTime(
+        chosenDate.year, chosenDate.month, chosenDate.day, fromHour, 0);
+  }
   final latestTime =
       DateTime(chosenDate.year, chosenDate.month, chosenDate.day, toHour, 0);
 
@@ -326,16 +344,39 @@ class ConfirmBookingButton extends ConsumerWidget {
                 minimumSize: MaterialStatePropertyAll(
                     Size(MediaQuery.of(context).size.width, 50))),
             onPressed: () {
-              ref.read(bookingRepositoryProvider).addBooking(
-                  housingCooperative: housingCooperative,
-                  booking: Booking(
-                      bookingID: '',
-                      apartmentID: apartmentID,
-                      amenityID: amenityID,
-                      timestamp: Timestamp.fromDate(selectedTimeSlot),
-                      amenityDisplayName: selectedAmenity.displayName,
-                      type: 'laundry'));
-              ref.read(selectedTimeSlotProvider.notifier).state = null;
+              try {
+                // Add booking
+                ref.read(bookingRepositoryProvider).addBooking(
+                      housingCooperative: housingCooperative,
+                      booking: Booking(
+                        bookingID: '',
+                        apartmentID: apartmentID,
+                        amenityID: amenityID,
+                        timestamp: Timestamp.fromDate(selectedTimeSlot),
+                        amenityDisplayName: selectedAmenity.displayName,
+                        type: 'laundry',
+                      ),
+                    );
+                // Clear selected time slot
+                ref.read(selectedTimeSlotProvider.notifier).state = null;
+
+                // Show success snackbar
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Booking confirmed successfully!'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              } catch (error) {
+                // Show error snackbar
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content:
+                        Text('Error confirming booking. Please try again.'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.start,
