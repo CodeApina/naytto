@@ -145,9 +145,9 @@ class MaintenanceScreen extends ConsumerWidget {
                                   ],
                                 )));
                       },
-                      child: Container(
+                      child: const SizedBox(
                         width: 120,
-                        child:const Row(
+                        child:Row(
                         children: [
                           Icon(Icons.receipt, color: Color.fromRGBO(0, 124, 124, 1.0),),
                           Padding(padding: EdgeInsets.only(left: 10)),
