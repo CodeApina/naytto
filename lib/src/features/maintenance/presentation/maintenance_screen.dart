@@ -80,7 +80,7 @@ class MaintenanceScreen extends ConsumerWidget {
                           ]))
                     ],
                   ),
-                  TextButton(
+                  ElevatedButton(
                       onPressed: () async {
                         await showDialog(
                             context: context,
@@ -145,7 +145,17 @@ class MaintenanceScreen extends ConsumerWidget {
                                   ],
                                 )));
                       },
-                      child: const Text('Create Ticket')),
+                      child: Container(
+                        width: 120,
+                        child:const Row(
+                        children: [
+                          Icon(Icons.receipt, color: Color.fromRGBO(0, 124, 124, 1.0),),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Text('Create Ticket')
+                        ],
+                      ), 
+                    ),
+                  ),
                   streamWatcher.when(
                       data: (streamWatcher) {
                         return ListView.builder(
