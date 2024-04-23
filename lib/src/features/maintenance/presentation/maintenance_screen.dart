@@ -23,7 +23,7 @@ class MaintenanceScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   Container(
-                      padding: EdgeInsets.only(bottom: 100, top: 20),
+                      padding: const EdgeInsets.only(bottom: 100, top: 20),
                       child: Text(
                         "Maintenance",
                         style: Theme.of(context).textTheme.displayLarge,
