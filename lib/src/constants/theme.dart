@@ -31,7 +31,7 @@ ThemeData getAppTheme(BuildContext context) {
     filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
-                Color.fromRGBO(0, 124, 124, 1)))),
+                const Color.fromRGBO(0, 124, 124, 1)))),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 128,
       showSelectedLabels: true,
@@ -51,8 +51,8 @@ ThemeData getAppTheme(BuildContext context) {
       unselectedIconTheme: IconThemeData(color: Colors.grey[600]),
     ),
     listTileTheme: ListTileThemeData(
-      textColor: Color.fromARGB(255, 14, 12, 12),
-      iconColor: Color.fromRGBO(0, 124, 124, 1.0),
+      textColor: const Color.fromARGB(255, 14, 12, 12),
+      iconColor: const Color.fromRGBO(0, 124, 124, 1.0),
       titleTextStyle: GoogleFonts.raleway(
           textStyle:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

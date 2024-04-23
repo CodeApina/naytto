@@ -28,10 +28,10 @@ part 'app_router.g.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _bookingNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'booking');
-final _settingsNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'settings');
+final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'settings');
 final _devNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dev');
-final _maintenanceNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'maintenance');
+final _maintenanceNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'maintenance');
 
 // Add a new entry to the AppRoute enum for your route whether it's nested or not.
 enum AppRoute {
@@ -328,6 +328,7 @@ GoRouter goRouter(GoRouterRef ref) {
                   const NoTransitionPage(child: SettingsScreen()),
             )
           ]),
+          // Maintenance section with nested routes
           StatefulShellBranch(navigatorKey: _maintenanceNavigatorKey, routes: [
             GoRoute(
               path: '/maintenance',
@@ -336,6 +337,7 @@ GoRouter goRouter(GoRouterRef ref) {
                   const NoTransitionPage(child: MaintenanceScreen()),
             )
           ]),
+          // Dev section with nested routes
           StatefulShellBranch(navigatorKey: _devNavigatorKey, routes: [
             GoRoute(
               path: '/dev',
@@ -344,7 +346,6 @@ GoRouter goRouter(GoRouterRef ref) {
                   NoTransitionPage(child: DevScreen()),
             )
           ]),
-          
         ],
       )
     ],
