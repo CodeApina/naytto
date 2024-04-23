@@ -15,6 +15,15 @@ class LoginScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(
+                  height: 400.0,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/welcome.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
                 TextField(
                   decoration: const InputDecoration(hintText: 'Email'),
                   controller: _emailController,
