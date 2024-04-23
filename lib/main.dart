@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naytto/firebase_options.dart';
 import 'package:naytto/src/constants/theme.dart';
 import 'package:naytto/src/routing/app_router.dart';
+import 'package:flutter/services.dart';
 
 class MyObserver extends ProviderObserver {
   @override
@@ -58,6 +59,10 @@ void main() async {
 class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
     final goRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       routerConfig: goRouter,
