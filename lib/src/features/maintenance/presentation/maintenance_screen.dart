@@ -18,17 +18,19 @@ class MaintenanceScreen extends ConsumerWidget {
     return ColorfulSafeArea(
       color: Colors.white,
       child: Scaffold(
+         appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Text(
+            'Maintenance',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ),
         body:SingleChildScrollView(
             child: Center(
               child: Column(
                 children: [
                   const Padding(padding: EdgeInsets.only(top: 20)),
-                  Container(
-                      padding: const EdgeInsets.only(bottom: 50, top: 20),
-                      child: Text(
-                        "Maintenance",
-                        style: Theme.of(context).textTheme.displayLarge,
-                      )),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Container(
@@ -162,6 +164,7 @@ class MaintenanceScreen extends ConsumerWidget {
                                     ),
                                     child: Center(
                                       child: Row(children: [
+                                        const Padding(padding: EdgeInsets.only(left: 10)),
                                         const Icon(Icons.build),
                                         SizedBox(
                                           width: 100,
