@@ -19,7 +19,6 @@ class MaintenanceScreen extends ConsumerWidget {
       color: Colors.white,
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Container(
             child: Center(
               child: Column(
                 children: [
@@ -30,18 +29,16 @@ class MaintenanceScreen extends ConsumerWidget {
                         style: Theme.of(context).textTheme.displayLarge,
                       )),
                   Column(
-                    children: [
-                      Container(
-                          child: Text(
+                    children: [Text(
                         AppUser().housingCooperative,
                         style: Theme.of(context).textTheme.displayMedium,
-                      )),
+                      ),
                       Container(
-                          padding: EdgeInsets.only(left: 20, top: 20),
+                          padding: const EdgeInsets.only(left: 20, top: 20),
                           child: Row(
                             children: [
                               Container(
-                                padding: EdgeInsets.only(right: 50),
+                                padding: const EdgeInsets.only(right: 50),
                                 child: Text(
                                   "Address: ",
                                   style:
@@ -53,10 +50,10 @@ class MaintenanceScreen extends ConsumerWidget {
                             ],
                           )),
                       Container(
-                          padding: EdgeInsets.only(left: 20, bottom: 10),
+                          padding: const EdgeInsets.only(left: 20, bottom: 10),
                           child: Row(children: [
                             Container(
-                              padding: EdgeInsets.only(right: 90),
+                              padding: const EdgeInsets.only(right: 90),
                               child: Text("Tel: ",
                                   style:
                                       Theme.of(context).textTheme.displaySmall),
@@ -171,7 +168,7 @@ class MaintenanceScreen extends ConsumerWidget {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "${maintenance.statusTextGiver()}",
+                                              maintenance.statusTextGiver(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displaySmall,
@@ -204,7 +201,6 @@ class MaintenanceScreen extends ConsumerWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }

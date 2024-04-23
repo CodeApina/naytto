@@ -1,12 +1,7 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:naytto/src/constants/firestore_constants.dart';
 import 'package:naytto/src/features/authentication/domain/app_user.dart';
 import 'package:naytto/src/features/maintenance/data/firebase_maintenance.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class Maintenance{
   late final String maintenanceId;
@@ -42,7 +37,7 @@ class Maintenance{
       FirestoreFields.maintenanceApartmentNumber: apartmentNumber
     };
   }
-  
+
   // Translates status text into a text format to be used in text fields
   String statusTextGiver(){
     String statusText;
@@ -65,8 +60,6 @@ class Maintenance{
     }
     return statusText;
   }
-
-  
 }
 // Creates a new ticket for maintenance
 bool createTicket(text1, text2, text3){
