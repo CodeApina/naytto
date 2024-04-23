@@ -300,7 +300,7 @@ class _BookingContents extends ConsumerWidget {
                                             ),
                                       (booking.displayname != null)
                                           ? Text(
-                                              booking.displayname!,
+                                              capitalizer(booking.displayname!),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall,
