@@ -11,30 +11,34 @@ class MaintenanceScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    MediaQueryData queryData = MediaQuery.of(context);
     final reasonController = TextEditingController();
     final bodyController = TextEditingController();
     final typeController = TextEditingController();
     final streamWatcher = ref.watch(maintenanceStreamProvider);
     return ColorfulSafeArea(
-      color: Colors.white,
-      child: Scaffold(
-         appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          title: Text(
-            'Maintenance',
-            style: Theme.of(context).textTheme.displayLarge,
+        color: Colors.white,
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            title: Text(
+              'Maintenance',
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
           ),
-        ),
-        body:SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Center(
               child: Column(
                 children: [
-                  const Padding(padding: EdgeInsets.only(top: 20)),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
+                      padding:
+                          EdgeInsets.only(top: queryData.size.height * 0.02)),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(bottom: queryData.size.height * 0.02),
                     child: Container(
-                      height: 400.0,
+                      height: queryData.size.height * 0.55,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage('assets/maintenance.jpg'),
@@ -43,109 +47,126 @@ class MaintenanceScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Column(
-                    children: [Text(
-                        AppUser().housingCooperative,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
+                  Text(
+                    AppUser().housingCooperative,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                  Row(
+                    children: [
                       Container(
-                          padding: const EdgeInsets.only(left: 20, top: 20),
-                          child: Row(
+                          height: queryData.size.height * 0.1,
+                          width: queryData.size.width * 0.35,
+                          padding: EdgeInsets.only(
+                              left: queryData.size.width * 0.05,
+                              bottom: queryData.size.height * 0.02,
+                              top: queryData.size.height * 0.02),
+                          child: Column(
                             children: [
-                              Container(
-                                padding: const EdgeInsets.only(right: 50),
+                              Align(
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Address: ",
                                   style:
                                       Theme.of(context).textTheme.displaySmall,
                                 ),
                               ),
-                              Text(AppUser().housingCooperativeAddress,
-                                  style: Theme.of(context).textTheme.bodySmall)
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Tel: ",
+                                    textAlign: TextAlign.left,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall),
+                              )
                             ],
                           )),
                       Container(
-                          padding: const EdgeInsets.only(left: 20, bottom: 10),
-                          child: Row(children: [
-                            Container(
-                              padding: const EdgeInsets.only(right: 90),
-                              child: Text("Tel: ",
-                                  style:
-                                      Theme.of(context).textTheme.displaySmall),
-                            ),
+                          padding: EdgeInsets.only(
+                              left: queryData.size.width * 0.05,
+                              bottom: queryData.size.height * 0.02,
+                              top: queryData.size.height * 0.02),
+                          child: Column(children: [
+                            Text(AppUser().housingCooperativeAddress,
+                                style: Theme.of(context).textTheme.bodySmall),
                             Text(
                               AppUser().housingCooperativeTel,
                               style: Theme.of(context).textTheme.bodySmall,
                             )
-                          ]))
+                          ])),
+                      SizedBox(
+                        width: queryData.size.width * 0.35,
+                      )
                     ],
                   ),
                   ElevatedButton(
-                      onPressed: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                    content: Stack(
-                                  clipBehavior: Clip.none,
-                                  children: <Widget>[
-                                    Positioned(
-                                      right: -40,
-                                      top: -40,
-                                      child: InkResponse(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const CircleAvatar(
-                                          backgroundColor: Colors.red,
-                                          child: Icon(Icons.close),
-                                        ),
+                    onPressed: () async {
+                      await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                  content: Stack(
+                                clipBehavior: Clip.none,
+                                children: <Widget>[
+                                  Positioned(
+                                    right: -40,
+                                    top: -40,
+                                    child: InkResponse(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const CircleAvatar(
+                                        backgroundColor: Colors.red,
+                                        child: Icon(Icons.close),
                                       ),
                                     ),
-                                    Form(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          const Text("Maintenance reason:"),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: TextFormField(
-                                                controller: reasonController),
+                                  ),
+                                  Form(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        const Text("Maintenance reason:"),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: TextFormField(
+                                              controller: reasonController),
+                                        ),
+                                        const Text("Additional info:"),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: TextFormField(
+                                              controller: bodyController),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: ElevatedButton(
+                                            child: const Text("Submit"),
+                                            onPressed: () {
+                                              createTicket(
+                                                  reasonController.text,
+                                                  bodyController.text);
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            },
                                           ),
-                                          const Text("Additional info:"),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: TextFormField(
-                                                controller: bodyController),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: ElevatedButton(
-                                              child: const Text("Submit"),
-                                              onPressed: () {
-                                                createTicket(
-                                                    reasonController.text,
-                                                    bodyController.text);
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop();
-                                              },
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )));
-                      },
-                      child: const SizedBox(
-                        width: 120,
-                        child:Row(
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )));
+                    },
+                    child: const SizedBox(
+                      width: 120,
+                      child: Row(
                         children: [
-                          Icon(Icons.receipt, color: Color.fromRGBO(0, 124, 124, 1.0),),
+                          Icon(
+                            Icons.receipt,
+                            color: Color.fromRGBO(0, 124, 124, 1.0),
+                          ),
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Text('Create Ticket')
                         ],
-                      ), 
+                      ),
                     ),
                   ),
                   streamWatcher.when(
@@ -159,18 +180,26 @@ class MaintenanceScreen extends ConsumerWidget {
                               return Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Container(
-                                    height: 100,
-                                    decoration: BoxDecoration( 
-                                      color: const Color.fromARGB(128, 238, 238, 238),
+                                    height: queryData.size.height * 0.18,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          128, 238, 238, 238),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Center(
                                       child: Row(children: [
-                                        const Padding(padding: EdgeInsets.only(left: 10)),
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                left: queryData.size.width *
+                                                    0.03)),
                                         const Icon(Icons.build),
-                                        const Padding(padding: EdgeInsets.only(left: 10),),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left:
+                                                  queryData.size.width * 0.03),
+                                        ),
                                         SizedBox(
-                                          width: 100,
+                                          width: queryData.size.width * 0.20,
                                           child: Text(
                                             capitalizer(maintenance.reason),
                                             style: Theme.of(context)
@@ -181,36 +210,35 @@ class MaintenanceScreen extends ConsumerWidget {
                                             maxLines: 2,
                                           ),
                                         ),
-                                        const SizedBox(
-                                          width: 20,
+                                        SizedBox(
+                                          width: queryData.size.width * 0.02,
                                         ),
                                         Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                maintenance.statusTextGiver(),
+                                            child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              maintenance.statusTextGiver(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displaySmall,
+                                            ),
+                                            Text(
+                                              maintenance.body,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                            Text(maintenance.date,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .displaySmall,
-                                              ),
-                                              Text(
-                                                maintenance.body,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium,
-                                                textAlign: TextAlign.center,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
-                                              Text(maintenance.date,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displaySmall)
-                                            ],
-                                          )
-                                        )
+                                                    .displaySmall)
+                                          ],
+                                        ))
                                       ]),
                                     ),
                                   ));
@@ -226,7 +254,6 @@ class MaintenanceScreen extends ConsumerWidget {
               ),
             ),
           ),
-        )
-      );
+        ));
   }
 }

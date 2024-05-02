@@ -32,15 +32,22 @@ class HomeScreen extends ConsumerWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Welcome home, ${appUserWatcher.firstName}!    ',
+                Container(
+                  margin: const EdgeInsets.only(right: 5),
+                  child: Text(
+                  'Welcome home, ${appUserWatcher.firstName}!',
                   style: Theme.of(context).textTheme.displayMedium,
+                  )
                 ),
-                const Icon(
+                Container(
+                margin: const EdgeInsets.only(right:5),
+                child: const Icon(
                   Icons.hail_rounded,
                   size: 40,
+                  
                   color: Color.fromRGBO(0, 124, 124, 1.0),
-                ),
+                )
+                )
               ],
             ),
             backgroundColor: const Color.fromARGB(220, 255, 255, 255),

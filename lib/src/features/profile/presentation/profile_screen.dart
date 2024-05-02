@@ -9,6 +9,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    MediaQueryData queryData = MediaQuery.of(context);
     final appUser = ref.watch(AppUser().provider);
     return SafeArea(
       child: Scaffold(
@@ -23,6 +24,7 @@ class SettingsScreen extends ConsumerWidget {
         body: Opacity(
           opacity: 1,
           child: Container(
+            height: queryData.size.height,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 colorFilter: ColorFilter.mode(
@@ -36,9 +38,9 @@ class SettingsScreen extends ConsumerWidget {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 230.0,
-                    left: 55.0,
-                    right: 50.0,
+                    top: queryData.size.height * 0.22,
+                    left: queryData.size.width * 0.15,
+                    right: queryData.size.width * 0.15,
                     child: Container(
                       decoration:
                           BoxDecoration(color: Color.fromARGB(169, 0, 0, 0)),
@@ -70,7 +72,7 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 400),
+                    padding: EdgeInsets.only(top: queryData.size.height * 0.45),
                     child: Column(
                       children: [
                         Row(
